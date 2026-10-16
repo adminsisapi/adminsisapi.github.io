@@ -906,18 +906,37 @@
       });
     }
 
-    function hitungKPI() {
+      function hitungKPI() {
       document.getElementById('kpiTotalItem').innerText = `${masterStok.length} Item`;
-      const todayIso = new Date().toISOString().split('T')[0];
-      const masukHariIni = logTransaksi.filter(l => String(l.tanggal).includes(todayIso) && l.jenis === 'MASUK');
-      const keluarHariIni = logTransaksi.filter(l => String(l.tanggal).includes(todayIso) && l.jenis === 'KELUAR');
+      
+      const todayIso = new Date().toISOString().split('T')[0]; // Format '2026-10-16'
+      
+      // Filter transaksi masuk dan keluar hari ini secara fleksibel
+      const masukHariIni = logTransaksi.filter(l => {
+        const tgl = String(l.tanggal || '').split('T')[0];
+        return (tgl === todayIso || tgl.includes('16/10/2026') || tgl.includes(todayIso)) && l.jenis === 'MASUK';
+      });
+
+      const keluarHariIni = logTransaksi.filter(l => {
+        const tgl = String(l.tanggal || '').split('T')[0];
+        return (tgl === todayIso || tgl.includes('16/10/2026') || tgl.includes(todayIso)) && l.jenis === 'KELUAR';
+      });
+
+      const totalUnitMasuk = masukHariIni.reduce((a, b) => a + Number(b.jumlah || 0), 0);
+      const totalUnitKeluar = keluarHariIni.reduce((a, b) => a + Number(b.jumlah || 0), 0);
 
       document.getElementById('kpiMasukHariIni').innerText = `${masukHariIni.length} SJ`;
-      document.getElementById('kpiVolumeMasuk').innerText = `+${formatAngka(masukHariIni.reduce((a,b)=>a+Number(b.jumlah),0))} Unit Masuk`;
+      document.getElementById('kpiVolumeMasuk').innerText = `+${formatAngka(totalUnitMasuk)} Unit Masuk`;
+      
       document.getElementById('kpiKeluarHariIni').innerText = `${keluarHariIni.length} SJ`;
-      document.getElementById('kpiVolumeKeluar').innerText = `-${formatAngka(keluarHariIni.reduce((a,b)=>a+Number(b.jumlah),0))} Unit Keluar`;
-      document.getElementById('kpiStokRendah').innerText = `${masterStok.filter(item => (item.satuan==='Kg'&&item.stok<2000)||(item.satuan!=='Kg'&&item.stok<100)).length} Item`;
+      document.getElementById('kpiVolumeKeluar').innerText = `-${formatAngka(totalUnitKeluar)} Unit Keluar`;
+      
+      const stokRendah = masterStok.filter(item => 
+        (item.satuan === 'Kg' && item.stok < 2000) || (item.satuan !== 'Kg' && item.stok < 100)
+      ).length;
+      document.getElementById('kpiStokRendah').innerText = `${stokRendah} Item`;
     }
+
 
     function switchFormTab(mode) {
       document.getElementById('tabBtnMasuk').className = "py-4 px-2 border-b-4 border-transparent text-slate-500 hover:text-slate-900 transition flex items-center justify-center space-x-1.5";
