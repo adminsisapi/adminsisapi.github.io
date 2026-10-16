@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="overflow-x-hidden">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>ADMIN GUDANG - CV YUDISTIRA FEEDMILL</title>
+  <title>SISAPI - CV YUDISTIRA FEEDMILL</title>
 
   <!-- FAVICON ICON -->
   <link rel="icon" type="image/png" href="icon.png">
@@ -14,7 +14,7 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="FEEDMILL">
+  <meta name="apple-mobile-web-app-title" content="SISAPI">
   <link id="manifestLink" rel="manifest" href="manifest.json">
 
   <!-- Tailwind CSS -->
@@ -27,7 +27,9 @@
   <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
 
   <style>
-    body {
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
       font-family: 'Inter', sans-serif;
       background-color: #f1f5f9;
       -webkit-tap-highlight-color: transparent;
@@ -100,16 +102,16 @@
     }
   </style>
 </head>
-<body class="text-slate-800 min-h-screen flex flex-col">
+<body class="text-slate-800 min-h-screen flex flex-col w-full overflow-x-hidden">
 
   <!-- ========================================================= -->
   <!-- OVERLAY LOADING TENGAH DENGAN ICON.PNG BERKEDIP           -->
   <!-- ========================================================= -->
   <div id="centerLoadingOverlay" class="fixed inset-0 bg-slate-950/40 backdrop-blur-[2px] z-[90] hidden items-center justify-center p-4">
-    <div class="bg-slate-900/95 border border-slate-700 text-white px-5 py-4 rounded-2xl shadow-2xl flex flex-col items-center space-y-2.5 min-w-[140px]">
-      <div class="relative w-12 h-12 rounded-xl bg-emerald-500/20 border border-emerald-500/40 p-1.5 flex items-center justify-center animate-logo-blink">
+    <div class="bg-slate-900/95 border border-slate-700 text-white px-5 py-4 rounded-2xl shadow-2xl flex flex-col items-center space-y-2.5 min-w-[135px]">
+      <div class="relative w-11 h-11 rounded-xl bg-emerald-500/20 border border-emerald-500/40 p-1.5 flex items-center justify-center animate-logo-blink">
         <img src="icon.png" alt="Loading" class="w-full h-full object-contain rounded-lg" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-        <div class="hidden w-full h-full items-center justify-center text-emerald-400 text-xl">
+        <div class="hidden w-full h-full items-center justify-center text-emerald-400 text-lg">
           <i class="fa-solid fa-warehouse"></i>
         </div>
       </div>
@@ -120,25 +122,25 @@
   <!-- ========================================================= -->
   <!-- NOTIFIKASI MELAYANG DI ATAS TENGAH (TOP-CENTER TOAST)     -->
   <!-- ========================================================= -->
-  <div id="toast" class="fixed top-4 left-1/2 -translate-x-1/2 bg-slate-900/95 text-white px-5 py-2.5 rounded-full shadow-2xl border border-emerald-500/50 hidden items-center space-x-2.5 z-[100] text-xs font-bold backdrop-blur-md transition-all duration-300">
-    <i class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
-    <span id="toastMsg">Berhasil!</span>
+  <div id="toast" class="fixed top-4 left-1/2 -translate-x-1/2 bg-slate-900/95 text-white px-4 py-2 rounded-full shadow-2xl border border-emerald-500/50 hidden items-center space-x-2 z-[100] text-xs font-bold backdrop-blur-md max-w-[90vw] truncate">
+    <i class="fa-solid fa-circle-check text-emerald-400 text-sm shrink-0"></i>
+    <span id="toastMsg" class="truncate">Berhasil!</span>
   </div>
 
   <!-- ========================================================= -->
-  <!-- 1. LAYAR LOGIN (DENGAN LOGO ICON.PNG)                     -->
+  <!-- 1. LAYAR LOGIN (JUDUL: SISAPI & LOGO ICON.PNG)            -->
   <!-- ========================================================= -->
   <div id="loginScreen" class="fixed inset-0 bg-slate-900 z-50 flex items-center justify-center p-4 overflow-y-auto">
     <div class="bg-white rounded-2xl max-w-sm w-full shadow-2xl border border-slate-800 overflow-hidden my-auto">
       <div class="bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-950 p-6 text-center text-white border-b border-slate-700">
         <!-- Logo icon.png di Login -->
         <div class="w-16 h-16 rounded-2xl bg-white/10 border border-white/20 p-1.5 flex items-center justify-center mx-auto shadow-lg mb-3 overflow-hidden">
-          <img src="icon.png" alt="Logo Feedmill" class="w-full h-full object-contain rounded-xl" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <img src="icon.png" alt="Logo SISAPI" class="w-full h-full object-contain rounded-xl" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
           <div class="hidden w-full h-full bg-emerald-500 text-slate-950 items-center justify-center text-2xl font-extrabold rounded-xl">
             <i class="fa-solid fa-warehouse"></i>
           </div>
         </div>
-        <h1 class="text-xl font-extrabold tracking-wider">FEEDMILL</h1>
+        <h1 class="text-2xl font-extrabold tracking-wider">SISAPI</h1>
         <p class="text-[11px] text-emerald-400 font-bold uppercase tracking-widest mt-0.5">CV YUDISTIRA FEEDMILL</p>
         <p class="text-[10px] text-slate-400 mt-1">Sistem Manajemen Gudang</p>
       </div>
@@ -229,87 +231,85 @@
   </div>
 
   <!-- ========================================================= -->
-  <!-- 3. HEADER UTAMA (LOGO ICON.PNG, INSTAL APP, TEMA, SYNC)   -->
+  <!-- 3. HEADER UTAMA RESPONSIF HP (TIDAK KELUAR BARIS)         -->
   <!-- ========================================================= -->
-  <header class="bg-slate-900 text-white shadow-md sticky top-0 z-30 border-b border-slate-800">
-    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2.5">
-      <div class="flex items-center justify-between gap-2 pb-2.5 border-b border-slate-800">
+  <header class="bg-slate-900 text-white shadow-md sticky top-0 z-30 border-b border-slate-800 w-full">
+    <div class="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 py-2">
+      <!-- Baris Atas: Brand Kiri & Deretan Tombol Kanan Pas Layar HP -->
+      <div class="flex items-center justify-between gap-1.5 pb-2 border-b border-slate-800">
         <!-- Brand & Logo icon.png -->
-        <div class="flex items-center space-x-2.5 cursor-pointer" onclick="navigatePage('BERANDA')">
-          <div class="w-9 h-9 rounded-xl bg-white/10 border border-slate-700 p-1 flex items-center justify-center shadow overflow-hidden shrink-0">
+        <div class="flex items-center space-x-2 cursor-pointer min-w-0" onclick="navigatePage('BERANDA')">
+          <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-white/10 border border-slate-700 p-1 flex items-center justify-center shadow overflow-hidden shrink-0">
             <img src="icon.png" alt="Logo" class="w-full h-full object-contain rounded-lg" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
             <div class="hidden w-full h-full bg-emerald-500 text-slate-950 items-center justify-center font-extrabold rounded-lg">
-              <i class="fa-solid fa-warehouse text-sm"></i>
+              <i class="fa-solid fa-warehouse text-xs"></i>
             </div>
           </div>
-          <div>
-            <div class="flex items-center space-x-1.5">
-              <span class="text-sm sm:text-base font-extrabold tracking-wider">FEEDMILL</span>
-              <span id="roleBadge" class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase">ADMIN</span>
+          <div class="min-w-0">
+            <div class="flex items-center space-x-1">
+              <span class="text-sm sm:text-base font-extrabold tracking-wider truncate">SISAPI</span>
+              <span id="roleBadge" class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[8px] sm:text-[9px] px-1.5 py-0.5 rounded font-bold uppercase shrink-0">ADMIN</span>
             </div>
-            <p class="text-[10px] text-slate-400 leading-none mt-0.5">CV YUDISTIRA FEEDMILL</p>
+            <p class="text-[9px] sm:text-[10px] text-slate-400 leading-none mt-0.5 truncate">CV YUDISTIRA FEEDMILL</p>
           </div>
         </div>
 
         <!-- Jam Live Desktop -->
-        <div class="hidden lg:flex items-center space-x-2 bg-slate-800/90 border border-slate-700 px-3 py-1.5 rounded-xl text-xs">
+        <div class="hidden lg:flex items-center space-x-2 bg-slate-800/90 border border-slate-700 px-3 py-1.5 rounded-xl text-xs shrink-0">
           <i class="fa-regular fa-clock text-emerald-400"></i>
           <span id="headerLiveDateTime" class="font-mono-code font-semibold text-slate-200">Memuat...</span>
         </div>
 
-        <!-- Deretan Tombol Aksi Pojok Kanan Atas -->
-        <div class="flex items-center space-x-1.5">
-          <!-- Tombol Instal Aplikasi (PWA) -->
-          <button id="btnInstallApp" onclick="triggerInstallApp()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-2.5 py-1.5 rounded-xl text-[11px] font-bold transition flex items-center space-x-1 shadow" title="Instal Aplikasi">
-            <i class="fa-solid fa-download"></i>
+        <!-- Deretan Tombol Aksi Pojok Kanan Atas (Rapi & Muat di HP) -->
+        <div class="flex items-center space-x-1 sm:space-x-1.5 shrink-0">
+          <!-- Tombol Instal Aplikasi (Otomatis Hilang Jika Sudah Instal) -->
+          <button id="btnInstallApp" onclick="triggerInstallApp()" class="bg-emerald-600 hover:bg-emerald-500 text-white w-7 h-7 sm:w-auto sm:h-auto sm:px-2.5 sm:py-1.5 rounded-lg sm:rounded-xl text-[11px] font-bold transition flex items-center justify-center sm:space-x-1 shadow" title="Instal Aplikasi">
+            <i class="fa-solid fa-download text-[11px]"></i>
             <span class="hidden sm:inline">Instal</span>
           </button>
 
           <!-- Tombol Mode Terang / Gelap -->
-          <button onclick="toggleDarkMode()" class="bg-slate-800 hover:bg-slate-700 text-amber-400 border border-slate-700 p-2 rounded-xl text-xs transition" title="Mode Terang / Gelap">
-            <i id="themeIcon" class="fa-solid fa-moon"></i>
+          <button onclick="toggleDarkMode()" class="bg-slate-800 hover:bg-slate-700 text-amber-400 border border-slate-700 w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl text-xs transition flex items-center justify-center" title="Mode Terang / Gelap">
+            <i id="themeIcon" class="fa-solid fa-moon text-[11px]"></i>
           </button>
 
           <!-- Tombol Absen Shift -->
-          <button id="btnGantiShift" onclick="openModal('modalAbsensi')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 px-2.5 py-1 rounded-xl text-xs flex items-center space-x-1.5 transition" title="Absen Shift">
-            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-            <div class="text-left">
-              <span class="text-[9px] text-slate-400 block leading-none">Shift:</span>
-              <span id="activeAdminName" class="font-extrabold text-amber-400 text-[11px] leading-tight">SUFYAN</span>
-            </div>
+          <button id="btnGantiShift" onclick="openModal('modalAbsensi')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 px-2 py-1 rounded-lg sm:rounded-xl text-xs flex items-center space-x-1 transition" title="Absen Shift">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping shrink-0"></span>
+            <span id="activeAdminName" class="font-extrabold text-amber-400 text-[10px] sm:text-[11px] leading-none">SUFYAN</span>
           </button>
 
           <!-- Tombol Sinkronisasi -->
-          <button onclick="syncData()" class="bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-slate-700 p-2 rounded-xl text-xs transition" title="Refresh Database">
-            <i id="syncIcon" class="fa-solid fa-rotate"></i>
+          <button onclick="syncData()" class="bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-slate-700 w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl text-xs transition flex items-center justify-center" title="Refresh Database">
+            <i id="syncIcon" class="fa-solid fa-rotate text-[11px]"></i>
           </button>
 
           <!-- Tombol Keluar -->
-          <button onclick="handleLogout()" class="bg-rose-600/20 hover:bg-rose-600 text-rose-300 hover:text-white border border-rose-500/30 p-2 sm:px-2.5 sm:py-1.5 rounded-xl text-xs font-bold transition flex items-center space-x-1" title="Keluar">
-            <i class="fa-solid fa-power-off"></i>
+          <button onclick="handleLogout()" class="bg-rose-600/20 hover:bg-rose-600 text-rose-300 hover:text-white border border-rose-500/30 w-7 h-7 sm:w-auto sm:h-auto sm:px-2.5 sm:py-1.5 rounded-lg sm:rounded-xl text-xs font-bold transition flex items-center justify-center sm:space-x-1" title="Keluar">
+            <i class="fa-solid fa-power-off text-[11px]"></i>
             <span class="hidden md:inline">Keluar</span>
           </button>
         </div>
       </div>
 
       <!-- Baris Navigasi & Jam Mobile -->
-      <div class="pt-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+      <div class="pt-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1.5">
         <div class="lg:hidden flex items-center justify-between bg-slate-800/70 px-2.5 py-1 rounded-lg text-[10px]">
           <span class="text-slate-400 font-medium"><i class="fa-regular fa-clock text-emerald-400 mr-1"></i>Live:</span>
           <span id="mobileLiveDateTime" class="font-mono-code font-bold text-slate-200">--:--:--</span>
         </div>
 
-        <nav class="grid grid-cols-4 gap-1.5 w-full sm:w-auto">
-          <button onclick="navigatePage('BERANDA')" id="navBeranda" class="nav-btn-active px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:text-white transition flex items-center justify-center space-x-1">
+        <nav class="grid grid-cols-4 gap-1 sm:gap-1.5 w-full sm:w-auto">
+          <button onclick="navigatePage('BERANDA')" id="navBeranda" class="nav-btn-active px-2 py-1.5 rounded-xl text-[11px] sm:text-xs font-bold bg-slate-800 text-slate-300 hover:text-white transition flex items-center justify-center space-x-1">
             <i class="fa-solid fa-grip"></i><span>Beranda</span>
           </button>
-          <button onclick="navigatePage('TRANSAKSI')" id="navTransaksi" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:text-white transition flex items-center justify-center space-x-1">
+          <button onclick="navigatePage('TRANSAKSI')" id="navTransaksi" class="px-2 py-1.5 rounded-xl text-[11px] sm:text-xs font-bold bg-slate-800 text-slate-300 hover:text-white transition flex items-center justify-center space-x-1">
             <i class="fa-solid fa-truck-ramp-box"></i><span>Mutasi</span>
           </button>
-          <button onclick="navigatePage('STOK')" id="navStok" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:text-white transition flex items-center justify-center space-x-1">
+          <button onclick="navigatePage('STOK')" id="navStok" class="px-2 py-1.5 rounded-xl text-[11px] sm:text-xs font-bold bg-slate-800 text-slate-300 hover:text-white transition flex items-center justify-center space-x-1">
             <i class="fa-solid fa-boxes-stacked"></i><span>Stok</span>
           </button>
-          <button onclick="navigatePage('RIWAYAT')" id="navRiwayat" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:text-white transition flex items-center justify-center space-x-1">
+          <button onclick="navigatePage('RIWAYAT')" id="navRiwayat" class="px-2 py-1.5 rounded-xl text-[11px] sm:text-xs font-bold bg-slate-800 text-slate-300 hover:text-white transition flex items-center justify-center space-x-1">
             <i class="fa-solid fa-calendar-days"></i><span>Riwayat</span>
           </button>
         </nav>
@@ -324,10 +324,10 @@
   <!-- ========================================================= -->
   <!-- 4. KONTEN UTAMA (SPA)                                     -->
   <!-- ========================================================= -->
-  <main class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-5 flex-grow w-full">
+  <main class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-5 flex-grow w-full">
 
     <!-- HALAMAN 1: BERANDA -->
-    <section id="pageBeranda" class="space-y-5">
+    <section id="pageBeranda" class="space-y-4 sm:space-y-5">
       <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-emerald-900 rounded-2xl p-4 sm:p-5 text-white shadow-md flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div class="space-y-1">
           <div class="inline-flex items-center space-x-1.5 bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 px-2.5 py-0.5 rounded-full text-[10px] font-bold">
@@ -335,10 +335,10 @@
             <span>Database Aktif</span>
           </div>
           <h2 class="text-lg sm:text-xl font-extrabold">Halo, <span id="welcomeAdminName" class="text-amber-400 underline">SUFYAN</span>!</h2>
-          <p class="text-xs text-slate-300">CV Yudistira Feedmill</p>
+          <p class="text-xs text-slate-300">SISAPI — CV Yudistira Feedmill</p>
         </div>
 
-        <div class="bg-slate-950/60 border border-slate-700 rounded-xl p-3 min-w-[200px] flex flex-col justify-between">
+        <div class="bg-slate-950/60 border border-slate-700 rounded-xl p-3 sm:min-w-[200px] flex flex-col justify-between">
           <div class="flex items-center justify-between text-[11px] text-slate-400 mb-1">
             <span>Admin Shift:</span>
             <button onclick="openModal('modalAbsensi')" class="text-amber-400 hover:underline font-bold">Ganti</button>
@@ -352,61 +352,61 @@
       </div>
 
       <!-- 4 RINGKASAN KPI -->
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
-          <div class="flex items-center justify-between"><span class="text-[11px] font-bold text-slate-400 uppercase">Komoditas</span><span class="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xs"><i class="fa-solid fa-boxes-stacked"></i></span></div>
-          <div class="mt-2"><h3 id="kpiTotalItem" class="text-lg sm:text-xl font-extrabold text-slate-800">0 Item</h3><p class="text-[10px] text-slate-500">Master Gudang</p></div>
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3">
+        <div class="bg-white p-3.5 sm:p-4 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
+          <div class="flex items-center justify-between"><span class="text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase">Komoditas</span><span class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xs"><i class="fa-solid fa-boxes-stacked"></i></span></div>
+          <div class="mt-2"><h3 id="kpiTotalItem" class="text-base sm:text-xl font-extrabold text-slate-800">0 Item</h3><p class="text-[10px] text-slate-500">Master Gudang</p></div>
         </div>
-        <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
-          <div class="flex items-center justify-between"><span class="text-[11px] font-bold text-emerald-600 uppercase">Masuk</span><span class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xs"><i class="fa-solid fa-arrow-down-to-bracket"></i></span></div>
-          <div class="mt-2"><h3 id="kpiMasukHariIni" class="text-lg sm:text-xl font-extrabold text-slate-800">0 SJ</h3><p id="kpiVolumeMasuk" class="text-[10px] text-emerald-600 font-bold">+0 Unit</p></div>
+        <div class="bg-white p-3.5 sm:p-4 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
+          <div class="flex items-center justify-between"><span class="text-[10px] sm:text-[11px] font-bold text-emerald-600 uppercase">Masuk</span><span class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xs"><i class="fa-solid fa-arrow-down-to-bracket"></i></span></div>
+          <div class="mt-2"><h3 id="kpiMasukHariIni" class="text-base sm:text-xl font-extrabold text-slate-800">0 SJ</h3><p id="kpiVolumeMasuk" class="text-[10px] text-emerald-600 font-bold">+0 Unit</p></div>
         </div>
-        <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
-          <div class="flex items-center justify-between"><span class="text-[11px] font-bold text-rose-600 uppercase">Keluar</span><span class="w-8 h-8 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center text-xs"><i class="fa-solid fa-arrow-up-from-bracket"></i></span></div>
-          <div class="mt-2"><h3 id="kpiKeluarHariIni" class="text-lg sm:text-xl font-extrabold text-slate-800">0 SJ</h3><p id="kpiVolumeKeluar" class="text-[10px] text-rose-600 font-bold">-0 Unit</p></div>
+        <div class="bg-white p-3.5 sm:p-4 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
+          <div class="flex items-center justify-between"><span class="text-[10px] sm:text-[11px] font-bold text-rose-600 uppercase">Keluar</span><span class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center text-xs"><i class="fa-solid fa-arrow-up-from-bracket"></i></span></div>
+          <div class="mt-2"><h3 id="kpiKeluarHariIni" class="text-base sm:text-xl font-extrabold text-slate-800">0 SJ</h3><p id="kpiVolumeKeluar" class="text-[10px] text-rose-600 font-bold">-0 Unit</p></div>
         </div>
-        <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
-          <div class="flex items-center justify-between"><span class="text-[11px] font-bold text-amber-600 uppercase">Menipis</span><span class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xs"><i class="fa-solid fa-triangle-exclamation"></i></span></div>
-          <div class="mt-2"><h3 id="kpiStokRendah" class="text-lg sm:text-xl font-extrabold text-slate-800">0 Item</h3><p class="text-[10px] text-slate-500">Perlu Restock</p></div>
+        <div class="bg-white p-3.5 sm:p-4 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
+          <div class="flex items-center justify-between"><span class="text-[10px] sm:text-[11px] font-bold text-amber-600 uppercase">Menipis</span><span class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xs"><i class="fa-solid fa-triangle-exclamation"></i></span></div>
+          <div class="mt-2"><h3 id="kpiStokRendah" class="text-base sm:text-xl font-extrabold text-slate-800">0 Item</h3><p class="text-[10px] text-slate-500">Perlu Restock</p></div>
         </div>
       </div>
 
-      <!-- KOTAK MENU UTAMA (RINGKAS & RESPONSIF) -->
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        <div id="cardMenuTransaksi" onclick="bukaHalamanTransaksi('MASUK')" class="bg-white hover:border-emerald-500 border-2 border-slate-200 rounded-2xl p-4 shadow-sm transition cursor-pointer flex flex-col justify-between group">
+      <!-- KOTAK MENU UTAMA -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3">
+        <div id="cardMenuTransaksi" onclick="bukaHalamanTransaksi('MASUK')" class="bg-white hover:border-emerald-500 border-2 border-slate-200 rounded-2xl p-3.5 sm:p-4 shadow-sm transition cursor-pointer flex flex-col justify-between group">
           <div>
-            <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-base shadow group-hover:scale-105 transition"><i class="fa-solid fa-truck-ramp-box"></i></div>
-            <h4 class="text-sm font-extrabold text-slate-800 mt-3">Keluar / Masuk</h4>
-            <p class="text-[11px] text-slate-500 mt-0.5">Input Surat Jalan</p>
+            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-sm sm:text-base shadow group-hover:scale-105 transition"><i class="fa-solid fa-truck-ramp-box"></i></div>
+            <h4 class="text-xs sm:text-sm font-extrabold text-slate-800 mt-2.5">Keluar / Masuk</h4>
+            <p class="text-[10px] sm:text-[11px] text-slate-500 mt-0.5">Input Surat Jalan</p>
           </div>
-          <div class="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-emerald-600"><span>Buka</span><i class="fa-solid fa-arrow-right"></i></div>
+          <div class="mt-2.5 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-emerald-600"><span>Buka</span><i class="fa-solid fa-arrow-right"></i></div>
         </div>
 
-        <div onclick="navigatePage('STOK')" class="bg-white hover:border-blue-500 border-2 border-slate-200 rounded-2xl p-4 shadow-sm transition cursor-pointer flex flex-col justify-between group">
+        <div onclick="navigatePage('STOK')" class="bg-white hover:border-blue-500 border-2 border-slate-200 rounded-2xl p-3.5 sm:p-4 shadow-sm transition cursor-pointer flex flex-col justify-between group">
           <div>
-            <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center text-base shadow group-hover:scale-105 transition"><i class="fa-solid fa-cubes-stacked"></i></div>
-            <h4 class="text-sm font-extrabold text-slate-800 mt-3">Stok Gudang</h4>
-            <p class="text-[11px] text-slate-500 mt-0.5">Stok Real-Time</p>
+            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center text-sm sm:text-base shadow group-hover:scale-105 transition"><i class="fa-solid fa-cubes-stacked"></i></div>
+            <h4 class="text-xs sm:text-sm font-extrabold text-slate-800 mt-2.5">Stok Gudang</h4>
+            <p class="text-[10px] sm:text-[11px] text-slate-500 mt-0.5">Stok Real-Time</p>
           </div>
-          <div class="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-blue-600"><span>Buka</span><i class="fa-solid fa-arrow-right"></i></div>
+          <div class="mt-2.5 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-blue-600"><span>Buka</span><i class="fa-solid fa-arrow-right"></i></div>
         </div>
 
-        <div onclick="navigatePage('RIWAYAT')" class="bg-white hover:border-indigo-500 border-2 border-slate-200 rounded-2xl p-4 shadow-sm transition cursor-pointer flex flex-col justify-between group">
+        <div onclick="navigatePage('RIWAYAT')" class="bg-white hover:border-indigo-500 border-2 border-slate-200 rounded-2xl p-3.5 sm:p-4 shadow-sm transition cursor-pointer flex flex-col justify-between group">
           <div>
-            <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-base shadow group-hover:scale-105 transition"><i class="fa-solid fa-calendar-days"></i></div>
-            <h4 class="text-sm font-extrabold text-slate-800 mt-3">Riwayat</h4>
-            <p class="text-[11px] text-slate-500 mt-0.5">Laporan & Cetak SJ</p>
+            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-sm sm:text-base shadow group-hover:scale-105 transition"><i class="fa-solid fa-calendar-days"></i></div>
+            <h4 class="text-xs sm:text-sm font-extrabold text-slate-800 mt-2.5">Riwayat</h4>
+            <p class="text-[10px] sm:text-[11px] text-slate-500 mt-0.5">Laporan & Cetak SJ</p>
           </div>
-          <div class="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-indigo-600"><span>Buka</span><i class="fa-solid fa-arrow-right"></i></div>
+          <div class="mt-2.5 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-indigo-600"><span>Buka</span><i class="fa-solid fa-arrow-right"></i></div>
         </div>
 
-        <div id="cardMenuManual" onclick="bukaHalamanTransaksi('MANUAL')" class="bg-white hover:border-amber-500 border-2 border-slate-200 rounded-2xl p-4 shadow-sm transition cursor-pointer flex flex-col justify-between group">
+        <div id="cardMenuManual" onclick="bukaHalamanTransaksi('MANUAL')" class="bg-white hover:border-amber-500 border-2 border-slate-200 rounded-2xl p-3.5 sm:p-4 shadow-sm transition cursor-pointer flex flex-col justify-between group">
           <div>
-            <div class="w-10 h-10 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center text-base shadow group-hover:scale-105 transition"><i class="fa-solid fa-sliders"></i></div>
-            <h4 class="text-sm font-extrabold text-slate-800 mt-3">Kontrol Manual</h4>
-            <p class="text-[11px] text-slate-500 mt-0.5">Opname & Barang</p>
+            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center text-sm sm:text-base shadow group-hover:scale-105 transition"><i class="fa-solid fa-sliders"></i></div>
+            <h4 class="text-xs sm:text-sm font-extrabold text-slate-800 mt-2.5">Kontrol Manual</h4>
+            <p class="text-[10px] sm:text-[11px] text-slate-500 mt-0.5">Opname & Barang</p>
           </div>
-          <div class="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-amber-600"><span>Buka</span><i class="fa-solid fa-arrow-right"></i></div>
+          <div class="mt-2.5 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-amber-600"><span>Buka</span><i class="fa-solid fa-arrow-right"></i></div>
         </div>
       </div>
 
@@ -739,7 +739,7 @@
       </div>
 
       <!-- Area Dokumen Cetak -->
-      <div class="p-4 sm:p-6 bg-slate-100 overflow-x-auto">
+      <div class="p-3 sm:p-6 bg-slate-100 overflow-x-auto">
         <div id="areaDokumenCetak" class="bg-white text-slate-900 mx-auto"></div>
       </div>
 
@@ -796,6 +796,7 @@
 
     window.addEventListener('DOMContentLoaded', () => {
       initDarkMode();
+      checkInstallState();
       startLiveClock();
       setDefaultTanggalForm();
       checkAuthSession();
@@ -804,30 +805,61 @@
     });
 
     /* ========================================================= */
-    /* FITUR INSTAL APLIKASI (PWA) & DARK MODE                   */
+    /* FITUR INSTAL APLIKASI (OTOMATIS HILANG JIKA SUDAH INSTAL) */
     /* ========================================================= */
+    function checkInstallState() {
+      const btnInstall = document.getElementById('btnInstallApp');
+      if (!btnInstall) return;
+
+      const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+      const isInstalledFlag = localStorage.getItem('SISAPI_INSTALLED') === 'true';
+
+      if (isStandalone || isInstalledFlag) {
+        btnInstall.classList.add('hidden');
+      }
+    }
+
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
+      localStorage.removeItem('SISAPI_INSTALLED');
+      const btnInstall = document.getElementById('btnInstallApp');
+      if (btnInstall) btnInstall.classList.remove('hidden');
+    });
+
+    window.addEventListener('appinstalled', () => {
+      localStorage.setItem('SISAPI_INSTALLED', 'true');
+      deferredPrompt = null;
+      const btnInstall = document.getElementById('btnInstallApp');
+      if (btnInstall) btnInstall.classList.add('hidden');
+      showToast("Aplikasi SISAPI Terinstal!");
     });
 
     async function triggerInstallApp() {
       if (deferredPrompt) {
         deferredPrompt.prompt();
         const { outcome } = await deferredPrompt.userChoice;
-        if (outcome === 'accepted') showToast("Aplikasi berhasil diinstal!");
+        if (outcome === 'accepted') {
+          localStorage.setItem('SISAPI_INSTALLED', 'true');
+          const btnInstall = document.getElementById('btnInstallApp');
+          if (btnInstall) btnInstall.classList.add('hidden');
+          showToast("Aplikasi berhasil diinstal!");
+        }
         deferredPrompt = null;
       } else {
-        showToast("Klik menu titik 3 browser lalu pilih 'Tambahkan ke Layar Utama'");
+        showToast("Pilih 'Tambahkan ke Layar Utama' di menu pojok browser");
       }
     }
 
+    /* ========================================================= */
+    /* FITUR MODE TERANG / GELAP (DARK MODE)                     */
+    /* ========================================================= */
     function initDarkMode() {
       const isDark = localStorage.getItem('FEEDMILL_DARK_MODE') === 'true';
       if (isDark) {
         document.body.classList.add('dark-mode');
         const icon = document.getElementById('themeIcon');
-        if (icon) icon.className = 'fa-solid fa-sun';
+        if (icon) icon.className = 'fa-solid fa-sun text-[11px]';
       }
     }
 
@@ -835,7 +867,7 @@
       const isDark = document.body.classList.toggle('dark-mode');
       localStorage.setItem('FEEDMILL_DARK_MODE', isDark);
       const icon = document.getElementById('themeIcon');
-      if (icon) icon.className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+      if (icon) icon.className = isDark ? 'fa-solid fa-sun text-[11px]' : 'fa-solid fa-moon text-[11px]';
       showToast(isDark ? "Mode Gelap Aktif" : "Mode Terang Aktif");
     }
 
@@ -912,14 +944,14 @@
         document.getElementById('loginUser').value = '';
         document.getElementById('loginPass').value = '';
         checkAuthSession();
-        showToast(`Selamat datang, ${matched.defaultWorker}!`);
+        showToast(`Selamat datang di SISAPI, ${matched.defaultWorker}!`);
       } else {
         errBox.classList.remove('hidden');
       }
     }
 
     function handleLogout() {
-      if (confirm("Keluar dari sesi FEEDMILL?")) {
+      if (confirm("Keluar dari sesi SISAPI?")) {
         localStorage.removeItem('FEEDMILL_SESSION');
         currentSession = null;
         document.getElementById('loginScreen').classList.remove('hidden');
@@ -940,7 +972,7 @@
 
       if (isViewer) {
         roleBadge.innerText = "VIEWER";
-        roleBadge.className = "bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase";
+        roleBadge.className = "bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[8px] sm:text-[9px] px-1.5 py-0.5 rounded font-bold uppercase shrink-0";
         viewerNotice.classList.remove('hidden');
         navTransaksi.classList.add('hidden');
         cardMenuTransaksi.classList.add('opacity-50', 'pointer-events-none');
@@ -950,7 +982,7 @@
         navigatePage('BERANDA');
       } else {
         roleBadge.innerText = "ADMIN";
-        roleBadge.className = "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase";
+        roleBadge.className = "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[8px] sm:text-[9px] px-1.5 py-0.5 rounded font-bold uppercase shrink-0";
         viewerNotice.classList.add('hidden');
         navTransaksi.classList.remove('hidden');
         cardMenuTransaksi.classList.remove('opacity-50', 'pointer-events-none');
@@ -1136,14 +1168,37 @@
       tbody.innerHTML = '';
 
       const filtered = logTransaksi.filter(log => {
+        const tglStr = String(log.tanggal || '').split('T')[0];
+        let matchMode = true;
+
+        if (modeLaporanAktif === 'HARIAN') {
+          const filterTgl = document.getElementById('filterTanggal').value;
+          matchMode = !filterTgl || tglStr === filterTgl || tglStr.includes(filterTgl);
+        } else if (modeLaporanAktif === 'MINGGUAN') {
+          const filterMgg = document.getElementById('filterMingguan').value;
+          if (filterMgg === '7') {
+            const logDate = new Date(tglStr);
+            const diffDays = (new Date() - logDate) / (1000 * 60 * 60 * 24);
+            matchMode = !isNaN(diffDays) && diffDays >= -1 && diffDays <= 7;
+          }
+        } else if (modeLaporanAktif === 'BULANAN') {
+          const bln = document.getElementById('filterBulan').value;
+          const thn = document.getElementById('filterTahun').value;
+          matchMode = !thn || tglStr.startsWith(thn) || tglStr.includes(thn);
+          if (bln && bln !== 'ALL') {
+            matchMode = matchMode && (tglStr.slice(5, 7) === bln || tglStr.includes(`-${bln}-`) || tglStr.includes(`/${bln}/`));
+          }
+        }
+
         const matchJenis = jenis === 'SEMUA' || log.jenis === jenis;
         const matchAdmin = adminFilter === 'SEMUA' || String(log.admin || 'SUFYAN').toUpperCase() === adminFilter;
         const matchKey = !keyword || String(log.suratJalan).toLowerCase().includes(keyword) || String(log.nopol).toLowerCase().includes(keyword) || String(log.namaBarang).toLowerCase().includes(keyword);
-        return matchJenis && matchAdmin && matchKey;
+        
+        return matchMode && matchJenis && matchAdmin && matchKey;
       });
 
       if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-slate-400">Belum ada data transaksi. Klik <b>Refresh</b> di atas.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-slate-400">Belum ada data transaksi pada periode ini. Klik <b>Refresh</b> di atas.</td></tr>`;
         return;
       }
 
@@ -1323,7 +1378,7 @@
 
       // Data lengkap dari Sheet yang muncul saat QR di-scan
       const qrDataText = [
-        "CV YUDISTIRA FEEDMILL",
+        "SISAPI - CV YUDISTIRA FEEDMILL",
         "No SJ: " + log.suratJalan,
         "Tipe: " + log.jenis,
         "Tanggal: " + log.tanggal,
@@ -1349,7 +1404,7 @@
               </td>
               <td style="vertical-align: middle;">
                 <div style="font-size: 20px; font-weight: 800; letter-spacing: 0.5px; color: #0f172a;">CV YUDISTIRA FEEDMILL</div>
-                <div style="font-size: 11px; font-weight: 600; color: #334155;">DIVISI PERGUDANGAN & LOGISTIK PAKAN TERNAK</div>
+                <div style="font-size: 11px; font-weight: 600; color: #334155;">SISTEM PERGUDANGAN SISAPI — DIVISI LOGISTIK PAKAN</div>
                 <div style="font-size: 10px; color: #64748b; margin-top: 2px;">Waktu Cetak/Input: ${log.timestamp || log.tanggal}</div>
               </td>
               <td style="text-align: right; vertical-align: middle;">
@@ -1436,7 +1491,7 @@
       setTimeout(() => {
         try {
           if (window.JsBarcode) {
-            JsBarcode("#barcodeSJ", String(log.suratJalan || log.id || "FEEDMILL"), {
+            JsBarcode("#barcodeSJ", String(log.suratJalan || log.id || "SISAPI"), {
               format: "CODE128",
               width: 1.3,
               height: 34,
@@ -1456,7 +1511,7 @@
         <!DOCTYPE html>
         <html>
         <head>
-          <title>Cetak Surat Jalan - CV Yudistira Feedmill</title>
+          <title>Cetak Surat Jalan - SISAPI CV Yudistira Feedmill</title>
           <style>
             @page { size: A4 portrait; margin: 12mm; }
             body {
@@ -1549,7 +1604,7 @@
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
-      link.download = `Laporan_FEEDMILL_${new Date().toISOString().split('T')[0]}.csv`;
+      link.download = `Laporan_SISAPI_${new Date().toISOString().split('T')[0]}.csv`;
       link.click();
     }
 
