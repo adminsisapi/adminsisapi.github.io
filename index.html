@@ -648,23 +648,29 @@
         </div>
 
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 items-end">
-          <div id="filterBoxTanggal">
-            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Tanggal</label>
+          <!-- Filter Harian (Dilengkapi tombol Semua agar mudah cek semua data) -->
+          <div id="filterBoxTanggal" class="col-span-2 sm:col-span-1">
+            <div class="flex items-center justify-between mb-1">
+              <label class="text-[10px] font-bold text-slate-500 uppercase">Tanggal</label>
+              <button type="button" onclick="document.getElementById('filterTanggal').value=''; renderTabelLog();" class="text-[10px] font-extrabold text-emerald-600 hover:underline">Semua Tanggal</button>
+            </div>
             <input type="date" id="filterTanggal" onchange="renderTabelLog()" class="w-full rounded-xl border border-slate-300 px-2.5 py-1.5 text-xs font-bold bg-white">
           </div>
 
-          <div id="filterBoxMingguan" class="hidden">
-            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Minggu</label>
+          <!-- Filter Mingguan -->
+          <div id="filterBoxMingguan" class="hidden col-span-2 sm:col-span-1">
+            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Rentang</label>
             <select id="filterMingguan" onchange="renderTabelLog()" class="w-full rounded-xl border border-slate-300 px-2.5 py-1.5 text-xs font-bold bg-white">
-              <option value="ALL">Semua Minggu</option>
               <option value="7">7 Hari Terakhir</option>
+              <option value="ALL">Semua Minggu</option>
             </select>
           </div>
 
-          <div id="filterBoxBulanan" class="hidden col-span-2 grid grid-cols-2 gap-2">
+          <!-- Filter Bulanan (Pas 1 slot kolom agar tidak merusak grid) -->
+          <div id="filterBoxBulanan" class="hidden col-span-2 sm:col-span-1 grid grid-cols-2 gap-1.5">
             <div>
               <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Bulan</label>
-              <select id="filterBulan" onchange="renderTabelLog()" class="w-full rounded-xl border border-slate-300 px-2.5 py-1.5 text-xs font-bold bg-white">
+              <select id="filterBulan" onchange="renderTabelLog()" class="w-full rounded-xl border border-slate-300 px-2 py-1.5 text-xs font-bold bg-white">
                 <option value="ALL">Semua</option>
                 <option value="01">Jan</option><option value="02">Feb</option><option value="03">Mar</option>
                 <option value="04">Apr</option><option value="05">Mei</option><option value="06">Jun</option>
@@ -674,7 +680,7 @@
             </div>
             <div>
               <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Tahun</label>
-              <select id="filterTahun" onchange="renderTabelLog()" class="w-full rounded-xl border border-slate-300 px-2.5 py-1.5 text-xs font-bold bg-white">
+              <select id="filterTahun" onchange="renderTabelLog()" class="w-full rounded-xl border border-slate-300 px-2 py-1.5 text-xs font-bold bg-white">
                 <option value="2026" selected>2026</option><option value="2027">2027</option>
               </select>
             </div>
@@ -1159,6 +1165,28 @@
       });
     }
 
+        // Helper untuk menormalisasi format tanggal dari Google Sheets ke YYYY-MM-DD lokal (WIB)
+    function normalizeDateStr(rawDate) {
+      if (!rawDate) return '';
+      const str = String(rawDate).trim();
+      // Jika sudah YYYY-MM-DD murni
+      if (/^\d{4}-\d{2}-\d{2}$/.test(str)) return str;
+      // Jika format DD/MM/YYYY
+      if (/^\d{2}\/\d{2}\/\d{4}$/.test(str)) {
+        const [d, m, y] = str.split('/');
+        return `${y}-${m}-${d}`;
+      }
+      // Jika ISO string dari Google Sheets (misal 2026-10-15T17:00:00.000Z), konversi ke waktu lokal perangkat
+      const parsed = new Date(str);
+      if (!isNaN(parsed.getTime())) {
+        const yyyy = parsed.getFullYear();
+        const mm = String(parsed.getMonth() + 1).padStart(2, '0');
+        const dd = String(parsed.getDate()).padStart(2, '0');
+        return `${yyyy}-${mm}-${dd}`;
+      }
+      return str.split('T')[0];
+    }
+
     function renderTabelLog() {
       const jenis = document.getElementById('filterJenisLog').value;
       const adminFilter = document.getElementById('filterAdminLog').value;
@@ -1167,42 +1195,59 @@
       if (!tbody) return;
       tbody.innerHTML = '';
 
-      const filtered = logTransaksi.filter(log => {
-        const tglStr = String(log.tanggal || '').split('T')[0];
+      // Simpan index asli dari setiap item agar tombol Cetak selalu akurat 100%
+      const indexedLogs = logTransaksi.map((item, idx) => ({ item, originalIndex: idx }));
+
+      const filtered = indexedLogs.filter(({ item: log }) => {
+        const tglStr = normalizeDateStr(log.tanggal);
         let matchMode = true;
 
         if (modeLaporanAktif === 'HARIAN') {
           const filterTgl = document.getElementById('filterTanggal').value;
-          matchMode = !filterTgl || tglStr === filterTgl || tglStr.includes(filterTgl);
+          matchMode = !filterTgl || tglStr === filterTgl || String(log.tanggal || '').includes(filterTgl);
         } else if (modeLaporanAktif === 'MINGGUAN') {
           const filterMgg = document.getElementById('filterMingguan').value;
-          if (filterMgg === '7') {
-            const logDate = new Date(tglStr);
-            const diffDays = (new Date() - logDate) / (1000 * 60 * 60 * 24);
+          if (filterMgg === '7' && tglStr) {
+            const logDate = new Date(tglStr + "T00:00:00");
+            const now = new Date();
+            const diffDays = (now - logDate) / (1000 * 60 * 60 * 24);
             matchMode = !isNaN(diffDays) && diffDays >= -1 && diffDays <= 7;
           }
         } else if (modeLaporanAktif === 'BULANAN') {
           const bln = document.getElementById('filterBulan').value;
           const thn = document.getElementById('filterTahun').value;
-          matchMode = !thn || tglStr.startsWith(thn) || tglStr.includes(thn);
+          matchMode = !thn || tglStr.startsWith(thn) || String(log.tanggal || '').includes(thn);
           if (bln && bln !== 'ALL') {
-            matchMode = matchMode && (tglStr.slice(5, 7) === bln || tglStr.includes(`-${bln}-`) || tglStr.includes(`/${bln}/`));
+            matchMode = matchMode && (tglStr.slice(5, 7) === bln || tglStr.includes(`-${bln}-`));
           }
         }
 
         const matchJenis = jenis === 'SEMUA' || log.jenis === jenis;
         const matchAdmin = adminFilter === 'SEMUA' || String(log.admin || 'SUFYAN').toUpperCase() === adminFilter;
-        const matchKey = !keyword || String(log.suratJalan).toLowerCase().includes(keyword) || String(log.nopol).toLowerCase().includes(keyword) || String(log.namaBarang).toLowerCase().includes(keyword);
+        const matchKey = !keyword ||
+          String(log.suratJalan || '').toLowerCase().includes(keyword) ||
+          String(log.nopol || '').toLowerCase().includes(keyword) ||
+          String(log.namaBarang || '').toLowerCase().includes(keyword) ||
+          String(log.sopir || '').toLowerCase().includes(keyword);
         
         return matchMode && matchJenis && matchAdmin && matchKey;
       });
 
       if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-slate-400">Belum ada data transaksi pada periode ini. Klik <b>Refresh</b> di atas.</td></tr>`;
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="8" class="text-center py-8 text-slate-400 space-y-2">
+              <div>Tidak ada transaksi pada filter tanggal ini.</div>
+              <button onclick="document.getElementById('filterTanggal').value=''; setModeLaporan('HARIAN');" class="mt-1 bg-slate-200 hover:bg-slate-300 text-slate-700 px-3 py-1 rounded-lg text-[11px] font-bold transition">
+                Tampilkan Semua Transaksi
+              </button>
+            </td>
+          </tr>`;
         return;
       }
 
-      filtered.forEach(log => {
+      filtered.forEach(({ item: log, originalIndex }) => {
+        const tglTampil = normalizeDateStr(log.tanggal) || log.tanggal || '-';
         let badgeJenis = log.jenis === 'MASUK'
           ? `<span class="bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-extrabold text-[10px]">MASUK</span>`
           : log.jenis === 'KELUAR'
@@ -1210,9 +1255,36 @@
           : `<span class="bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-extrabold text-[10px]">OPNAME</span>`;
         let tanda = log.jenis === 'KELUAR' ? '-' : '+';
         let warna = log.jenis === 'KELUAR' ? 'text-rose-600 font-extrabold' : 'text-emerald-600 font-extrabold';
-        const originalIndex = logTransaksi.findIndex(item => item.id === log.id);
 
-        tbody.innerHTML += `<tr class="hover:bg-slate-50 transition"><td class="py-2.5 px-3"><div class="font-bold text-slate-800">${log.tanggal}</div><div class="text-[10px] text-slate-400 font-mono-code">${log.timestamp || ''}</div></td><td class="py-2.5 px-3"><div>${badgeJenis}</div><div class="font-mono-code font-bold text-slate-800 mt-0.5">${log.suratJalan}</div></td><td class="py-2.5 px-3"><div class="font-bold text-slate-800">${log.armada} <span class="bg-slate-200 text-slate-800 px-1.5 py-0.5 rounded font-mono-code text-[10px]">${log.nopol}</span></div><div class="text-[11px] text-slate-500">${log.sopir}</div></td><td class="py-2.5 px-3"><div class="font-bold text-slate-800">${log.namaBarang}</div><div class="text-[11px] text-slate-400">${log.keterangan || '-'}</div></td><td class="py-2.5 px-3 text-right ${warna} whitespace-nowrap">${tanda}${formatAngka(log.jumlah)} ${log.satuan}</td><td class="py-2.5 px-3 text-right font-extrabold text-slate-800 whitespace-nowrap">${formatAngka(log.stokAkhir)} ${log.satuan}</td><td class="py-2.5 px-3 text-center"><span class="px-2 py-0.5 rounded-full font-extrabold text-[10px] bg-emerald-100 text-emerald-800">${log.admin || 'SUFYAN'}</span></td><td class="py-2.5 px-3 text-center"><button onclick="bukaModalCetak(${originalIndex})" class="bg-slate-900 hover:bg-emerald-600 text-white px-2.5 py-1.5 rounded-xl text-[11px] font-bold transition inline-flex items-center space-x-1 shadow-sm"><i class="fa-solid fa-print"></i><span>Cetak</span></button></td></tr>`;
+        tbody.innerHTML += `
+          <tr class="hover:bg-slate-50 transition">
+            <td class="py-2.5 px-3 whitespace-nowrap">
+              <div class="font-bold text-slate-800">${tglTampil}</div>
+              <div class="text-[10px] text-slate-400 font-mono-code">${log.timestamp || ''}</div>
+            </td>
+            <td class="py-2.5 px-3 whitespace-nowrap">
+              <div>${badgeJenis}</div>
+              <div class="font-mono-code font-bold text-slate-800 mt-0.5">${log.suratJalan || '-'}</div>
+            </td>
+            <td class="py-2.5 px-3">
+              <div class="font-bold text-slate-800">${log.armada || '-'} <span class="bg-slate-200 text-slate-800 px-1.5 py-0.5 rounded font-mono-code text-[10px]">${log.nopol || '-'}</span></div>
+              <div class="text-[11px] text-slate-500">${log.sopir || '-'}</div>
+            </td>
+            <td class="py-2.5 px-3">
+              <div class="font-bold text-slate-800">${log.namaBarang || '-'}</div>
+              <div class="text-[11px] text-slate-400">${log.keterangan || '-'}</div>
+            </td>
+            <td class="py-2.5 px-3 text-right ${warna} whitespace-nowrap">${tanda}${formatAngka(Math.abs(log.jumlah))} ${log.satuan || ''}</td>
+            <td class="py-2.5 px-3 text-right font-extrabold text-slate-800 whitespace-nowrap">${formatAngka(log.stokAkhir)} ${log.satuan || ''}</td>
+            <td class="py-2.5 px-3 text-center">
+              <span class="px-2 py-0.5 rounded-full font-extrabold text-[10px] bg-emerald-100 text-emerald-800">${log.admin || 'SUFYAN'}</span>
+            </td>
+            <td class="py-2.5 px-3 text-center">
+              <button onclick="bukaModalCetak(${originalIndex})" class="bg-slate-900 hover:bg-emerald-600 text-white px-2.5 py-1.5 rounded-xl text-[11px] font-bold transition inline-flex items-center space-x-1 shadow-sm">
+                <i class="fa-solid fa-print"></i><span>Cetak</span>
+              </button>
+            </td>
+          </tr>`;
       });
     }
 
