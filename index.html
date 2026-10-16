@@ -65,7 +65,7 @@
         </div>
 
         <div>
-          <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">Username Akun</label>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">Username</label>
           <div class="relative">
             <i class="fa-solid fa-user absolute left-3.5 top-3 text-slate-400 text-sm"></i>
             <input type="text" id="loginUser" required placeholder="Masukkan username..." autocomplete="username" class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500">
@@ -114,7 +114,7 @@
         </div>
 
         <div class="bg-slate-100 p-3 rounded-xl text-center">
-          <p class="text-[11px] font-semibold text-slate-500 uppercase">Waktu Live Saat Ini</p>
+          <p class="text-[11px] font-semibold text-slate-500 uppercase">Time Live</p>
           <p id="liveClockAbsen" class="text-xs sm:text-sm font-extrabold text-slate-800 font-mono-code mt-0.5">--:--:--</p>
         </div>
 
@@ -172,7 +172,7 @@
           <button id="btnGantiShift" onclick="openModal('modalAbsensi')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 px-3 py-1.5 rounded-xl text-xs flex items-center space-x-2 transition" title="Klik untuk Absen / Ganti Shift">
             <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
             <div class="text-left">
-              <span class="text-[10px] text-slate-400 block leading-none">Admin Shift (Absen):</span>
+              <span class="text-[10px] text-slate-400 block leading-none">Admin:</span>
               <span id="activeAdminName" class="font-extrabold text-amber-400 text-xs leading-tight">SUFYAN</span>
             </div>
           </button>
@@ -230,13 +230,13 @@
             <span>Database Terhubung</span>
           </div>
           <h2 class="text-xl sm:text-2xl font-extrabold">Selamat Bertugas, <span id="welcomeAdminName" class="text-amber-400 underline">SUFYAN</span>!</h2>
-          <p class="text-xs sm:text-sm text-slate-300">Operasional gudang CV Yudistira Feedmill.</p>
+          <p class="text-xs sm:text-sm text-slate-300">Operasional Gudang CV Yudistira Feedmill.</p>
         </div>
 
         <div class="bg-slate-950/60 border border-slate-700 rounded-xl p-3.5 min-w-[230px] flex flex-col justify-between">
           <div class="flex items-center justify-between text-xs text-slate-400 mb-1">
-            <span>Admin Absen Aktif:</span>
-            <button onclick="openModal('modalAbsensi')" class="text-amber-400 hover:underline font-bold text-[11px]">Absen Manual</button>
+            <span>Admin Aktif:</span>
+            <button onclick="openModal('modalAbsensi')" class="text-amber-400 hover:underline font-bold text-[11px]">Absensi</button>
           </div>
           <div class="text-sm font-extrabold text-white flex items-center space-x-2">
             <i class="fa-solid fa-user-shield text-emerald-400"></i>
@@ -307,30 +307,57 @@
           </div>
         </div>
       </div>
+            <!-- TABEL LOG ABSENSI ADMIN GUDANG DI BERANDA -->
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden p-5 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-3">
+          <div class="flex items-center space-x-2 text-slate-800 font-extrabold text-sm">
+            <i class="fa-solid fa-id-card-clip text-emerald-600"></i>
+            <h3>ABSENSI ADMIN GUDANG</h3>
+          </div>
+          <button onclick="openModal('modalAbsensi')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-1.5 rounded-xl text-xs font-bold shadow transition">
+            Absen
+          </button>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-900 text-white text-[11px] uppercase">
+                <th class="py-3 px-4">Waktu Absen</th>
+                <th class="py-3 px-4">Nama Admin Gudang</th>
+                <th class="py-3 px-4">Shift Kerja</th>
+                <th class="py-3 px-4">Akun Login</th>
+                <th class="py-3 px-4 text-center">Status</th>
+              </tr>
+            </thead>
+            <tbody id="tbodyAbsensi" class="divide-y divide-slate-200 text-xs"></tbody>
+          </table>
+        </div>
+      </div>
     </section>
 
-    <!-- HALAMAN 2: KELUAR / MASUK & MANUAL -->
+    <!-- HALAMAN 2: KELUAR / MASUK -->
     <section id="pageTransaksi" class="hidden space-y-6">
       <div class="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h2 class="text-lg sm:text-xl font-extrabold text-slate-800">Pencatatan Keluar / Masuk & Kontrol Manual</h2>
+          <h2 class="text-lg sm:text-xl font-extrabold text-slate-800">Pencatatan Keluar / Masuk</h2>
           <p class="text-xs text-slate-500">Terintegrasi otomatis dengan stok dan waktu live.</p>
         </div>
         <button onclick="navigatePage('BERANDA')" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-1.5">
-          <i class="fa-solid fa-arrow-left"></i><span>Kembali ke Beranda</span>
+          <i class="fa-solid fa-arrow-left"></i><span>Beranda</span>
         </button>
       </div>
 
       <div class="max-w-3xl mx-auto bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
         <div class="grid grid-cols-3 border-b border-slate-200 bg-slate-50 text-center text-xs sm:text-sm font-bold text-slate-600">
           <button type="button" onclick="switchFormTab('MASUK')" id="tabBtnMasuk" class="py-4 px-2 border-b-4 border-emerald-600 text-emerald-700 bg-white transition flex items-center justify-center space-x-1.5">
-            <i class="fa-solid fa-arrow-down-to-bracket"></i><span>Barang Masuk (+Stok)</span>
+            <i class="fa-solid fa-arrow-down-to-bracket"></i><span>Masuk</span>
           </button>
           <button type="button" onclick="switchFormTab('KELUAR')" id="tabBtnKeluar" class="py-4 px-2 border-b-4 border-transparent hover:text-slate-900 transition flex items-center justify-center space-x-1.5">
-            <i class="fa-solid fa-arrow-up-from-bracket text-rose-600"></i><span>Barang Keluar (-Stok)</span>
+            <i class="fa-solid fa-arrow-up-from-bracket text-rose-600"></i><span>Keluar</span>
           </button>
           <button type="button" onclick="switchFormTab('MANUAL')" id="tabBtnManual" class="py-4 px-2 border-b-4 border-transparent hover:text-slate-900 transition flex items-center justify-center space-x-1.5">
-            <i class="fa-solid fa-sliders text-amber-600"></i><span>Tombol Manual</span>
+            <i class="fa-solid fa-sliders text-amber-600"></i><span>Manual</span>
           </button>
         </div>
 
@@ -341,16 +368,16 @@
             <div class="flex items-center space-x-3">
               <div class="w-10 h-10 rounded-lg bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 flex items-center justify-center text-lg"><i class="fa-solid fa-clock"></i></div>
               <div>
-                <span class="text-[10px] uppercase tracking-wider text-slate-400 block">Waktu Pencatatan Live</span>
+                <span class="text-[10px] uppercase tracking-wider text-slate-400 block">Live</span>
                 <span id="formLiveTimestamp" class="font-mono-code font-bold text-xs sm:text-sm text-emerald-300">Memuat...</span>
               </div>
             </div>
             <div class="flex items-center justify-between sm:justify-end space-x-3 border-t sm:border-t-0 pt-2 sm:pt-0 border-slate-800">
               <div class="text-left sm:text-right">
-                <span id="labelAdminForm" class="text-[10px] uppercase tracking-wider text-slate-400 block">Admin Absen Aktif:</span>
+                <span id="labelAdminForm" class="text-[10px] uppercase tracking-wider text-slate-400 block">Admin Aktif:</span>
                 <span id="formAdminBertugas" class="font-extrabold text-sm text-amber-400">SUFYAN</span>
               </div>
-              <button type="button" onclick="openModal('modalAbsensi')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold border border-slate-700">Absen Manual</button>
+              <button type="button" onclick="openModal('modalAbsensi')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold border border-slate-700">Absensi</button>
             </div>
           </div>
 
@@ -416,12 +443,12 @@
 
           <div class="flex items-center space-x-2">
             <input type="checkbox" id="autoPrintCheck" class="w-4 h-4 text-emerald-600 rounded border-slate-300">
-            <label for="autoPrintCheck" class="text-xs font-semibold text-slate-600 cursor-pointer">Langsung tampilkan cetak Surat Jalan setelah disimpan</label>
+            <label for="autoPrintCheck" class="text-xs font-semibold text-slate-600 cursor-pointer">cetak Surat Jalan</label>
           </div>
 
           <button type="submit" id="btnSubmitTransaksi" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-3.5 px-4 rounded-xl shadow-lg transition flex items-center justify-center space-x-2 text-sm">
             <i class="fa-solid fa-floppy-disk"></i>
-            <span id="btnSubmitText">Simpan Barang Masuk & Tambah Stok Otomatis</span>
+            <span id="btnSubmitText">Simpan</span>
           </button>
         </form>
 
@@ -464,7 +491,7 @@
     <!-- HALAMAN 3: STOK GUDANG -->
     <section id="pageStok" class="hidden space-y-5">
       <div class="flex flex-wrap items-center justify-between gap-3">
-        <div><h2 class="text-lg sm:text-xl font-extrabold text-slate-800">Daftar Stok Gudang Real-Time</h2><p class="text-xs text-slate-500">Otomatis bertambah & berkurang mengikuti Surat Jalan.</p></div>
+        <div><h2 class="text-lg sm:text-xl font-extrabold text-slate-800">Stok Gudang Real-Time</h2><p class="text-xs text-slate-500">Otomatis bertambah & berkurang mengikuti Surat Jalan.</p></div>
         <div class="flex items-center space-x-2 w-full sm:w-auto">
           <div class="relative flex-grow sm:w-64"><i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-xs"></i><input type="text" id="searchStok" oninput="renderTabelStok()" placeholder="Cari kode / nama barang..." class="w-full pl-9 pr-3 py-2 rounded-xl border border-slate-300 text-xs font-semibold bg-white"></div>
           <button onclick="navigatePage('BERANDA')" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-3.5 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap"><i class="fa-solid fa-arrow-left mr-1"></i>Beranda</button>
@@ -475,7 +502,7 @@
           <table class="w-full text-left border-collapse">
             <thead>
               <tr class="bg-slate-900 text-white text-xs uppercase">
-                <th class="py-3.5 px-4 font-bold">Kode</th><th class="py-3.5 px-4 font-bold">Nama Komoditas / Barang</th><th class="py-3.5 px-4 font-bold">Kategori</th><th class="py-3.5 px-4 font-bold text-right">Stok Tersedia</th><th class="py-3.5 px-4 font-bold text-center">Status</th><th id="thAksiStok" class="py-3.5 px-4 font-bold text-center">Aksi Cepat</th>
+                <th class="py-3.5 px-4 font-bold">Kode</th><th class="py-3.5 px-4 font-bold">Nama Barang</th><th class="py-3.5 px-4 font-bold">Kategori</th><th class="py-3.5 px-4 font-bold text-right">Stok</th><th class="py-3.5 px-4 font-bold text-center">Status</th><th id="thAksiStok" class="py-3.5 px-4 font-bold text-center">Aksi Cepat</th>
               </tr>
             </thead>
             <tbody id="tbodyStok" class="divide-y divide-slate-200 text-sm"></tbody>
@@ -490,8 +517,8 @@
     <section id="pageRiwayat" class="hidden space-y-5">
       <div class="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h2 class="text-lg sm:text-xl font-extrabold text-slate-800">Buku Riwayat & Laporan Pergudangan</h2>
-          <p class="text-xs text-slate-500">Pilih mode laporan Harian, Mingguan, atau Bulanan. Klik tombol <b>Refresh Data</b> jika data belum tampil.</p>
+          <h2 class="text-lg sm:text-xl font-extrabold text-slate-800">Riwayat</h2>
+          <p class="text-xs text-slate-500">laporan Harian, Mingguan, Bulanan. Klik tombol <b>Refresh Data</b> jika data belum tampil.</p>
         </div>
         <div class="flex items-center space-x-2">
           <button onclick="syncData()" class="bg-blue-600 hover:bg-blue-700 text-white px-3.5 py-2 rounded-xl text-xs font-bold shadow transition flex items-center space-x-1.5">
@@ -510,9 +537,9 @@
       <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 space-y-4">
         <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-3">
           <div class="flex space-x-2">
-            <button onclick="setModeLaporan('HARIAN')" id="btnLapHarian" class="sub-tab-active px-4 py-2 rounded-xl text-xs font-extrabold bg-slate-100 text-slate-700 border border-slate-300 transition"><i class="fa-solid fa-calendar-day mr-1.5"></i>Laporan Harian</button>
-            <button onclick="setModeLaporan('MINGGUAN')" id="btnLapMingguan" class="px-4 py-2 rounded-xl text-xs font-extrabold bg-slate-100 text-slate-700 border border-slate-300 transition"><i class="fa-solid fa-calendar-week mr-1.5"></i>Laporan Mingguan</button>
-            <button onclick="setModeLaporan('BULANAN')" id="btnLapBulanan" class="px-4 py-2 rounded-xl text-xs font-extrabold bg-slate-100 text-slate-700 border border-slate-300 transition"><i class="fa-solid fa-calendar-alt mr-1.5"></i>Laporan Bulanan</button>
+            <button onclick="setModeLaporan('HARIAN')" id="btnLapHarian" class="sub-tab-active px-4 py-2 rounded-xl text-xs font-extrabold bg-slate-100 text-slate-700 border border-slate-300 transition"><i class="fa-solid fa-calendar-day mr-1.5"></i>Harian</button>
+            <button onclick="setModeLaporan('MINGGUAN')" id="btnLapMingguan" class="px-4 py-2 rounded-xl text-xs font-extrabold bg-slate-100 text-slate-700 border border-slate-300 transition"><i class="fa-solid fa-calendar-week mr-1.5"></i>Mingguan</button>
+            <button onclick="setModeLaporan('BULANAN')" id="btnLapBulanan" class="px-4 py-2 rounded-xl text-xs font-extrabold bg-slate-100 text-slate-700 border border-slate-300 transition"><i class="fa-solid fa-calendar-alt mr-1.5"></i>Bulanan</button>
           </div>
           <div class="text-xs font-bold text-slate-500" id="infoModeLaporan">Menampilkan: <span class="text-slate-900">Mode Harian</span></div>
         </div>
@@ -575,7 +602,7 @@
           <table class="w-full text-left border-collapse">
             <thead>
               <tr class="bg-slate-900 text-white text-[11px] uppercase">
-                <th class="py-3 px-3">Waktu & Tanggal</th><th class="py-3 px-3">Tipe & No. SJ</th><th class="py-3 px-3">Armada & Nopol</th><th class="py-3 px-3">Barang</th><th class="py-3 px-3 text-right">Mutasi</th><th class="py-3 px-3 text-right">Stok Akhir</th><th class="py-3 px-3 text-center">Admin Shift</th><th class="py-3 px-3 text-center">Cetak SJ</th>
+                <th class="py-3 px-3">Waktu</th><th class="py-3 px-3">No</th><th class="py-3 px-3">Armada</th><th class="py-3 px-3">Barang</th><th class="py-3 px-3 text-right">Mutasi</th><th class="py-3 px-3 text-right">Stok Akhir</th><th class="py-3 px-3 text-center">Admin</th><th class="py-3 px-3 text-center">Cetak</th>
               </tr>
             </thead>
             <tbody id="tbodyLog" class="divide-y divide-slate-200 text-xs"></tbody>
