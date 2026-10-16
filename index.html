@@ -88,8 +88,16 @@
       color: #f8fafc !important;
       border-color: #334155 !important;
     }
-    body.dark-mode tr.hover\:bg-slate-50:hover {
+        body.dark-mode tr.hover\:bg-slate-50:hover {
       background-color: #334155 !important;
+    }
+
+    body.dark-mode .bg-slate-200 {
+      color: #0f172a !important;
+    }
+    body.dark-mode .bg-slate-200 i,
+    body.dark-mode .bg-slate-200 span {
+      color: #0f172a !important;
     }
 
     /* Animasi Kedip Halus untuk Icon Loading Tengah */
@@ -102,7 +110,7 @@
     }
   </style>
 </head>
-<body class="text-slate-800 min-h-screen flex flex-col w-full overflow-x-hidden">
+<body class="dark-mode text-slate-800 min-h-screen flex flex-col w-full overflow-x-hidden">
 
   <!-- ========================================================= -->
   <!-- OVERLAY LOADING TENGAH DENGAN ICON.PNG BERKEDIP           -->
@@ -860,14 +868,22 @@
     /* ========================================================= */
     /* FITUR MODE TERANG / GELAP (DARK MODE)                     */
     /* ========================================================= */
-    function initDarkMode() {
-      const isDark = localStorage.getItem('FEEDMILL_DARK_MODE') === 'true';
+      function initDarkMode() {
+      const savedMode = localStorage.getItem('FEEDMILL_DARK_MODE');
+      const isDark = savedMode === null ? true : savedMode === 'true';
+      
       if (isDark) {
         document.body.classList.add('dark-mode');
+        localStorage.setItem('FEEDMILL_DARK_MODE', 'true');
         const icon = document.getElementById('themeIcon');
         if (icon) icon.className = 'fa-solid fa-sun text-[11px]';
+      } else {
+        document.body.classList.remove('dark-mode');
+        const icon = document.getElementById('themeIcon');
+        if (icon) icon.className = 'fa-solid fa-moon text-[11px]';
       }
     }
+
 
     function toggleDarkMode() {
       const isDark = document.body.classList.toggle('dark-mode');
