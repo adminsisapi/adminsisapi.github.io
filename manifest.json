@@ -1,6 +1,6 @@
 {
-  "name": "FEEDMILL WMS - CV Yudistira Feedmill",
-  "short_name": "FEEDMILL",
+  "name": "Sisapi",
+  "short_name": "Sisapi",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0f172a",
