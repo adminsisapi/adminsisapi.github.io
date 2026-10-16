@@ -585,7 +585,7 @@
           <div>
             <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Filter Admin Shift</label>
             <select id="filterAdminLog" onchange="renderTabelLog()" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-xs font-bold bg-white">
-              <option value="SEMUA">SUFYAN & HASFHI</option><option value="SUFYAN">Hanya SUFYAN</option><option value="HASFHI">Hanya HASFHI</option>
+              <option value="SEMUA">SUFYAN & HASFHI</option><option value="SUFYAN">SUFYAN</option><option value="HASFHI">HASFHI</option>
             </select>
           </div>
 
@@ -974,13 +974,13 @@
         document.getElementById('formBanner').className = "bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-xl text-xs font-semibold flex items-center space-x-2";
         document.getElementById('formBannerText').innerHTML = "Mode <b>BARANG MASUK (INBOUND)</b>: Stok gudang otomatis bertambah.";
         document.getElementById('btnSubmitTransaksi').className = "w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-3.5 px-4 rounded-xl shadow-lg transition flex items-center justify-center space-x-2 text-sm";
-        document.getElementById('btnSubmitText').innerText = "Simpan Barang Masuk & Tambah Stok Otomatis";
+        document.getElementById('btnSubmitText').innerText = "Simpan";
       } else {
         document.getElementById('tabBtnKeluar').className = "py-4 px-2 border-b-4 border-rose-600 text-rose-700 bg-white transition flex items-center justify-center space-x-1.5";
         document.getElementById('formBanner').className = "bg-rose-50 border border-rose-200 text-rose-800 px-4 py-3 rounded-xl text-xs font-semibold flex items-center space-x-2";
         document.getElementById('formBannerText').innerHTML = "Mode <b>BARANG KELUAR (OUTBOUND)</b>: Stok gudang otomatis berkurang.";
         document.getElementById('btnSubmitTransaksi').className = "w-full bg-rose-600 hover:bg-rose-700 text-white font-extrabold py-3.5 px-4 rounded-xl shadow-lg transition flex items-center justify-center space-x-2 text-sm";
-        document.getElementById('btnSubmitText').innerText = "Simpan Barang Keluar & Kurangi Stok Otomatis";
+        document.getElementById('btnSubmitText').innerText = "Simpan";
       }
     }
 
