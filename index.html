@@ -1798,6 +1798,134 @@
         toast.classList.remove('flex');
       }, 3000);
     }
+      <!-- ========================================================= -->
+  <!-- FLOATING POPUP KALKULATOR GUDANG (SEDERHANA & ANTI ERROR) -->
+  <!-- ========================================================= -->
+  <div id="floatingCalcWrapper" class="fixed bottom-6 right-6 z-50">
+    <!-- Tombol Ikon Kalkulator Mengambang -->
+    <button type="button" onclick="toggleCalculator()" class="w-12 h-12 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white shadow-2xl flex items-center justify-center text-lg transition transform hover:scale-110 border-2 border-white/20" title="Buka Kalkulator Gudang">
+      <i class="fa-solid fa-calculator"></i>
+    </button>
+
+    <!-- Kotak Popup Kalkulator -->
+    <div id="calcPopupBox" class="hidden absolute bottom-16 right-0 bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl w-72 p-4 text-white flex flex-col space-y-3 z-50">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+        <div class="flex items-center space-x-1.5 text-xs font-extrabold text-emerald-400">
+          <i class="fa-solid fa-calculator"></i>
+          <span>Kalkulator Gudang SISAPI</span>
+        </div>
+        <button type="button" onclick="toggleCalculator()" class="text-slate-400 hover:text-white text-sm"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <!-- Layar Kalkulator -->
+      <div class="bg-slate-950 border border-slate-800 rounded-xl p-3 text-right">
+        <div id="calcScreen" class="text-xl font-mono-code font-extrabold text-emerald-300 tracking-wider truncate">0</div>
+      </div>
+
+      <!-- Tombol Kalkulator Sederhana -->
+      <div class="grid grid-cols-4 gap-1.5 text-sm font-bold">
+        <button type="button" onclick="calcClear()" class="bg-rose-600/20 text-rose-300 hover:bg-rose-600 hover:text-white py-2 rounded-xl transition">C</button>
+        <button type="button" onclick="calcBack()" class="bg-slate-800 hover:bg-slate-700 py-2 rounded-xl transition">⌫</button>
+        <button type="button" onclick="calcInput('/')" class="bg-slate-800 hover:bg-slate-700 text-emerald-400 py-2 rounded-xl transition">÷</button>
+        <button type="button" onclick="calcInput('*')" class="bg-slate-800 hover:bg-slate-700 text-emerald-400 py-2 rounded-xl transition">×</button>
+
+        <button type="button" onclick="calcInput('7')" class="bg-slate-800 hover:bg-slate-700 py-2.5 rounded-xl transition">7</button>
+        <button type="button" onclick="calcInput('8')" class="bg-slate-800 hover:bg-slate-700 py-2.5 rounded-xl transition">8</button>
+        <button type="button" onclick="calcInput('9')" class="bg-slate-800 hover:bg-slate-700 py-2.5 rounded-xl transition">9</button>
+        <button type="button" onclick="calcInput('-')" class="bg-slate-800 hover:bg-slate-700 text-emerald-400 py-2.5 rounded-xl transition">-</button>
+
+        <button type="button" onclick="calcInput('4')" class="bg-slate-800 hover:bg-slate-700 py-2.5 rounded-xl transition">4</button>
+        <button type="button" onclick="calcInput('5')" class="bg-slate-800 hover:bg-slate-700 py-2.5 rounded-xl transition">5</button>
+        <button type="button" onclick="calcInput('6')" class="bg-slate-800 hover:bg-slate-700 py-2.5 rounded-xl transition">6</button>
+        <button type="button" onclick="calcInput('+')" class="bg-slate-800 hover:bg-slate-700 text-emerald-400 py-2.5 rounded-xl transition">+</button>
+
+        <button type="button" onclick="calcInput('1')" class="bg-slate-800 hover:bg-slate-700 py-2.5 rounded-xl transition">1</button>
+        <button type="button" onclick="calcInput('2')" class="bg-slate-800 hover:bg-slate-700 py-2.5 rounded-xl transition">2</button>
+        <button type="button" onclick="calcInput('3')" class="bg-slate-800 hover:bg-slate-700 py-2.5 rounded-xl transition">3</button>
+        <button type="button" onclick="calcResult()" class="row-span-2 bg-emerald-600 hover:bg-emerald-500 text-white py-2.5 rounded-xl transition flex items-center justify-center font-extrabold">=</button>
+
+        <button type="button" onclick="calcInput('0')" class="col-span-2 bg-slate-800 hover:bg-slate-700 py-2.5 rounded-xl transition">0</button>
+        <button type="button" onclick="calcInput('.')" class="bg-slate-800 hover:bg-slate-700 py-2.5 rounded-xl transition">.</button>
+      </div>
+
+      <!-- Kotak Pintasan Konversi Sak ke Kg (x 50) -->
+      <div class="pt-2 border-t border-slate-800 text-[11px] space-y-1">
+        <div class="text-slate-400 font-semibold">Konversi Cepat Sak (1 Sak = 50 Kg):</div>
+        <div class="flex space-x-1">
+          <input type="number" id="calcSakInput" placeholder="Jumlah Sak..." class="w-full bg-slate-950 border border-slate-800 rounded-lg px-2 py-1 text-xs text-white">
+          <button type="button" onclick="convertSakToKg()" class="bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold px-2.5 py-1 rounded-lg shrink-0">Jadi Kg</button>
+        </div>
+      </div>
+    </div>
+  </div>
+    /* ========================================================= */
+    /* LOGIKA JAVASCRIPT KALKULATOR POPUP & KONVERSI SAK         */
+    /* ========================================================= */
+    let calcExpression = "0";
+
+    function toggleCalculator() {
+      const box = document.getElementById('calcPopupBox');
+      if (box) {
+        box.classList.toggle('hidden');
+      }
+    }
+
+    function updateCalcScreen() {
+      const screen = document.getElementById('calcScreen');
+      if (screen) {
+        screen.innerText = calcExpression;
+      }
+    }
+
+    function calcClear() {
+      calcExpression = "0";
+      updateCalcScreen();
+    }
+
+    function calcBack() {
+      if (calcExpression.length > 1) {
+        calcExpression = calcExpression.slice(0, -1);
+      } else {
+        calcExpression = "0";
+      }
+      updateCalcScreen();
+    }
+
+    function calcInput(char) {
+      if (calcExpression === "0" && !['+', '-', '*', '/'].includes(char)) {
+        calcExpression = char;
+      } else {
+        calcExpression += char;
+      }
+      updateCalcScreen();
+    }
+
+    function calcResult() {
+      try {
+        // Evaluasi aman ekspresi matematika sederhana tanpa error angka besar
+        let hasil = Function('"use strict"; return (' + calcExpression + ')')();
+        if (isNaN(hasil) || !isFinite(hasil)) {
+          calcExpression = "Error";
+        } else {
+          // Format hasil agar rapi
+          calcExpression = String(Math.round(hasil * 1000) / 1000);
+        }
+      } catch (err) {
+        calcExpression = "Error";
+      }
+      updateCalcScreen();
+    }
+
+    function convertSakToKg() {
+      const inputSak = document.getElementById('calcSakInput');
+      if (!inputSak || !inputSak.value) return;
+      const val = Number(inputSak.value);
+      const hasilKg = val * 50;
+      calcExpression = String(hasilKg);
+      updateCalcScreen();
+      showToast(`${val} Sak = ${formatAngka(hasilKg)} Kg`);
+    }
+
   </script>
 </body>
 </html>
