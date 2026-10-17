@@ -220,10 +220,13 @@
           </select>
         </div>
 
+        <input type="hidden" id="statusAbsenInput" value="MASUK">
         <div class="flex space-x-2 pt-1">
-          <button type="button" onclick="closeModal('modalAbsensi')" class="w-1/2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-2.5 rounded-xl text-xs">Batal</button>
-          <button type="submit" id="btnSubmitAbsen" class="w-1/2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl shadow-md text-xs flex items-center justify-center space-x-1.5">
-            <i class="fa-solid fa-user-check"></i><span>Simpan</span>
+          <button type="submit" id="btnAbsenMasuk" onclick="document.getElementById('statusAbsenInput').value='MASUK'" class="w-1/2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl text-xs transition shadow flex items-center justify-center space-x-1.5">
+            <i class="fa-solid fa-right-to-bracket"></i><span>Masuk</span>
+          </button>
+          <button type="submit" id="btnAbsenPulang" onclick="document.getElementById('statusAbsenInput').value='PULANG'" class="w-1/2 bg-rose-600 hover:bg-rose-500 text-white font-bold py-2.5 rounded-xl text-xs transition shadow flex items-center justify-center space-x-1.5">
+            <i class="fa-solid fa-right-from-bracket"></i><span>Pulang</span>
           </button>
         </div>
       </form>
@@ -1031,17 +1034,22 @@
       renderTabelStok();
     }
 
-    async function submitAbsensiShift(e) {
+      async function submitAbsensiShift(e) {
       e.preventDefault();
       const namaAdmin = document.getElementById('selectAdminShift').value;
-      const shift = document.getElementById('selectWaktuShift').value;
+      const shiftPilihan = document.getElementById('selectWaktuShift').value;
+      const statusInput = document.getElementById('statusAbsenInput');
+      const statusAbsen = statusInput ? statusInput.value : 'MASUK';
 
-      showCenterLoading("Menyimpan Absen...");
+      // Menggabungkan Shift dengan status Masuk/Pulang agar langsung terbaca di Google Sheets & Tabel
+      const shift = `${shiftPilihan} (${statusAbsen})`;
 
-      activeShift = { namaAdmin, shift, akun: currentSession ? currentSession.username : 'admin', waktu: liveTimeString, timestamp: Date.now() };
+      showCenterLoading(`Menyimpan Absen ${statusAbsen}...`);
+
+      activeShift = { namaAdmin, shift, akun: currentSession ? currentSession.username : 'admin', waktu: liveTimeString, timestamp: Date.now(), status: statusAbsen };
       localStorage.setItem('FEEDMILL_SHIFT_12H', JSON.stringify(activeShift));
 
-      logAbsensi.unshift({ id: "ABS-" + Date.now(), waktu: liveTimeString, tanggal: new Date().toISOString().split('T')[0], namaAdmin, akun: activeShift.akun, shift, status: "HADIR" });
+      logAbsensi.unshift({ id: "ABS-" + Date.now(), waktu: liveTimeString, tanggal: new Date().toISOString().split('T')[0], namaAdmin, akun: activeShift.akun, shift, status: statusAbsen });
       localStorage.setItem('FEEDMILL_ABSENSI', JSON.stringify(logAbsensi));
 
       if (SCRIPT_URL) {
@@ -1049,7 +1057,7 @@
           await fetch(SCRIPT_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify({ action: "CATAT_ABSENSI", waktuLive: liveTimeString, namaAdmin, akun: activeShift.akun, shift })
+            body: JSON.stringify({ action: "CATAT_ABSENSI", waktuLive: liveTimeString, namaAdmin, akun: activeShift.akun, shift, status: statusAbsen })
           });
         } catch(err){}
       }
@@ -1059,7 +1067,7 @@
         updateShiftUI();
         renderTabelAbsensi();
         closeModal('modalAbsensi');
-        showToast(`Absen Berhasil: ${namaAdmin}`);
+        showToast(`Absen ${statusAbsen} Berhasil: ${namaAdmin}`);
       }, 400);
     }
 
@@ -1116,7 +1124,7 @@
       });
     }
 
-    function renderTabelAbsensi() {
+        function renderTabelAbsensi() {
       const tbody = document.getElementById('tbodyAbsensi');
       if (!tbody) return;
       tbody.innerHTML = '';
@@ -1129,13 +1137,22 @@
       }
 
       filtered.forEach(a => {
+        // Deteksi otomatis status PULANG atau MASUK (termasuk dari data Google Sheets yang tergabung di teks shift)
+        const isPulang = (a.status && a.status.toUpperCase().includes('PULANG')) || (a.shift && a.shift.toUpperCase().includes('PULANG'));
+        const isMasuk = (a.status && a.status.toUpperCase().includes('MASUK')) || (a.shift && a.shift.toUpperCase().includes('MASUK'));
+        
+        const labelStatus = isPulang ? 'PULANG' : (isMasuk ? 'MASUK' : (a.status || 'HADIR'));
+        const badgeClass = isPulang 
+          ? 'bg-rose-50 text-rose-700 border-rose-200' 
+          : 'bg-emerald-50 text-emerald-700 border-emerald-200';
+
         tbody.innerHTML += `
           <tr class="hover:bg-slate-50 transition">
             <td class="py-2.5 px-3 font-mono-code text-[11px] text-slate-600 whitespace-nowrap">${a.waktu || '-'}</td>
             <td class="py-2.5 px-3 whitespace-nowrap"><span class="px-2 py-0.5 rounded-full font-extrabold text-[10px] bg-emerald-100 text-emerald-800">${a.namaAdmin || 'SUFYAN'}</span></td>
             <td class="py-2.5 px-3 font-medium text-slate-700 whitespace-nowrap">${a.shift || '-'}</td>
             <td class="py-2.5 px-3 text-slate-500 font-mono-code whitespace-nowrap">${a.akun || 'admin'}</td>
-            <td class="py-2.5 px-3 text-center whitespace-nowrap"><span class="text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded">${a.status || 'HADIR'}</span></td>
+            <td class="py-2.5 px-3 text-center whitespace-nowrap"><span class="text-[10px] font-bold border px-2 py-0.5 rounded ${badgeClass}">${labelStatus}</span></td>
           </tr>`;
       });
     }
