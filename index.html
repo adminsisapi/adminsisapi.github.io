@@ -187,7 +187,7 @@
             <i class="fa-solid fa-id-card-clip"></i>
           </span>
           <div>
-            <h3 class="font-bold text-xs sm:text-sm">Absensi Shift</h3>
+            <h3 class="font-bold text-xs sm:text-sm">Absensi</h3>
             <p class="text-[10px] text-slate-400">Waktu Live Otomatis</p>
           </div>
         </div>
@@ -205,6 +205,8 @@
         <div>
           <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Admin *</label>
           <select id="selectAdminShift" required class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm font-bold text-slate-800 bg-white">
+            <option value="ADMIN">ADMIN</option>
+            <option value="MANAGER">MANAGER</option>
             <option value="SUFYAN">SUFYAN</option>
             <option value="HASFHI">HASFHI</option>
           </select>
@@ -213,8 +215,8 @@
         <div>
           <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Shift *</label>
           <select id="selectWaktuShift" required class="w-full rounded-xl border border-slate-300 px-3 py-2 text-xs font-semibold text-slate-700 bg-white">
-            <option value="Shift Pagi / Siang (07:00 - 19:00)">Pagi / Siang (07:00 - 19:00)</option>
-            <option value="Shift Malam (19:00 - 07:00)">Malam (19:00 - 07:00)</option>
+            <option value="Shift Pagi / Siang (07:00 - 19:00)">Pagi</option>
+            <option value="Shift Malam (19:00 - 07:00)">Malam</option>
           </select>
         </div>
 
@@ -263,7 +265,7 @@
           <!-- Tombol Instal Aplikasi (Otomatis Hilang Jika Sudah Instal) -->
           <button id="btnInstallApp" onclick="triggerInstallApp()" class="bg-emerald-600 hover:bg-emerald-500 text-white w-7 h-7 sm:w-auto sm:h-auto sm:px-2.5 sm:py-1.5 rounded-lg sm:rounded-xl text-[11px] font-bold transition flex items-center justify-center sm:space-x-1 shadow" title="Instal Aplikasi">
             <i class="fa-solid fa-download text-[11px]"></i>
-            <span class="hidden sm:inline">Instal</span>
+            <span class="hidden sm:inline">Aplikasi</span>
           </button>
 
           <!-- Tombol Mode Terang / Gelap -->
@@ -316,7 +318,7 @@
   </header>
 
   <div id="viewerNotice" class="hidden bg-amber-500/15 border-b border-amber-500/30 text-amber-700 px-4 py-1.5 text-center text-xs font-semibold">
-    <i class="fa-solid fa-eye mr-1"></i> Mode <b>Lihat Saja</b>. Input dinonaktifkan.
+    <i class="fa-solid fa-eye mr-1"></i> Mode <b>Kontrol</b>. Input dinonaktifkan.
   </div>
 
   <!-- ========================================================= -->
@@ -332,20 +334,20 @@
             <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
             <span>Database Aktif</span>
           </div>
-          <h2 class="text-lg sm:text-xl font-extrabold">Halo, <span id="welcomeAdminName" class="text-amber-400 underline">SUFYAN</span>!</h2>
+          <h2 class="text-lg sm:text-xl font-extrabold">Halo, <span id="welcomeAdminName" class="text-amber-400 underline">ADMIN</span>!</h2>
           <p class="text-xs text-slate-300">SISAPI — CV YUDISTIRA CATTLE AND FARM</p>
         </div>
 
         <div class="bg-slate-950/60 border border-slate-700 rounded-xl p-3 sm:min-w-[200px] flex flex-col justify-between">
           <div class="flex items-center justify-between text-[11px] text-slate-400 mb-1">
-            <span>Admin Shift:</span>
+            <span>Admin:</span>
             <button onclick="openModal('modalAbsensi')" class="text-amber-400 hover:underline font-bold">Ganti</button>
           </div>
           <div class="text-sm font-extrabold text-white flex items-center space-x-2">
             <i class="fa-solid fa-user-shield text-emerald-400"></i>
-            <span id="cardShiftAdmin">SUFYAN</span>
+            <span id="cardShiftAdmin">ADMIN</span>
           </div>
-          <div id="cardShiftWaktu" class="text-[10px] text-slate-400 mt-0.5">Pagi / Siang (07:00 - 19:00)</div>
+          <div id="cardShiftWaktu" class="text-[10px] text-slate-400 mt-0.5">Pagi</div>
         </div>
       </div>
 
@@ -357,11 +359,11 @@
         </div>
         <div class="bg-white p-3.5 sm:p-4 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
           <div class="flex items-center justify-between"><span class="text-[10px] sm:text-[11px] font-bold text-emerald-600 uppercase">Masuk</span><span class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xs"><i class="fa-solid fa-arrow-down-to-bracket"></i></span></div>
-          <div class="mt-2"><h3 id="kpiMasukHariIni" class="text-base sm:text-xl font-extrabold text-slate-800">0 SJ</h3><p id="kpiVolumeMasuk" class="text-[10px] text-emerald-600 font-bold">+0 Unit</p></div>
+          <div class="mt-2"><h3 id="kpiMasukHariIni" class="text-base sm:text-xl font-extrabold text-slate-800">0</h3><p id="kpiVolumeMasuk" class="text-[10px] text-emerald-600 font-bold">+0 Unit</p></div>
         </div>
         <div class="bg-white p-3.5 sm:p-4 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
           <div class="flex items-center justify-between"><span class="text-[10px] sm:text-[11px] font-bold text-rose-600 uppercase">Keluar</span><span class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center text-xs"><i class="fa-solid fa-arrow-up-from-bracket"></i></span></div>
-          <div class="mt-2"><h3 id="kpiKeluarHariIni" class="text-base sm:text-xl font-extrabold text-slate-800">0 SJ</h3><p id="kpiVolumeKeluar" class="text-[10px] text-rose-600 font-bold">-0 Unit</p></div>
+          <div class="mt-2"><h3 id="kpiKeluarHariIni" class="text-base sm:text-xl font-extrabold text-slate-800">0</h3><p id="kpiVolumeKeluar" class="text-[10px] text-rose-600 font-bold">-0 Unit</p></div>
         </div>
         <div class="bg-white p-3.5 sm:p-4 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
           <div class="flex items-center justify-between"><span class="text-[10px] sm:text-[11px] font-bold text-amber-600 uppercase">Menipis</span><span class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xs"><i class="fa-solid fa-triangle-exclamation"></i></span></div>
@@ -490,7 +492,7 @@
             <div class="flex items-center justify-between sm:justify-end space-x-2 border-t sm:border-t-0 pt-2 sm:pt-0 border-slate-800">
               <div class="text-left sm:text-right">
                 <span class="text-[9px] uppercase text-slate-400 block">Admin:</span>
-                <span id="formAdminBertugas" class="font-extrabold text-xs text-amber-400">SUFYAN</span>
+                <span id="formAdminBertugas" class="font-extrabold text-xs text-amber-400">ADMIN</span>
               </div>
               <button type="button" onclick="openModal('modalAbsensi')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-2.5 py-1 rounded-lg text-[10px] font-semibold border border-slate-700">Absen</button>
             </div>
