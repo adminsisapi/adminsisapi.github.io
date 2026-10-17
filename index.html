@@ -1124,7 +1124,7 @@
       });
     }
 
-        function renderTabelAbsensi() {
+    function renderTabelAbsensi() {
       const tbody = document.getElementById('tbodyAbsensi');
       if (!tbody) return;
       tbody.innerHTML = '';
@@ -1165,7 +1165,11 @@
       }
       let csv = "ID,Waktu,Tanggal,Admin,Shift,Akun,Status\n";
       dataToExport.forEach(a => {
-        csv += `"${a.id || '-'}","${a.waktu || ''}","${a.tanggal || ''}","${a.namaAdmin || ''}","${a.shift || ''}","${a.akun || ''}","${a.status || 'HADIR'}"\n`;
+        const isPulang = (a.status && a.status.toUpperCase().includes('PULANG')) || (a.shift && a.shift.toUpperCase().includes('PULANG'));
+        const isMasuk = (a.status && a.status.toUpperCase().includes('MASUK')) || (a.shift && a.shift.toUpperCase().includes('MASUK'));
+        const labelStatus = isPulang ? 'PULANG' : (isMasuk ? 'MASUK' : (a.status || 'HADIR'));
+
+        csv += `"${a.id || '-'}","${a.waktu || ''}","${a.tanggal || ''}","${a.namaAdmin || ''}","${a.shift || ''}","${a.akun || ''}","${labelStatus}"\n`;
       });
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       const link = document.createElement("a");
