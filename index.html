@@ -188,7 +188,7 @@
           </span>
           <div>
             <h3 class="font-bold text-xs sm:text-sm">Absensi</h3>
-            <p class="text-[10px] text-slate-400">Waktu Live Otomatis</p>
+            <p class="text-[10px] text-slate-400">Waktu Live</p>
           </div>
         </div>
         <button type="button" onclick="closeModal('modalAbsensi')" class="text-slate-400 hover:text-white">
@@ -280,7 +280,7 @@
           <!-- Tombol Absen Shift -->
           <button id="btnGantiShift" onclick="openModal('modalAbsensi')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 px-2 py-1 rounded-lg sm:rounded-xl text-xs flex items-center space-x-1 transition" title="Absen Shift">
             <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping shrink-0"></span>
-            <span id="activeAdminName" class="font-extrabold text-amber-400 text-[10px] sm:text-[11px] leading-none">SUFYAN</span>
+            <span id="activeAdminName" class="font-extrabold text-amber-400 text-[10px] sm:text-[11px] leading-none">ADMIN</span>
           </button>
 
           <!-- Tombol Sinkronisasi -->
@@ -578,7 +578,7 @@
           <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4 space-y-3.5">
             <div class="flex items-center justify-between text-amber-900 font-extrabold text-xs sm:text-sm">
               <div class="flex items-center space-x-2"><i class="fa-solid fa-wrench"></i><h3>1. Stock Opname</h3></div>
-              <span id="manualAdminLabel" class="text-[11px] bg-amber-200 text-amber-900 px-2 py-0.5 rounded font-bold">SUFYAN</span>
+              <span id="manualAdminLabel" class="text-[11px] bg-amber-200 text-amber-900 px-2 py-0.5 rounded font-bold">ADMIN</span>
             </div>
             <form onsubmit="submitManualAdjust(event)" class="space-y-3">
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -1025,7 +1025,7 @@
         if (thAksiStok) thAksiStok.classList.remove('hidden');
 
         if (!activeShift) {
-          const defWorker = currentSession.defaultWorker || "SUFYAN";
+          const defWorker = currentSession.defaultWorker || "ADMIN";
           document.getElementById('selectAdminShift').value = defWorker;
           openModal('modalAbsensi');
         } else {
@@ -1150,7 +1150,7 @@
         tbody.innerHTML += `
           <tr class="hover:bg-slate-50 transition">
             <td class="py-2.5 px-3 font-mono-code text-[11px] text-slate-600 whitespace-nowrap">${a.waktu || '-'}</td>
-            <td class="py-2.5 px-3 whitespace-nowrap"><span class="px-2 py-0.5 rounded-full font-extrabold text-[10px] bg-emerald-100 text-emerald-800">${a.namaAdmin || 'SUFYAN'}</span></td>
+            <td class="py-2.5 px-3 whitespace-nowrap"><span class="px-2 py-0.5 rounded-full font-extrabold text-[10px] bg-emerald-100 text-emerald-800">${a.namaAdmin || 'ADMIN'}</span></td>
             <td class="py-2.5 px-3 font-medium text-slate-700 whitespace-nowrap">${a.shift || '-'}</td>
             <td class="py-2.5 px-3 text-slate-500 font-mono-code whitespace-nowrap">${a.akun || 'admin'}</td>
             <td class="py-2.5 px-3 text-center whitespace-nowrap"><span class="text-[10px] font-bold border px-2 py-0.5 rounded ${badgeClass}">${labelStatus}</span></td>
@@ -1341,7 +1341,7 @@
         }
 
         const matchJenis = jenis === 'SEMUA' || log.jenis === jenis;
-        const matchAdmin = adminFilter === 'SEMUA' || String(log.admin || 'SUFYAN').toUpperCase() === adminFilter;
+        const matchAdmin = adminFilter === 'SEMUA' || String(log.admin || 'ADMIN').toUpperCase() === adminFilter;
         const matchKey = !keyword ||
           String(log.suratJalan || '').toLowerCase().includes(keyword) ||
           String(log.nopol || '').toLowerCase().includes(keyword) ||
@@ -1395,7 +1395,7 @@
             <td class="py-2.5 px-3 text-right ${warna} whitespace-nowrap">${tanda}${formatAngka(Math.abs(log.jumlah))} ${log.satuan || ''}</td>
             <td class="py-2.5 px-3 text-right font-extrabold text-slate-800 whitespace-nowrap">${formatAngka(log.stokAkhir)} ${log.satuan || ''}</td>
             <td class="py-2.5 px-3 text-center">
-              <span class="px-2 py-0.5 rounded-full font-extrabold text-[10px] bg-emerald-100 text-emerald-800">${log.admin || 'SUFYAN'}</span>
+              <span class="px-2 py-0.5 rounded-full font-extrabold text-[10px] bg-emerald-100 text-emerald-800">${log.admin || 'ADMIN'}</span>
             </td>
             <td class="py-2.5 px-3 text-center">
               <button onclick="bukaModalCetak(${originalIndex})" class="bg-slate-900 hover:bg-emerald-600 text-white px-2.5 py-1.5 rounded-xl text-[11px] font-bold transition inline-flex items-center space-x-1 shadow-sm">
@@ -1477,7 +1477,7 @@
       const kodeBarang = document.getElementById('inputBarang').value;
       const jumlah = Number(document.getElementById('inputJumlah').value);
       const keterangan = document.getElementById('inputKeterangan').value.trim();
-      const adminBertugas = activeShift ? activeShift.namaAdmin : "SUFYAN";
+      const adminBertugas = activeShift ? activeShift.namaAdmin : "ADMIN";
       const isAutoPrint = document.getElementById('autoPrintCheck').checked;
 
       const barang = masterStok.find(b => b.kode === kodeBarang);
@@ -1522,7 +1522,7 @@
       const stokBaru = Number(document.getElementById('manualStokBaru').value);
       const suratJalan = document.getElementById('manualRef').value.trim().toUpperCase() || "BA-OPNAME";
       const keterangan = document.getElementById('manualAlasan').value.trim();
-      const adminBertugas = activeShift ? activeShift.namaAdmin : "SUFYAN";
+      const adminBertugas = activeShift ? activeShift.namaAdmin : "ADMIN";
       const barang = masterStok.find(b => b.kode === kodeBarang);
       if (!barang) return;
 
@@ -1563,7 +1563,7 @@
       const log = logTransaksi[index];
       if (!log) return;
       dataCetakAktif = log;
-      const adminName = String(log.admin || "SUFYAN").toUpperCase();
+      const adminName = String(log.admin || "ADMIN").toUpperCase();
       const tipeLabel = log.jenis === 'MASUK' ? 'BUKTI BARANG MASUK (INBOUND)' : log.jenis === 'KELUAR' ? 'SURAT JALAN BARANG KELUAR' : 'BERITA ACARA STOCK OPNAME';
 
       // Data lengkap dari Sheet yang muncul saat QR di-scan
@@ -1789,7 +1789,7 @@
     function exportCSV() {
       let csv = "ID,Waktu,Tanggal,Jenis,SJ,Armada,Nopol,Sopir,Kode,Barang,Jumlah,Satuan,StokAkhir,Keterangan,Admin\n";
       logTransaksi.forEach(r => {
-        csv += `"${r.id}","${r.timestamp||''}","${r.tanggal}","${r.jenis}","${r.suratJalan}","${r.armada}","${r.nopol}","${r.sopir}","${r.kodeBarang}","${r.namaBarang}",${r.jumlah},"${r.satuan}",${r.stokAkhir},"${r.keterangan}","${r.admin||'SUFYAN'}"\n`;
+        csv += `"${r.id}","${r.timestamp||''}","${r.tanggal}","${r.jenis}","${r.suratJalan}","${r.armada}","${r.nopol}","${r.sopir}","${r.kodeBarang}","${r.namaBarang}",${r.jumlah},"${r.satuan}",${r.stokAkhir},"${r.keterangan}","${r.admin||'ADMIN'}"\n`;
       });
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       const link = document.createElement("a");
