@@ -1863,12 +1863,20 @@
         <button type="button" onclick="calcInput('.')" class="bg-slate-800 hover:bg-slate-700 py-2.5 rounded-xl transition">.</button>
       </div>
 
-      <!-- Kotak Pintasan Konversi Sak ke Kg (x 50) -->
-      <div class="pt-2 border-t border-slate-800 text-[11px] space-y-1">
-        <div class="text-slate-400 font-semibold">Konversi 1:50</div>
+            <!-- Kotak Pintasan Konversi Sak ⇄ Kg (1 Sak = 50 Kg) -->
+      <div class="pt-2 border-t border-slate-800 text-[11px] space-y-1.5">
+        <div class="text-slate-400 font-semibold">Konversi 1:50 (Sak ⇄ Kg)</div>
+        
+        <!-- Baris 1: Sak ke Kg (x 50) -->
         <div class="flex space-x-1">
-          <input type="number" id="calcSakInput" placeholder="Jumlah Sak..." class="w-full bg-slate-950 border border-slate-800 rounded-lg px-2 py-1 text-xs text-white">
-          <button type="button" onclick="convertSakToKg()" class="bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold px-2.5 py-1 rounded-lg shrink-0">KG</button>
+          <input type="number" id="calcSakInput" placeholder="Jumlah Sak..." class="w-full bg-slate-950 border border-slate-800 rounded-lg px-2 py-1 text-xs text-white focus:outline-none focus:border-amber-500">
+          <button type="button" onclick="convertSakToKg()" class="bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold px-2.5 py-1 rounded-lg shrink-0 w-12">KG</button>
+        </div>
+
+        <!-- Baris 2: Kg ke Sak (÷ 50) -->
+        <div class="flex space-x-1">
+          <input type="number" id="calcKgInput" placeholder="Jumlah Kg..." class="w-full bg-slate-950 border border-slate-800 rounded-lg px-2 py-1 text-xs text-white focus:outline-none focus:border-emerald-500">
+          <button type="button" onclick="convertKgToSak()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-2.5 py-1 rounded-lg shrink-0 w-12">SAK</button>
         </div>
       </div>
     </div>
@@ -1939,8 +1947,26 @@
       const hasilKg = val * 50;
       calcExpression = String(hasilKg);
       updateCalcScreen();
+      if (document.getElementById('calcKgInput')) {
+        document.getElementById('calcKgInput').value = hasilKg;
+      }
       showToast(`${val} Sak = ${formatAngka(hasilKg)} Kg`);
     }
+
+    function convertKgToSak() {
+      const inputKg = document.getElementById('calcKgInput');
+      if (!inputKg || !inputKg.value) return;
+      const val = Number(inputKg.value);
+      // Dibulatkan hingga 2 desimal jika angka Kg tidak kelipatan 50
+      const hasilSak = Math.round((val / 50) * 100) / 100;
+      calcExpression = String(hasilSak);
+      updateCalcScreen();
+      if (document.getElementById('calcSakInput')) {
+        document.getElementById('calcSakInput').value = hasilSak;
+      }
+      showToast(`${formatAngka(val)} Kg = ${hasilSak} Sak`);
+    }
+
 
   </script>
 </body>
