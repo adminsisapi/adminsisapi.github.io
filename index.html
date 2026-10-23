@@ -1425,15 +1425,81 @@
       }
     }
 
+        /* ========================================================= */
+    /* PERBAIKAN FITUR FOTO PRODUK (AUTO-KOMPRES & DRIVE LINK)   */
     /* ========================================================= */
-    /* FITUR KATALOG PRODUK & RIWAYAT INVOICE PENJUALAN          */
-    /* ========================================================= */
+
+    // 1. Helper Konversi Link Google Drive / Base64 agar pasti tampil di <img>
+    function resolveProductImage(p) {
+      // Cek semua kemungkinan nama kolom dari Google Sheets (.gs)
+      let raw = p.fotoUrl || p.foto || p.fotoBase64 || p.gambar || p.image || "";
+      
+      // Jika dari server kosong, cek cadangan foto di memori lokal berdasarkan kodeBarang / nama
+      if (!raw) {
+        const localCache = JSON.parse(localStorage.getItem('SISAPI_FOTO_CACHE') || '{}');
+        raw = localCache[p.idProduk] || localCache[p.kodeBarang] || localCache[p.nama] || "";
+      }
+      if (!raw) return "";
+
+      raw = String(raw).trim();
+
+      // Jika berupa Link Google Drive, ubah ke format Thumbnail Direct Image agar tidak diblokir browser
+      if (raw.includes("drive.google.com")) {
+        let fileId = "";
+        const match1 = raw.match(/\/d\/([a-zA-Z0-9_-]+)/);
+        const match2 = raw.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+        if (match1 && match1[1]) fileId = match1[1];
+        else if (match2 && match2[1]) fileId = match2[1];
+
+        if (fileId) {
+          return `https://drive.google.com/thumbnail?id=${fileId}&sz=w800`;
+        }
+      }
+
+      return raw;
+    }
+
+    // 2. Helper Auto-Kompres Foto (Agar muat di 1 sel Google Sheets < 40.000 karakter & cepat diupload)
+    function compressImageFile(file, maxWidth = 480, quality = 0.65) {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          const img = new Image();
+          img.onload = function() {
+            const canvas = document.createElement('canvas');
+            let width = img.width;
+            let height = img.height;
+
+            if (width > maxWidth) {
+              height = Math.round((height * maxWidth) / width);
+              width = maxWidth;
+            }
+            canvas.width = width;
+            canvas.height = height;
+
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+
+            // Hasilkan JPEG terkompresi ringan
+            let compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
+            // Jika masih di atas 45.000 karakter, turunkan sedikit kualitasnya agar aman masuk Google Sheets
+            if (compressedDataUrl.length > 45000) {
+              compressedDataUrl = canvas.toDataURL('image/jpeg', 0.45);
+            }
+            resolve(compressedDataUrl);
+          };
+          img.onerror = function() { resolve(event.target.result); };
+          img.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
     function renderKatalogProduk() {
       const container = document.getElementById('tabContentKatalog');
       if (!container) return;
       container.innerHTML = '';
 
-      // Hitung ringkasan atas halaman Produk & Invoice
       if (document.getElementById('sumTotalProduk')) {
         document.getElementById('sumTotalProduk').innerText = `${listProduk.length} Produk`;
       }
@@ -1453,8 +1519,11 @@
         const stokRef = masterStok.find(s => s.kode === p.kodeBarang);
         const sisaStok = stokRef ? stokRef.stok : (p.stok || 0);
         const satuan = stokRef ? stokRef.satuan : (p.satuan || 'Sak');
-        const imgTag = p.fotoUrl
-          ? `<img src="${p.fotoUrl}" class="w-full h-44 object-cover" onerror="this.style.display='none'">`
+        const finalImgSrc = resolveProductImage(p);
+
+        const imgTag = finalImgSrc
+          ? `<img src="${finalImgSrc}" alt="${p.nama}" class="w-full h-44 object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+             <div class="hidden w-full h-44 bg-gradient-to-br from-slate-800 to-slate-900 flex-col items-center justify-center text-emerald-400/70"><i class="fa-solid fa-box-open text-4xl mb-2"></i><span class="text-[10px] text-slate-400 uppercase font-bold">${p.kodeBarang}</span></div>`
           : `<div class="w-full h-44 bg-gradient-to-br from-slate-800 to-slate-900 flex flex-col items-center justify-center text-emerald-400/70"><i class="fa-solid fa-box-open text-4xl mb-2"></i><span class="text-[10px] text-slate-400 uppercase font-bold">${p.kodeBarang}</span></div>`;
 
         const actionBtns = isViewer
@@ -1517,11 +1586,9 @@
       const fileInput = document.getElementById('prodFotoFile');
 
       if (fileInput.files && fileInput.files[0]) {
-        const reader = new FileReader();
-        reader.onload = async function(evt) {
-          await kirimDataProdukKeServer({ kodeBarang, nama, kualitas, harga, fotoBase64: evt.target.result });
-        };
-        reader.readAsDataURL(fileInput.files[0]);
+        showCenterLoading("Mengompres Foto...");
+        const compressedBase64 = await compressImageFile(fileInput.files[0]);
+        await kirimDataProdukKeServer({ kodeBarang, nama, kualitas, harga, fotoBase64: compressedBase64 });
       } else {
         await kirimDataProdukKeServer({ kodeBarang, nama, kualitas, harga, fotoBase64: "" });
       }
@@ -1531,8 +1598,21 @@
       showCenterLoading("Menyimpan Produk...");
       const stokRef = masterStok.find(s => s.kode === payload.kodeBarang);
       const satuan = stokRef ? stokRef.satuan : "Sak";
+      const newId = "PRD-" + Date.now();
+
+      // Simpan foto ke Cache Lokal terlebih dahulu agar dijamin 100% langsung muncul
+      if (payload.fotoBase64) {
+        try {
+          const localCache = JSON.parse(localStorage.getItem('SISAPI_FOTO_CACHE') || '{}');
+          localCache[newId] = payload.fotoBase64;
+          localCache[payload.kodeBarang] = payload.fotoBase64;
+          localCache[payload.nama] = payload.fotoBase64;
+          localStorage.setItem('SISAPI_FOTO_CACHE', JSON.stringify(localCache));
+        } catch (err) {}
+      }
+
       const newProdLocal = {
-        idProduk: "PRD-" + Date.now(),
+        idProduk: newId,
         kodeBarang: payload.kodeBarang,
         nama: payload.nama,
         kualitas: payload.kualitas,
@@ -1547,7 +1627,13 @@
           const res = await fetch(SCRIPT_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify({ action: "SIMPAN_PRODUK", satuan, ...payload })
+            body: JSON.stringify({
+              action: "SIMPAN_PRODUK",
+              idProduk: newId,
+              satuan,
+              fotoUrl: payload.fotoBase64 || "",
+              ...payload
+            })
           });
           const data = await res.json();
           if (data.status === 'success' && Array.isArray(data.produk)) {
@@ -1571,7 +1657,7 @@
       document.getElementById('prodHarga').value = '';
       document.getElementById('prodFotoFile').value = '';
       renderSemuaUI();
-      showToast("Produk Berhasil Ditambahkan ke Katalog!");
+      showToast("Produk & Foto Berhasil Disimpan!");
     }
 
     async function hapusProduk(idProduk) {
