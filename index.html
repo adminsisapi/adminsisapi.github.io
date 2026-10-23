@@ -1720,7 +1720,7 @@
       }
     }
 
-    async function submitFormInvoice(e) {
+          async function submitFormInvoice(e) {
       e.preventDefault();
       const idProduk = document.getElementById('invIdProduk').value;
       const prod = listProduk.find(p => p.idProduk === idProduk);
@@ -1735,12 +1735,6 @@
       const catatan = document.getElementById('invCatatan').value.trim();
       const isAutoPrint = document.getElementById('invAutoPrint').checked;
       const adminBertugas = activeShift ? activeShift.namaAdmin : "ADMIN";
-
-      const barang = masterStok.find(b => b.kode === kodeBarang);
-      if (barang && barang.stok < jumlah) {
-        alert(`Stok gudang tidak mencukupi! Tersedia: ${formatAngka(barang.stok)} ${barang.satuan}`);
-        return;
-      }
 
       const now = new Date();
       const todayIso = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
@@ -1766,7 +1760,7 @@
         admin: adminBertugas
       };
 
-      showCenterLoading("Membuat Invoice & Memotong Stok...");
+      showCenterLoading("Membuat Invoice Penjualan...");
 
       let synced = false;
       let createdInvNo = noInvLocal;
@@ -1804,67 +1798,23 @@
             } else {
               listInvoice.unshift(newInvObj);
             }
-            if (Array.isArray(data.stok)) masterStok = data.stok;
-            if (Array.isArray(data.logs)) logTransaksi = data.logs;
+            // Catatan: data.stok dan data.logs dari server diabaikan agar stok tidak terpotong otomatis di sini
             synced = true;
           }
         } catch(err) {}
       }
 
-      // Fallback / Jaminan Pasti Terekam di Riwayat Invoice & Riwayat Mutasi
       if (!synced) {
         listInvoice.unshift(newInvObj);
-        if (barang) barang.stok -= jumlah;
-        logTransaksi.unshift({
-          id: "TRX-INV-" + Date.now(),
-          timestamp: liveTimeString,
-          tanggal: todayIso,
-          jenis: "KELUAR",
-          suratJalan: noInvLocal,
-          armada: "Invoice Penjualan",
-          nopol: kontakPembeli || "-",
-          sopir: namaPembeli,
-          kodeBarang: kodeBarang,
-          namaBarang: prod.nama,
-          jumlah: jumlah,
-          satuan: satuan,
-          stokAkhir: barang ? barang.stok : 0,
-          keterangan: `Invoice ${statusBayar} (${formatRp(totalHarga)}) ${catatan ? '- ' + catatan : ''}`,
-          admin: adminBertugas
-        });
-      } else {
-        // Pastikan jika server tidak otomatis menambahkan ke logTransaksi, kita catat juga agar tidak hilang di Riwayat
-        const existInLog = logTransaksi.some(l => l.suratJalan === createdInvNo);
-        if (!existInLog) {
-          logTransaksi.unshift({
-            id: "TRX-INV-" + Date.now(),
-            timestamp: liveTimeString,
-            tanggal: todayIso,
-            jenis: "KELUAR",
-            suratJalan: createdInvNo,
-            armada: "Invoice Penjualan",
-            nopol: kontakPembeli || "-",
-            sopir: namaPembeli,
-            kodeBarang: kodeBarang,
-            namaBarang: prod.nama,
-            jumlah: jumlah,
-            satuan: satuan,
-            stokAkhir: barang ? barang.stok : 0,
-            keterangan: `Invoice ${statusBayar} (${formatRp(totalHarga)})`,
-            admin: adminBertugas
-          });
-        }
       }
 
       localStorage.setItem('FEEDMILL_INVOICES', JSON.stringify(listInvoice));
-      localStorage.setItem('FEEDMILL_STOK', JSON.stringify(masterStok));
-      localStorage.setItem('FEEDMILL_LOGS', JSON.stringify(logTransaksi));
 
       hideCenterLoading();
       closeModal('modalFormInvoice');
       renderSemuaUI();
       switchProdukTab('INVOICE');
-      showToast(`Invoice ${createdInvNo} Berhasil Dibuat!`);
+      showToast(`Invoice ${createdInvNo} Berhasil Dibuat (Stok aman, menunggu Surat Jalan)!`);
 
       if (isAutoPrint) {
         bukaModalCetakInvoice(createdInvNo);
