@@ -324,16 +324,25 @@
           <p class="text-xs text-slate-300">SISAPI — CV YUDISTIRA CATTLE AND FARM</p>
         </div>
 
-        <div class="bg-slate-950/60 border border-slate-700 rounded-xl p-3 sm:min-w-[200px] flex flex-col justify-between">
-          <div class="flex items-center justify-between text-[11px] text-slate-400 mb-1">
-            <span>Admin Shift:</span>
-            <button onclick="openModal('modalAbsensi')" class="text-amber-400 hover:underline font-bold">Absensi</button>
+                <div class="bg-slate-950/60 border border-slate-700 rounded-xl p-3 sm:min-w-[200px] flex flex-col justify-between space-y-2.5">
+          <div>
+            <div class="flex items-center justify-between text-[11px] text-slate-400 mb-1">
+              <span>Admin Shift:</span>
+              <button onclick="openModal('modalAbsensi')" class="text-amber-400 hover:underline font-bold">Absensi</button>
+            </div>
+            <div class="text-sm font-extrabold text-white flex items-center space-x-2">
+              <i class="fa-solid fa-user-shield text-emerald-400"></i>
+              <span id="cardShiftAdmin">ADMIN</span>
+            </div>
+            <div id="cardShiftWaktu" class="text-[10px] text-slate-400 mt-0.5">Pagi</div>
           </div>
-          <div class="text-sm font-extrabold text-white flex items-center space-x-2">
-            <i class="fa-solid fa-user-shield text-emerald-400"></i>
-            <span id="cardShiftAdmin">ADMIN</span>
-          </div>
-          <div id="cardShiftWaktu" class="text-[10px] text-slate-400 mt-0.5">Pagi</div>
+
+          <!-- Tombol Integrasi Simkeu (Kecil, Panjang Menyesuaikan, di Bawahnya) -->
+          <a href="https://adminsisapi.github.io/simkeu/" target="_blank" class="w-full bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/40 text-emerald-300 hover:text-emerald-200 py-1.5 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center space-x-2 shadow-sm">
+            <i class="fa-solid fa-wallet text-xs"></i>
+            <span>Buka Simkeu (Keuangan)</span>
+            <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-70"></i>
+          </a>
         </div>
       </div>
 
