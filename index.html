@@ -324,8 +324,9 @@
           <p class="text-xs text-slate-300">SISAPI — CV YUDISTIRA CATTLE AND FARM</p>
         </div>
 
-                <div class="bg-slate-950/60 border border-slate-700 rounded-xl p-3 sm:min-w-[200px] flex flex-col justify-between space-y-2.5">
-          <div>
+        <!-- KOTAK ADMIN SHIFT + TOMBOL SIMKEU DI BAWAHNYA (SEUKURAN) -->
+        <div class="flex flex-col space-y-2 sm:min-w-[220px]">
+          <div class="bg-slate-950/60 border border-slate-700 rounded-xl p-3 flex flex-col justify-between">
             <div class="flex items-center justify-between text-[11px] text-slate-400 mb-1">
               <span>Admin Shift:</span>
               <button onclick="openModal('modalAbsensi')" class="text-amber-400 hover:underline font-bold">Absensi</button>
@@ -337,11 +338,12 @@
             <div id="cardShiftWaktu" class="text-[10px] text-slate-400 mt-0.5">Pagi</div>
           </div>
 
-          <!-- Tombol Integrasi Simkeu (Kecil, Panjang Menyesuaikan, di Bawahnya) -->
-          <a href="https://adminsisapi.github.io/simkeu/" target="_blank" class="w-full bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/40 text-emerald-300 hover:text-emerald-200 py-1.5 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center space-x-2 shadow-sm">
-            <i class="fa-solid fa-wallet text-xs"></i>
-            <span>Buka Simkeu (Keuangan)</span>
-            <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-70"></i>
+          <a href="https://adminsisapi.github.io/simkeu/" target="_blank" class="w-full bg-slate-950/80 hover:bg-emerald-600 border border-emerald-500/40 text-emerald-300 hover:text-white py-2 px-3 rounded-xl text-xs font-extrabold transition flex items-center justify-between shadow-sm">
+            <span class="flex items-center space-x-2">
+              <i class="fa-solid fa-wallet text-emerald-400"></i>
+              <span>Buka Simkeu (Kas)</span>
+            </span>
+            <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-80"></i>
           </a>
         </div>
       </div>
@@ -1105,14 +1107,60 @@
       </form>
     </div>
   </div>
+
+  <!-- FLOATING POPUP KALKULATOR GUDANG (AKTIF SETELAH LOGIN) -->
+  <div id="floatingCalcContainer" class="fixed bottom-5 right-5 z-40 hidden">
+    <button type="button" onclick="toggleCalc()" class="w-12 h-12 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white shadow-2xl flex items-center justify-center text-lg transition transform hover:scale-105 border-2 border-white/20" title="Kalkulator Gudang">
+      <i class="fa-solid fa-calculator"></i>
+    </button>
+
+    <div id="calcPopup" class="hidden absolute bottom-16 right-0 bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl w-64 p-3.5 text-white space-y-2.5">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-1.5 text-xs font-bold text-emerald-400">
+        <span><i class="fa-solid fa-calculator mr-1"></i>Kalkulator Gudang</span>
+        <button type="button" onclick="toggleCalc()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-right">
+        <div id="calcDisplay" class="text-lg font-mono-code font-extrabold text-amber-300 truncate">0</div>
+      </div>
+      <!-- Tombol Konversi Cepat Sak <-> Kg -->
+      <div class="grid grid-cols-2 gap-1.5 text-[10px] font-extrabold">
+        <button type="button" onclick="cKonversiSakKeKg()" class="bg-emerald-600/25 hover:bg-emerald-600 text-emerald-300 hover:text-white border border-emerald-500/30 py-1.5 rounded-lg transition">Sak → Kg (×50)</button>
+        <button type="button" onclick="cKonversiKgKeSak()" class="bg-blue-600/25 hover:bg-blue-600 text-blue-300 hover:text-white border border-blue-500/30 py-1.5 rounded-lg transition">Kg → Sak (÷50)</button>
+      </div>
+      <div class="grid grid-cols-4 gap-1.5 text-xs font-bold">
+        <button type="button" onclick="cClear()" class="bg-rose-600/30 text-rose-300 py-2 rounded-lg">C</button>
+        <button type="button" onclick="cBack()" class="bg-slate-800 py-2 rounded-lg">⌫</button>
+        <button type="button" onclick="cIn('/')" class="bg-slate-800 text-emerald-400 py-2 rounded-lg">÷</button>
+        <button type="button" onclick="cIn('*')" class="bg-slate-800 text-emerald-400 py-2 rounded-lg">×</button>
+        <button type="button" onclick="cIn('7')" class="bg-slate-800 py-2 rounded-lg">7</button>
+        <button type="button" onclick="cIn('8')" class="bg-slate-800 py-2 rounded-lg">8</button>
+        <button type="button" onclick="cIn('9')" class="bg-slate-800 py-2 rounded-lg">9</button>
+        <button type="button" onclick="cIn('-')" class="bg-slate-800 text-emerald-400 py-2 rounded-lg">-</button>
+        <button type="button" onclick="cIn('4')" class="bg-slate-800 py-2 rounded-lg">4</button>
+        <button type="button" onclick="cIn('5')" class="bg-slate-800 py-2 rounded-lg">5</button>
+        <button type="button" onclick="cIn('6')" class="bg-slate-800 py-2 rounded-lg">6</button>
+        <button type="button" onclick="cIn('+')" class="bg-slate-800 text-emerald-400 py-2 rounded-lg">+</button>
+        <button type="button" onclick="cIn('1')" class="bg-slate-800 py-2 rounded-lg">1</button>
+        <button type="button" onclick="cIn('2')" class="bg-slate-800 py-2 rounded-lg">2</button>
+        <button type="button" onclick="cIn('3')" class="bg-slate-800 py-2 rounded-lg">3</button>
+        <button type="button" onclick="cEq()" class="row-span-2 bg-emerald-600 text-white py-2 rounded-lg">=</button>
+        <button type="button" onclick="cIn('0')" class="col-span-2 bg-slate-800 py-2 rounded-lg">0</button>
+        <button type="button" onclick="cIn('.')" class="bg-slate-800 text-amber-300 py-2 rounded-lg">.</button>
+      </div>
+    </div>
+  </div>
   <!-- ========================================================= -->
-  <!-- SCRIPT UTAMA TERINTEGRASI (BEBAS ERROR & NOTA LANDSCAPE)  -->
+  <!-- SCRIPT UTAMA TERINTEGRASI GOOGLE SHEETS & NOTA LANDSCAPE  -->
   <!-- ========================================================= -->
   <script>
     const DEFAULT_GAS_URL = "https://script.google.com/macros/s/AKfycbzE4U0G1IX9a3ovI36jKzIjlbYmepEDINKm1Rp1CWxQZkkTCZS0fXlMPn0fMfQ71rGN/exec";
     let SCRIPT_URL = localStorage.getItem('FEEDMILL_SCRIPT_URL') || DEFAULT_GAS_URL;
+    if (!SCRIPT_URL) {
+      SCRIPT_URL = DEFAULT_GAS_URL;
+      localStorage.setItem('FEEDMILL_SCRIPT_URL', SCRIPT_URL);
+    }
 
-    // Daftar Akun Lengkap (Bisa pakai admin/Sufyan, admin/adminss, Hasfhi, Pusat, atau Viewer)
+    // Daftar Akun Lengkap
     const ACCOUNTS_LIST = [
       { user: "admin",       pass: "Sufyan",       role: "ADMIN",  defaultWorker: "SUFYAN" },
       { user: "admin",       pass: "AdminSufyan",  role: "ADMIN",  defaultWorker: "SUFYAN" },
@@ -1333,16 +1381,19 @@
       if (confirm("Keluar dari sesi SISAPI?")) {
         localStorage.removeItem('FEEDMILL_SESSION');
         currentSession = null;
-        document.getElementById('loginScreen').classList.remove('hidden');
+        checkAuthSession();
       }
     }
 
     function checkAuthSession() {
+      const calcEl = document.getElementById('floatingCalcContainer');
       if (!currentSession) {
         document.getElementById('loginScreen').classList.remove('hidden');
+        if (calcEl) calcEl.classList.add('hidden');
         return;
       }
       document.getElementById('loginScreen').classList.add('hidden');
+      if (calcEl) calcEl.classList.remove('hidden');
 
       const isViewer = currentSession.role === 'VIEWER';
       const roleBadge = document.getElementById('roleBadge');
@@ -1402,7 +1453,7 @@
       activeShift = { namaAdmin, shift, akun, waktu: liveTimeString, timestamp: Date.now(), status: statusAbsen };
       localStorage.setItem('FEEDMILL_SHIFT_12H', JSON.stringify(activeShift));
 
-      logAbsensi.unshift({
+      const absenObj = {
         id: "ABS-" + Date.now(),
         waktu: liveTimeString,
         tanggal: new Date().toISOString().split('T')[0],
@@ -1410,26 +1461,39 @@
         akun,
         shift,
         status: statusAbsen
-      });
+      };
+      logAbsensi.unshift(absenObj);
       localStorage.setItem('FEEDMILL_ABSENSI', JSON.stringify(logAbsensi));
 
       if (SCRIPT_URL) {
         try {
-          await fetch(SCRIPT_URL, {
+          const res = await fetch(SCRIPT_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify({ action: "CATAT_ABSENSI", waktuLive: liveTimeString, namaAdmin, akun, shift, status: statusAbsen })
+            body: JSON.stringify({
+              action: "CATAT_ABSENSI",
+              waktuLive: liveTimeString,
+              waktu: liveTimeString,
+              tanggal: absenObj.tanggal,
+              namaAdmin,
+              akun,
+              shift,
+              status: statusAbsen
+            })
           });
+          const data = await res.json();
+          if (data.status === 'success' && Array.isArray(data.absensi)) {
+            logAbsensi = data.absensi;
+            localStorage.setItem('FEEDMILL_ABSENSI', JSON.stringify(logAbsensi));
+          }
         } catch(err) {}
       }
 
-      setTimeout(() => {
-        hideCenterLoading();
-        updateShiftUI();
-        renderTabelAbsensi();
-        closeModal('modalAbsensi');
-        showToast(`Absen ${statusAbsen} Berhasil: ${namaAdmin}`);
-      }, 350);
+      hideCenterLoading();
+      updateShiftUI();
+      renderTabelAbsensi();
+      closeModal('modalAbsensi');
+      showToast(`Absen ${statusAbsen} Berhasil: ${namaAdmin}`);
     }
 
     function updateShiftUI() {
@@ -1916,6 +1980,8 @@
             } else {
               listInvoice.unshift(newInvObj);
             }
+            if (Array.isArray(data.stok)) masterStok = data.stok;
+            if (Array.isArray(data.logs)) logTransaksi = data.logs;
             synced = true;
           }
         } catch(err) {}
@@ -1926,6 +1992,8 @@
       }
 
       localStorage.setItem('FEEDMILL_INVOICES', JSON.stringify(listInvoice));
+      localStorage.setItem('FEEDMILL_STOK', JSON.stringify(masterStok));
+      localStorage.setItem('FEEDMILL_LOGS', JSON.stringify(logTransaksi));
 
       hideCenterLoading();
       closeModal('modalFormInvoice');
@@ -2023,11 +2091,21 @@
 
       if (SCRIPT_URL) {
         try {
-          await fetch(SCRIPT_URL, {
+          const res = await fetch(SCRIPT_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify({ action: "UPDATE_STATUS_INVOICE", noInvoice, statusBayar: "LUNAS" })
+            body: JSON.stringify({
+              action: "UPDATE_STATUS_INVOICE",
+              noInvoice,
+              statusBayar: "LUNAS",
+              status: "LUNAS"
+            })
           });
+          const data = await res.json();
+          if (data.status === 'success' && Array.isArray(data.invoices)) {
+            listInvoice = data.invoices;
+            localStorage.setItem('FEEDMILL_INVOICES', JSON.stringify(listInvoice));
+          }
         } catch (err) {}
       }
 
@@ -2055,7 +2133,7 @@
     }
 
     /* ========================================================= */
-    /* FORM MUTASI KELUAR / MASUK & KONTROL MANUAL               */
+    /* FORM MUTASI KELUAR / MASUK & KONTROL MANUAL (SINKRON GS)  */
     /* ========================================================= */
     function switchFormTab(mode) {
       const formTrx = document.getElementById('formTransaksi');
@@ -2150,6 +2228,7 @@
       }
     }
 
+    // Mengirim action: "TRANSAKSI" dengan semua alias field agar 100% tersimpan ke Google Sheets (Kode.gs)
     async function submitTransaksi(e) {
       e.preventDefault();
       const jenis = document.getElementById('jenisTransaksi').value;
@@ -2181,13 +2260,17 @@
       const idLog = "LOG-" + Date.now();
       const newLog = {
         id: idLog,
+        timestamp: liveTimeString,
+        waktuLive: liveTimeString,
         waktu: liveTimeString,
         tanggal,
         jenis,
         suratJalan,
+        noSJ: suratJalan,
         armada,
         nopol,
         sopir,
+        kode: item.kode,
         kodeBarang: item.kode,
         namaBarang: item.nama,
         kategori: item.kategori,
@@ -2195,33 +2278,53 @@
         satuan: item.satuan,
         stokAwal,
         stokAkhir,
+        sisaStok: stokAkhir,
         keterangan,
+        ket: keterangan,
         admin: adminBertugas
       };
 
-      showCenterLoading("Menyimpan Mutasi...");
+      showCenterLoading("Menyimpan ke Google Sheets...");
       logTransaksi.unshift(newLog);
       localStorage.setItem('FEEDMILL_STOK', JSON.stringify(masterStok));
       localStorage.setItem('FEEDMILL_LOGS', JSON.stringify(logTransaksi));
 
+      let targetCetakId = idLog;
       if (SCRIPT_URL) {
         try {
-          await fetch(SCRIPT_URL, {
+          const res = await fetch(SCRIPT_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify({ action: "SIMPAN_TRANSAKSI", ...newLog })
+            body: JSON.stringify({
+              action: "TRANSAKSI",
+              ...newLog
+            })
           });
-        } catch (err) {}
+          const data = await res.json();
+          if (data.status === 'success') {
+            if (Array.isArray(data.stok) && data.stok.length > 0) {
+              masterStok = data.stok;
+              localStorage.setItem('FEEDMILL_STOK', JSON.stringify(masterStok));
+            }
+            if (Array.isArray(data.logs) && data.logs.length > 0) {
+              logTransaksi = data.logs;
+              localStorage.setItem('FEEDMILL_LOGS', JSON.stringify(logTransaksi));
+              targetCetakId = logTransaksi[0].id || idLog;
+            }
+          }
+        } catch (err) {
+          console.warn("Disimpan secara lokal:", err);
+        }
       }
 
       hideCenterLoading();
       document.getElementById('inputJumlah').value = '';
       document.getElementById('inputKeterangan').value = '';
       renderSemuaUI();
-      showToast(`Mutasi ${jenis} ${formatAngka(jumlah)} ${item.satuan} Berhasil!`);
+      showToast(`Mutasi ${jenis} ${formatAngka(jumlah)} ${item.satuan} Tersimpan!`);
 
       if (autoPrint) {
-        bukaModalCetakSJ(idLog);
+        bukaModalCetakSJ(targetCetakId);
       }
     }
 
@@ -2245,36 +2348,57 @@
       const todayIso = new Date().toISOString().split('T')[0];
       const newLog = {
         id: "OPN-" + Date.now(),
+        timestamp: liveTimeString,
+        waktuLive: liveTimeString,
         waktu: liveTimeString,
         tanggal: todayIso,
         jenis: "MANUAL_ADJUST",
         suratJalan: ref,
+        noSJ: ref,
         armada: "Stock Opname",
         nopol: "-",
         sopir: alasan,
+        kode: item.kode,
         kodeBarang: item.kode,
         namaBarang: item.nama,
         kategori: item.kategori,
         jumlah: Math.abs(selisih),
         satuan: item.satuan,
         stokAwal: stokLama,
+        stokBaru: stokFisik,
         stokAkhir: stokFisik,
+        sisaStok: stokFisik,
+        alasan,
         keterangan: `Opname Fisik (${selisih >= 0 ? '+' : ''}${selisih}): ${alasan}`,
         admin: adminBertugas
       };
 
-      showCenterLoading("Menyimpan Opname...");
+      showCenterLoading("Menyimpan Opname ke Sheets...");
       logTransaksi.unshift(newLog);
       localStorage.setItem('FEEDMILL_STOK', JSON.stringify(masterStok));
       localStorage.setItem('FEEDMILL_LOGS', JSON.stringify(logTransaksi));
 
       if (SCRIPT_URL) {
         try {
-          await fetch(SCRIPT_URL, {
+          const res = await fetch(SCRIPT_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify({ action: "MANUAL_ADJUST", ...newLog })
+            body: JSON.stringify({
+              action: "MANUAL_ADJUST",
+              ...newLog
+            })
           });
+          const data = await res.json();
+          if (data.status === 'success') {
+            if (Array.isArray(data.stok)) {
+              masterStok = data.stok;
+              localStorage.setItem('FEEDMILL_STOK', JSON.stringify(masterStok));
+            }
+            if (Array.isArray(data.logs)) {
+              logTransaksi = data.logs;
+              localStorage.setItem('FEEDMILL_LOGS', JSON.stringify(logTransaksi));
+            }
+          }
         } catch (err) {}
       }
 
@@ -2291,24 +2415,40 @@
       const kategori = document.getElementById('newKategori').value;
       const satuan = document.getElementById('newSatuan').value;
       const stok = Number(document.getElementById('newStokAwal').value || 0);
+      const adminBertugas = activeShift ? activeShift.namaAdmin : "ADMIN";
 
       if (masterStok.some(b => b.kode === kode)) {
         alert("Kode barang sudah digunakan!");
         return;
       }
 
-      const newItem = { kode, nama, kategori, satuan, stok, updated: liveTimeString };
-      showCenterLoading("Menambah Barang...");
+      const newItem = {
+        kode,
+        nama,
+        kategori,
+        satuan,
+        stok,
+        stokAwal: stok,
+        waktuLive: liveTimeString,
+        updated: liveTimeString,
+        admin: adminBertugas
+      };
+      showCenterLoading("Menambah Barang ke Sheets...");
       masterStok.push(newItem);
       localStorage.setItem('FEEDMILL_STOK', JSON.stringify(masterStok));
 
       if (SCRIPT_URL) {
         try {
-          await fetch(SCRIPT_URL, {
+          const res = await fetch(SCRIPT_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'text/plain;charset=utf-8' },
             body: JSON.stringify({ action: "TAMBAH_BARANG", ...newItem })
           });
+          const data = await res.json();
+          if (data.status === 'success' && Array.isArray(data.stok)) {
+            masterStok = data.stok;
+            localStorage.setItem('FEEDMILL_STOK', JSON.stringify(masterStok));
+          }
         } catch (err) {}
       }
 
@@ -2332,9 +2472,9 @@
       const isViewer = currentSession && currentSession.role === 'VIEWER';
 
       const filtered = masterStok.filter(b =>
-        b.kode.toLowerCase().includes(q) ||
-        b.nama.toLowerCase().includes(q) ||
-        b.kategori.toLowerCase().includes(q)
+        String(b.kode || '').toLowerCase().includes(q) ||
+        String(b.nama || '').toLowerCase().includes(q) ||
+        String(b.kategori || '').toLowerCase().includes(q)
       );
 
       filtered.forEach(item => {
@@ -2378,6 +2518,19 @@
         return `${parsed.getFullYear()}-${String(parsed.getMonth() + 1).padStart(2, '0')}-${String(parsed.getDate()).padStart(2, '0')}`;
       }
       return str.split('T')[0];
+    }
+
+    // Helper kompatibilitas nama kolom dari Google Sheets maupun Lokal
+    function getNoSJ(l) { return l.suratJalan || l.noSJ || '-'; }
+    function getWaktu(l) { return l.waktu || l.timestamp || l.waktuLive || ''; }
+    function getStokAkhir(l) { return l.stokAkhir !== undefined ? l.stokAkhir : (l.sisaStok !== undefined ? l.sisaStok : 0); }
+    function getStokAwal(l) {
+      if (l.stokAwal !== undefined) return l.stokAwal;
+      const akhir = Number(getStokAkhir(l) || 0);
+      const jml = Number(l.jumlah || 0);
+      if (l.jenis === 'MASUK') return akhir - jml;
+      if (l.jenis === 'KELUAR') return akhir + jml;
+      return akhir;
     }
 
     function setModeLaporan(mode) {
@@ -2438,10 +2591,11 @@
 
         const matchJenis = jenisFilter === 'SEMUA' || l.jenis === jenisFilter;
         const matchAdmin = adminFilter === 'SEMUA' || String(l.admin || '').toUpperCase() === adminFilter;
+        const noSJVal = getNoSJ(l);
         const matchKey = !keyword ||
-          String(l.suratJalan || '').toLowerCase().includes(keyword) ||
+          String(noSJVal).toLowerCase().includes(keyword) ||
           String(l.namaBarang || '').toLowerCase().includes(keyword) ||
-          String(l.kodeBarang || '').toLowerCase().includes(keyword) ||
+          String(l.kodeBarang || l.kode || '').toLowerCase().includes(keyword) ||
           String(l.nopol || '').toLowerCase().includes(keyword) ||
           String(l.sopir || '').toLowerCase().includes(keyword);
 
@@ -2493,11 +2647,11 @@
           <tr class="hover:bg-slate-50 transition">
             <td class="py-2.5 px-3 whitespace-nowrap">
               <div class="font-bold text-slate-800">${normalizeDateStr(l.tanggal)}</div>
-              <div class="text-[10px] text-slate-400 font-mono-code">${l.waktu || ''}</div>
+              <div class="text-[10px] text-slate-400 font-mono-code">${getWaktu(l)}</div>
             </td>
             <td class="py-2.5 px-3 whitespace-nowrap">
-              <div class="flex items-center space-x-1.5">${badge}<span class="font-mono-code font-bold text-slate-800">${l.suratJalan}</span></div>
-              <div class="text-[10px] text-slate-500 mt-0.5">${l.keterangan || '-'}</div>
+              <div class="flex items-center space-x-1.5">${badge}<span class="font-mono-code font-bold text-slate-800">${getNoSJ(l)}</span></div>
+              <div class="text-[10px] text-slate-500 mt-0.5">${l.keterangan || l.ket || '-'}</div>
             </td>
             <td class="py-2.5 px-3">
               <div class="font-bold text-slate-800">${l.armada || '-'} (${l.nopol || '-'})</div>
@@ -2505,10 +2659,10 @@
             </td>
             <td class="py-2.5 px-3">
               <div class="font-bold text-slate-800">${l.namaBarang}</div>
-              <div class="text-[10px] text-slate-400 font-mono-code">${l.kodeBarang} • ${l.kategori || ''}</div>
+              <div class="text-[10px] text-slate-400 font-mono-code">${l.kodeBarang || l.kode || ''} • ${l.kategori || ''}</div>
             </td>
             <td class="py-2.5 px-3 text-right font-mono-code whitespace-nowrap">${mutasiText}</td>
-            <td class="py-2.5 px-3 text-right font-mono-code font-bold text-slate-800 whitespace-nowrap">${formatAngka(l.stokAkhir)} ${l.satuan}</td>
+            <td class="py-2.5 px-3 text-right font-mono-code font-bold text-slate-800 whitespace-nowrap">${formatAngka(getStokAkhir(l))} ${l.satuan}</td>
             <td class="py-2.5 px-3 text-center whitespace-nowrap">
               <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-500/15 text-emerald-500 border border-emerald-500/30">${l.admin || 'ADMIN'}</span>
             </td>
@@ -2566,7 +2720,11 @@
     function bukaModalCetakSJ(idLog) {
       const l = logTransaksi.find(x => x.id === idLog);
       if (!l) return;
-      dataCetakAktif = { kodeRef: l.suratJalan };
+      const noSJ = getNoSJ(l);
+      const stokAwalVal = getStokAwal(l);
+      const stokAkhirVal = getStokAkhir(l);
+
+      dataCetakAktif = { kodeRef: noSJ };
       tipeDokumenCetak = 'SURAT_JALAN';
 
       document.getElementById('btnModalExportCsv').classList.add('hidden');
@@ -2578,16 +2736,16 @@
 
       const qrData = [
         "SISAPI - CV YUDISTIRA CATTLE AND FARM",
-        "No. SJ: " + l.suratJalan,
+        "No. SJ: " + noSJ,
         "Jenis: " + l.jenis,
         "Tanggal: " + normalizeDateStr(l.tanggal),
         "Barang: " + l.namaBarang + " (" + l.jumlah + " " + l.satuan + ")",
-        "Stok Akhir: " + l.stokAkhir + " " + l.satuan,
+        "Stok Akhir: " + stokAkhirVal + " " + l.satuan,
         "Admin: " + (l.admin || "ADMIN")
       ].join("\n");
       const qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=110x110&margin=2&data=" + encodeURIComponent(qrData);
 
-      document.getElementById('judulModalCetak').innerText = `Surat Jalan ${l.suratJalan}`;
+      document.getElementById('judulModalCetak').innerText = `Surat Jalan ${noSJ}`;
       document.getElementById('areaDokumenCetak').innerHTML = `
         <div id="kartuDokumenTarget" style="width: 100%; max-width: 720px; margin: 0 auto; font-family: 'Inter', Arial, sans-serif; color: #0f172a; background: #ffffff; border: 2px solid #0f172a; padding: 22px; border-radius: 10px; box-sizing: border-box;">
           <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 3px double #0f172a; padding-bottom: 12px; margin-bottom: 14px;">
@@ -2601,7 +2759,7 @@
             </div>
             <div style="text-align: right;">
               <div style="background: ${warna}; color: #ffffff; font-weight: 800; font-size: 10px; padding: 4px 9px; border-radius: 4px; display: inline-block;">${judul}</div>
-              <div style="font-size: 12px; font-weight: 800; font-family: monospace; margin-top: 4px;">${l.suratJalan}</div>
+              <div style="font-size: 12px; font-weight: 800; font-family: monospace; margin-top: 4px;">${noSJ}</div>
             </div>
           </div>
 
@@ -2632,16 +2790,16 @@
             </thead>
             <tbody>
               <tr style="border-bottom: 2px solid #cbd5e1;">
-                <td style="padding: 10px 8px; font-weight: 800;">[${l.kodeBarang}] ${l.namaBarang}</td>
+                <td style="padding: 10px 8px; font-weight: 800;">[${l.kodeBarang || l.kode || '-'}] ${l.namaBarang}</td>
                 <td style="padding: 10px 8px;">${l.kategori || '-'}</td>
-                <td style="padding: 10px 8px; text-align: right; font-family: monospace;">${formatAngka(l.stokAwal)} ${l.satuan}</td>
+                <td style="padding: 10px 8px; text-align: right; font-family: monospace;">${formatAngka(stokAwalVal)} ${l.satuan}</td>
                 <td style="padding: 10px 8px; text-align: right; font-family: monospace; font-weight: 800; color: ${warna};">${isMasuk ? '+' : '-'}${formatAngka(l.jumlah)} ${l.satuan}</td>
-                <td style="padding: 10px 8px; text-align: right; font-family: monospace; font-weight: 800;">${formatAngka(l.stokAkhir)} ${l.satuan}</td>
+                <td style="padding: 10px 8px; text-align: right; font-family: monospace; font-weight: 800;">${formatAngka(stokAkhirVal)} ${l.satuan}</td>
               </tr>
             </tbody>
           </table>
 
-          <div style="font-size: 10.5px; color: #334155; margin-bottom: 14px;"><b>Catatan:</b> ${l.keterangan || '-'}</div>
+          <div style="font-size: 10.5px; color: #334155; margin-bottom: 14px;"><b>Catatan:</b> ${l.keterangan || l.ket || '-'}</div>
 
           <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 10px;">
             <div style="display: flex; align-items: center; gap: 8px;">
@@ -2668,7 +2826,7 @@
       `;
 
       openModal('modalPreviewCetak');
-      renderBarcodeKeDokumen(l.suratJalan);
+      renderBarcodeKeDokumen(noSJ);
     }
 
     /* ========================================================= */
@@ -2791,7 +2949,6 @@
       btnCsvModal.classList.remove('hidden');
       btnCsvModal.classList.add('flex');
 
-      // Urutkan kronologis dari terlama ke terbaru untuk laporan mutasi
       const kronologis = [...filtered].reverse();
 
       const totalMasuk = kronologis.filter(l => l.jenis === 'MASUK').reduce((a, b) => a + Number(b.jumlah || 0), 0);
@@ -2833,15 +2990,19 @@
         kronologis.forEach((item, idx) => {
           const isMasuk = item.jenis === 'MASUK';
           const isKeluar = item.jenis === 'KELUAR';
+          const noSJ = getNoSJ(item);
+          const stokAwalVal = getStokAwal(item);
+          const stokAkhirVal = getStokAkhir(item);
+
           rowsHtml += `
             <tr style="border-bottom: 1px solid #e2e8f0; page-break-inside: avoid;">
               <td style="padding: 7px 6px; text-align: center; color: #64748b; font-weight: 700;">${idx + 1}</td>
               <td style="padding: 7px 6px; white-space: nowrap;">
                 <div style="font-weight: 700;">${normalizeDateStr(item.tanggal)}</div>
-                <div style="font-size: 9px; color: #64748b; font-family: monospace;">${item.waktu || ''}</div>
+                <div style="font-size: 9px; color: #64748b; font-family: monospace;">${getWaktu(item)}</div>
               </td>
               <td style="padding: 7px 6px; white-space: nowrap;">
-                <div style="font-family: monospace; font-weight: 800; color: #0f172a;">${item.suratJalan}</div>
+                <div style="font-family: monospace; font-weight: 800; color: #0f172a;">${noSJ}</div>
                 <div style="font-size: 9px; font-weight: 700; color: ${isMasuk ? '#059669' : (isKeluar ? '#e11d48' : '#d97706')};">${item.jenis}</div>
               </td>
               <td style="padding: 7px 6px;">
@@ -2850,10 +3011,10 @@
               </td>
               <td style="padding: 7px 6px;">
                 <div style="font-weight: 800; color: #0f172a;">${item.namaBarang}</div>
-                <div style="font-size: 9px; color: #64748b; font-family: monospace;">[${item.kodeBarang}] ${item.kategori || ''}</div>
+                <div style="font-size: 9px; color: #64748b; font-family: monospace;">[${item.kodeBarang || item.kode || '-'}] ${item.kategori || ''}</div>
               </td>
               <td style="padding: 7px 6px; text-align: right; font-family: monospace; color: #475569; white-space: nowrap;">
-                ${formatAngka(item.stokAwal)} ${item.satuan}
+                ${formatAngka(stokAwalVal)} ${item.satuan}
               </td>
               <td style="padding: 7px 6px; text-align: right; font-family: monospace; font-weight: 800; color: #059669; white-space: nowrap;">
                 ${isMasuk ? '+' + formatAngka(item.jumlah) + ' ' + item.satuan : '-'}
@@ -2862,7 +3023,7 @@
                 ${isKeluar ? '-' + formatAngka(item.jumlah) + ' ' + item.satuan : '-'}
               </td>
               <td style="padding: 7px 6px; text-align: right; font-family: monospace; font-weight: 800; color: #0f172a; white-space: nowrap;">
-                ${formatAngka(item.stokAkhir)} ${item.satuan}
+                ${formatAngka(stokAkhirVal)} ${item.satuan}
               </td>
               <td style="padding: 7px 6px; text-align: center; font-weight: 700; font-size: 9.5px;">
                 ${item.admin || 'ADMIN'}
@@ -2952,12 +3113,12 @@
             </div>
             <div style="display: flex; gap: 32px; text-align: center; font-size: 10px;">
               <div style="min-width: 130px;">
-                <div>Mengetahui / Manager:</div>
+                <div>Mengetahui / Manager,</div>
                 <div style="height: 38px;"></div>
                 <div style="font-weight: 800; border-top: 1px solid #0f172a; padding-top: 2px;">( MANAGER OPERASIONAL )</div>
               </div>
               <div style="min-width: 130px;">
-                <div>Warehouse Admin:</div>
+                <div>Admin Gudang SISAPI,</div>
                 <div style="height: 38px;"></div>
                 <div style="font-weight: 800; border-top: 1px solid #0f172a; padding-top: 2px;">( ${activeShift ? activeShift.namaAdmin : 'ADMIN'} )</div>
               </div>
@@ -3091,7 +3252,7 @@
         const masukVal = l.jenis === 'MASUK' ? l.jumlah : 0;
         const keluarVal = l.jenis === 'KELUAR' ? l.jumlah : 0;
         csvRows.push(
-          `"${idx + 1}","${normalizeDateStr(l.tanggal)}","${l.waktu || '-'}","${l.suratJalan}","${l.jenis}","${l.armada || '-'}","${l.nopol || '-'}","${String(l.sopir || '').replace(/"/g, '""')}","${l.kodeBarang}","${String(l.namaBarang || '').replace(/"/g, '""')}","${l.kategori || '-'}",${l.stokAwal || 0},${masukVal},${keluarVal},${l.stokAkhir || 0},"${l.satuan || ''}","${l.admin || 'ADMIN'}","${String(l.keterangan || '').replace(/"/g, '""')}"`
+          `"${idx + 1}","${normalizeDateStr(l.tanggal)}","${getWaktu(l)}","${getNoSJ(l)}","${l.jenis}","${l.armada || '-'}","${l.nopol || '-'}","${String(l.sopir || '').replace(/"/g, '""')}","${l.kodeBarang || l.kode || ''}","${String(l.namaBarang || '').replace(/"/g, '""')}","${l.kategori || '-'}",${getStokAwal(l)},${masukVal},${keluarVal},${getStokAkhir(l)},"${l.satuan || ''}","${l.admin || 'ADMIN'}","${String(l.keterangan || l.ket || '').replace(/"/g, '""')}"`
         );
       });
 
@@ -3106,7 +3267,7 @@
     }
 
     /* ========================================================= */
-    /* 5. SINKRONISASI CLOUD GOOGLE SHEETS & HELPER UI           */
+    /* 5. SINKRONISASI CLOUD GOOGLE SHEETS                       */
     /* ========================================================= */
     async function syncData(silent = false) {
       if (!SCRIPT_URL) return;
@@ -3151,6 +3312,51 @@
       }, 400);
     }
 
+    /* ========================================================= */
+    /* 6. KALKULATOR GUDANG MELAYANG (DENGAN KONVERSI SAK/KG)    */
+    /* ========================================================= */
+    let cExp = "0";
+    function toggleCalc() {
+      const popup = document.getElementById('calcPopup');
+      if (popup) popup.classList.toggle('hidden');
+    }
+    function cUpd() {
+      const disp = document.getElementById('calcDisplay');
+      if (disp) disp.innerText = cExp;
+    }
+    function cClear() { cExp = "0"; cUpd(); }
+    function cBack() { cExp = cExp.length > 1 ? cExp.slice(0, -1) : "0"; cUpd(); }
+    function cIn(ch) {
+      cExp = (cExp === "0" && !['+','-','*','/','.'].includes(ch)) ? ch : cExp + ch;
+      cUpd();
+    }
+    function cEq() {
+      try {
+        const res = Function('"use strict"; return (' + cExp + ')')();
+        cExp = isFinite(res) ? String(Math.round(res * 100) / 100) : "Error";
+      } catch (e) { cExp = "Error"; }
+      cUpd();
+    }
+    function cKonversiSakKeKg() {
+      try {
+        const val = Number(Function('"use strict"; return (' + cExp + ')')() || 0);
+        cExp = String(Math.round(val * 50 * 100) / 100);
+        cUpd();
+        showToast(`Konversi: ${val} Sak = ${cExp} Kg`);
+      } catch (e) {}
+    }
+    function cKonversiKgKeSak() {
+      try {
+        const val = Number(Function('"use strict"; return (' + cExp + ')')() || 0);
+        cExp = String(Math.round((val / 50) * 100) / 100);
+        cUpd();
+        showToast(`Konversi: ${val} Kg = ${cExp} Sak`);
+      } catch (e) {}
+    }
+
+    /* ========================================================= */
+    /* 7. HELPER MODAL & FORMATTER                               */
+    /* ========================================================= */
     function openModal(id) {
       const el = document.getElementById(id);
       if (el) { el.classList.remove('hidden'); el.classList.add('flex'); }
