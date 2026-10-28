@@ -1153,12 +1153,10 @@
   <!-- SCRIPT UTAMA TERINTEGRASI GOOGLE SHEETS & NOTA LANDSCAPE  -->
   <!-- ========================================================= -->
   <script>
+    // PAKSA LANGSUNG MENGGUNAKAN LINK GOOGLE APPS SCRIPT AKTIF ANDA (ANTI TERTIMPA CACHE LAMA)
     const DEFAULT_GAS_URL = "https://script.google.com/macros/s/AKfycbzE4U0G1IX9a3ovI36jKzIjlbYmepEDINKm1Rp1CWxQZkkTCZS0fXlMPn0fMfQ71rGN/exec";
-    let SCRIPT_URL = localStorage.getItem('FEEDMILL_SCRIPT_URL') || DEFAULT_GAS_URL;
-    if (!SCRIPT_URL) {
-      SCRIPT_URL = DEFAULT_GAS_URL;
-      localStorage.setItem('FEEDMILL_SCRIPT_URL', SCRIPT_URL);
-    }
+    const SCRIPT_URL = DEFAULT_GAS_URL;
+    localStorage.setItem('FEEDMILL_SCRIPT_URL', SCRIPT_URL);
 
     // Daftar Akun Lengkap
     const ACCOUNTS_LIST = [
@@ -1437,6 +1435,30 @@
     }
 
     /* ========================================================= */
+    /* HELPER PENGIRIMAN POST KE GOOGLE APPS SCRIPT (PASTI MASUK)*/
+    /* ========================================================= */
+    async function postToGas(payloadObj) {
+      if (!SCRIPT_URL) return null;
+      try {
+        const response = await fetch(SCRIPT_URL, {
+          method: 'POST',
+          redirect: 'follow',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payloadObj)
+        });
+        const text = await response.text();
+        try {
+          return JSON.parse(text);
+        } catch (e) {
+          return { status: 'raw', text };
+        }
+      } catch (err) {
+        console.error("Gagal koneksi ke Google Sheets:", err);
+        return null;
+      }
+    }
+
+    /* ========================================================= */
     /* ABSENSI SHIFT & EXPORT CSV ABSENSI                        */
     /* ========================================================= */
     async function submitAbsensiShift(e) {
@@ -1456,6 +1478,7 @@
       const absenObj = {
         id: "ABS-" + Date.now(),
         waktu: liveTimeString,
+        waktuLive: liveTimeString,
         tanggal: new Date().toISOString().split('T')[0],
         namaAdmin,
         akun,
@@ -1465,28 +1488,14 @@
       logAbsensi.unshift(absenObj);
       localStorage.setItem('FEEDMILL_ABSENSI', JSON.stringify(logAbsensi));
 
-      if (SCRIPT_URL) {
-        try {
-          const res = await fetch(SCRIPT_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify({
-              action: "CATAT_ABSENSI",
-              waktuLive: liveTimeString,
-              waktu: liveTimeString,
-              tanggal: absenObj.tanggal,
-              namaAdmin,
-              akun,
-              shift,
-              status: statusAbsen
-            })
-          });
-          const data = await res.json();
-          if (data.status === 'success' && Array.isArray(data.absensi)) {
-            logAbsensi = data.absensi;
-            localStorage.setItem('FEEDMILL_ABSENSI', JSON.stringify(logAbsensi));
-          }
-        } catch(err) {}
+      const data = await postToGas({
+        action: "CATAT_ABSENSI",
+        ...absenObj
+      });
+
+      if (data && data.status === 'success' && Array.isArray(data.absensi) && data.absensi.length > 0) {
+        logAbsensi = data.absensi;
+        localStorage.setItem('FEEDMILL_ABSENSI', JSON.stringify(logAbsensi));
       }
 
       hideCenterLoading();
@@ -1809,24 +1818,18 @@
         fotoUrl: payload.fotoBase64 || ""
       };
 
-      let synced = false;
-      if (SCRIPT_URL) {
-        try {
-          const res = await fetch(SCRIPT_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify({ action: "SIMPAN_PRODUK", idProduk: newId, satuan, fotoUrl: payload.fotoBase64 || "", ...payload })
-          });
-          const data = await res.json();
-          if (data.status === 'success' && Array.isArray(data.produk)) {
-            listProduk = data.produk;
-            if (data.stok) masterStok = data.stok;
-            synced = true;
-          }
-        } catch(err) {}
-      }
+      const data = await postToGas({
+        action: "SIMPAN_PRODUK",
+        idProduk: newId,
+        satuan,
+        fotoUrl: payload.fotoBase64 || "",
+        ...payload
+      });
 
-      if (!synced) {
+      if (data && data.status === 'success' && Array.isArray(data.produk)) {
+        listProduk = data.produk;
+        if (Array.isArray(data.stok) && data.stok.length > 0) masterStok = data.stok;
+      } else {
         listProduk.push(newProdLocal);
       }
 
@@ -1846,23 +1849,10 @@
       if (!confirm("Hapus produk ini dari katalog?")) return;
       showCenterLoading("Menghapus Produk...");
 
-      let synced = false;
-      if (SCRIPT_URL) {
-        try {
-          const res = await fetch(SCRIPT_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify({ action: "HAPUS_PRODUK", idProduk })
-          });
-          const data = await res.json();
-          if (data.status === 'success' && Array.isArray(data.produk)) {
-            listProduk = data.produk;
-            synced = true;
-          }
-        } catch(err) {}
-      }
-
-      if (!synced) {
+      const data = await postToGas({ action: "HAPUS_PRODUK", idProduk });
+      if (data && data.status === 'success' && Array.isArray(data.produk)) {
+        listProduk = data.produk;
+      } else {
         listProduk = listProduk.filter(p => p.idProduk !== idProduk);
       }
 
@@ -1927,6 +1917,7 @@
         noInvoice: noInvLocal,
         tanggal: todayIso,
         timestamp: liveTimeString,
+        waktuLive: liveTimeString,
         idProduk,
         kodeBarang,
         namaProduk: prod.nama,
@@ -1943,51 +1934,23 @@
       };
 
       showCenterLoading("Membuat Invoice Penjualan...");
-
-      let synced = false;
       let createdInvNo = noInvLocal;
 
-      if (SCRIPT_URL) {
-        try {
-          const res = await fetch(SCRIPT_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify({
-              action: "BUAT_INVOICE",
-              waktuLive: liveTimeString,
-              noInvoice: noInvLocal,
-              tanggal: todayIso,
-              idProduk,
-              kodeBarang,
-              namaProduk: prod.nama,
-              kualitas: prod.kualitas,
-              harga: prod.harga,
-              satuan,
-              namaPembeli,
-              kontakPembeli,
-              jumlah,
-              total: totalHarga,
-              statusBayar,
-              catatan,
-              admin: adminBertugas
-            })
-          });
-          const data = await res.json();
-          if (data.status === 'success') {
-            if (Array.isArray(data.invoices) && data.invoices.length > 0) {
-              listInvoice = data.invoices;
-              createdInvNo = data.invoices[0].noInvoice || noInvLocal;
-            } else {
-              listInvoice.unshift(newInvObj);
-            }
-            if (Array.isArray(data.stok)) masterStok = data.stok;
-            if (Array.isArray(data.logs)) logTransaksi = data.logs;
-            synced = true;
-          }
-        } catch(err) {}
-      }
+      const data = await postToGas({
+        action: "BUAT_INVOICE",
+        ...newInvObj
+      });
 
-      if (!synced) {
+      if (data && data.status === 'success') {
+        if (Array.isArray(data.invoices) && data.invoices.length > 0) {
+          listInvoice = data.invoices;
+          createdInvNo = data.invoices[0].noInvoice || noInvLocal;
+        } else {
+          listInvoice.unshift(newInvObj);
+        }
+        if (Array.isArray(data.stok) && data.stok.length > 0) masterStok = data.stok;
+        if (Array.isArray(data.logs) && data.logs.length > 0) logTransaksi = data.logs;
+      } else {
         listInvoice.unshift(newInvObj);
       }
 
@@ -2089,24 +2052,16 @@
         localStorage.setItem('FEEDMILL_INVOICES', JSON.stringify(listInvoice));
       }
 
-      if (SCRIPT_URL) {
-        try {
-          const res = await fetch(SCRIPT_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify({
-              action: "UPDATE_STATUS_INVOICE",
-              noInvoice,
-              statusBayar: "LUNAS",
-              status: "LUNAS"
-            })
-          });
-          const data = await res.json();
-          if (data.status === 'success' && Array.isArray(data.invoices)) {
-            listInvoice = data.invoices;
-            localStorage.setItem('FEEDMILL_INVOICES', JSON.stringify(listInvoice));
-          }
-        } catch (err) {}
+      const data = await postToGas({
+        action: "UPDATE_STATUS_INVOICE",
+        noInvoice,
+        statusBayar: "LUNAS",
+        status: "LUNAS"
+      });
+
+      if (data && data.status === 'success' && Array.isArray(data.invoices) && data.invoices.length > 0) {
+        listInvoice = data.invoices;
+        localStorage.setItem('FEEDMILL_INVOICES', JSON.stringify(listInvoice));
       }
 
       hideCenterLoading();
@@ -2182,7 +2137,7 @@
         bannerTxt.innerHTML = "Mode <b>BARANG KELUAR</b> (- Mengurangi Stok Gudang)";
         btnSubmit.className = "w-full bg-rose-600 hover:bg-rose-700 text-white font-extrabold py-3 px-4 rounded-xl shadow-lg transition flex items-center justify-center space-x-2 text-sm";
         btnSubmitTxt.innerText = "Simpan Barang Keluar";
-        labelSopir.innerText = "Nama Sopir & Tujuan Pengiriman *";
+        labelSopir.innerText = "Nama Sopir & Penerima / Tujuan Pengiriman *";
       }
       updateInfoStokPilihan();
     }
@@ -2228,7 +2183,7 @@
       }
     }
 
-    // Mengirim action: "TRANSAKSI" dengan semua alias field agar 100% tersimpan ke Google Sheets (Kode.gs)
+    // Mengirim action: "SIMPAN_TRANSAKSI" sesuai blok doPost(e) di Kode.gs Anda
     async function submitTransaksi(e) {
       e.preventDefault();
       const jenis = document.getElementById('jenisTransaksi').value;
@@ -2290,30 +2245,22 @@
       localStorage.setItem('FEEDMILL_LOGS', JSON.stringify(logTransaksi));
 
       let targetCetakId = idLog;
-      if (SCRIPT_URL) {
-        try {
-          const res = await fetch(SCRIPT_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify({
-              action: "TRANSAKSI",
-              ...newLog
-            })
-          });
-          const data = await res.json();
-          if (data.status === 'success') {
-            if (Array.isArray(data.stok) && data.stok.length > 0) {
-              masterStok = data.stok;
-              localStorage.setItem('FEEDMILL_STOK', JSON.stringify(masterStok));
-            }
-            if (Array.isArray(data.logs) && data.logs.length > 0) {
-              logTransaksi = data.logs;
-              localStorage.setItem('FEEDMILL_LOGS', JSON.stringify(logTransaksi));
-              targetCetakId = logTransaksi[0].id || idLog;
-            }
-          }
-        } catch (err) {
-          console.warn("Disimpan secara lokal:", err);
+
+      // Kirim menggunakan action: "SIMPAN_TRANSAKSI" (sesuai Kode.gs SISAPI)
+      const data = await postToGas({
+        action: "SIMPAN_TRANSAKSI",
+        ...newLog
+      });
+
+      if (data && data.status === 'success') {
+        if (Array.isArray(data.stok) && data.stok.length > 0) {
+          masterStok = data.stok;
+          localStorage.setItem('FEEDMILL_STOK', JSON.stringify(masterStok));
+        }
+        if (Array.isArray(data.logs) && data.logs.length > 0) {
+          logTransaksi = data.logs;
+          localStorage.setItem('FEEDMILL_LOGS', JSON.stringify(logTransaksi));
+          targetCetakId = logTransaksi[0].id || idLog;
         }
       }
 
@@ -2321,7 +2268,7 @@
       document.getElementById('inputJumlah').value = '';
       document.getElementById('inputKeterangan').value = '';
       renderSemuaUI();
-      showToast(`Mutasi ${jenis} ${formatAngka(jumlah)} ${item.satuan} Tersimpan!`);
+      showToast(`Mutasi ${jenis} ${formatAngka(jumlah)} ${item.satuan} Tersimpan ke Sheets!`);
 
       if (autoPrint) {
         bukaModalCetakSJ(targetCetakId);
@@ -2378,28 +2325,20 @@
       localStorage.setItem('FEEDMILL_STOK', JSON.stringify(masterStok));
       localStorage.setItem('FEEDMILL_LOGS', JSON.stringify(logTransaksi));
 
-      if (SCRIPT_URL) {
-        try {
-          const res = await fetch(SCRIPT_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify({
-              action: "MANUAL_ADJUST",
-              ...newLog
-            })
-          });
-          const data = await res.json();
-          if (data.status === 'success') {
-            if (Array.isArray(data.stok)) {
-              masterStok = data.stok;
-              localStorage.setItem('FEEDMILL_STOK', JSON.stringify(masterStok));
-            }
-            if (Array.isArray(data.logs)) {
-              logTransaksi = data.logs;
-              localStorage.setItem('FEEDMILL_LOGS', JSON.stringify(logTransaksi));
-            }
-          }
-        } catch (err) {}
+      const data = await postToGas({
+        action: "MANUAL_ADJUST",
+        ...newLog
+      });
+
+      if (data && data.status === 'success') {
+        if (Array.isArray(data.stok) && data.stok.length > 0) {
+          masterStok = data.stok;
+          localStorage.setItem('FEEDMILL_STOK', JSON.stringify(masterStok));
+        }
+        if (Array.isArray(data.logs) && data.logs.length > 0) {
+          logTransaksi = data.logs;
+          localStorage.setItem('FEEDMILL_LOGS', JSON.stringify(logTransaksi));
+        }
       }
 
       hideCenterLoading();
@@ -2437,19 +2376,14 @@
       masterStok.push(newItem);
       localStorage.setItem('FEEDMILL_STOK', JSON.stringify(masterStok));
 
-      if (SCRIPT_URL) {
-        try {
-          const res = await fetch(SCRIPT_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify({ action: "TAMBAH_BARANG", ...newItem })
-          });
-          const data = await res.json();
-          if (data.status === 'success' && Array.isArray(data.stok)) {
-            masterStok = data.stok;
-            localStorage.setItem('FEEDMILL_STOK', JSON.stringify(masterStok));
-          }
-        } catch (err) {}
+      const data = await postToGas({
+        action: "TAMBAH_BARANG",
+        ...newItem
+      });
+
+      if (data && data.status === 'success' && Array.isArray(data.stok) && data.stok.length > 0) {
+        masterStok = data.stok;
+        localStorage.setItem('FEEDMILL_STOK', JSON.stringify(masterStok));
       }
 
       hideCenterLoading();
@@ -2520,7 +2454,6 @@
       return str.split('T')[0];
     }
 
-    // Helper kompatibilitas nama kolom dari Google Sheets maupun Lokal
     function getNoSJ(l) { return l.suratJalan || l.noSJ || '-'; }
     function getWaktu(l) { return l.waktu || l.timestamp || l.waktuLive || ''; }
     function getStokAkhir(l) { return l.stokAkhir !== undefined ? l.stokAkhir : (l.sisaStok !== undefined ? l.sisaStok : 0); }
@@ -2715,7 +2648,7 @@
     }
 
     /* ========================================================= */
-    /* 1. CETAK NOTA SURAT JALAN SATUAN                          */
+    /* 1. CETAK NOTA SURAT JALAN (KELUAR ADA TTD PENERIMA)       */
     /* ========================================================= */
     function bukaModalCetakSJ(idLog) {
       const l = logTransaksi.find(x => x.id === idLog);
@@ -2731,8 +2664,9 @@
       document.getElementById('btnModalExportCsv').classList.remove('flex');
 
       const isMasuk = l.jenis === 'MASUK';
+      const isKeluar = l.jenis === 'KELUAR';
       const warna = isMasuk ? '#059669' : '#e11d48';
-      const judul = isMasuk ? 'BUKTI BARANG MASUK (SURAT JALAN)' : 'BUKTI BARANG KELUAR (SURAT JALAN)';
+      const judul = isMasuk ? 'BUKTI BARANG MASUK (SURAT JALAN)' : 'SURAT JALAN BARANG KELUAR';
 
       const qrData = [
         "SISAPI - CV YUDISTIRA CATTLE AND FARM",
@@ -2745,16 +2679,48 @@
       ].join("\n");
       const qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=110x110&margin=2&data=" + encodeURIComponent(qrData);
 
+      // Jika Barang KELUAR, tampilkan 3 Kolom TTD: Penerima Barang, Sopir / Pengirim, Admin Gudang
+      const blokTandaTangan = isKeluar
+        ? `<div style="display: flex; gap: 16px; text-align: center; font-size: 10px;">
+             <div style="min-width: 105px;">
+               <div>Penerima Barang,</div>
+               <div style="height: 38px;"></div>
+               <div style="font-weight: 800; border-top: 1px solid #0f172a; padding-top: 2px;">( .................... )</div>
+             </div>
+             <div style="min-width: 105px;">
+               <div>Sopir / Pengirim,</div>
+               <div style="height: 38px;"></div>
+               <div style="font-weight: 800; border-top: 1px solid #0f172a; padding-top: 2px;">( ${l.sopir || '....................'} )</div>
+             </div>
+             <div style="min-width: 105px;">
+               <div>Admin Gudang,</div>
+               <div style="height: 38px;"></div>
+               <div style="font-weight: 800; border-top: 1px solid #0f172a; padding-top: 2px;">( ${l.admin || 'ADMIN'} )</div>
+             </div>
+           </div>`
+        : `<div style="display: flex; gap: 24px; text-align: center; font-size: 10px;">
+             <div style="min-width: 115px;">
+               <div>Sopir / Supplier,</div>
+               <div style="height: 38px;"></div>
+               <div style="font-weight: 800; border-top: 1px solid #0f172a; padding-top: 2px;">( ${l.sopir || '....................'} )</div>
+             </div>
+             <div style="min-width: 115px;">
+               <div>Admin Penerima,</div>
+               <div style="height: 38px;"></div>
+               <div style="font-weight: 800; border-top: 1px solid #0f172a; padding-top: 2px;">( ${l.admin || 'ADMIN'} )</div>
+             </div>
+           </div>`;
+
       document.getElementById('judulModalCetak').innerText = `Surat Jalan ${noSJ}`;
       document.getElementById('areaDokumenCetak').innerHTML = `
-        <div id="kartuDokumenTarget" style="width: 100%; max-width: 720px; margin: 0 auto; font-family: 'Inter', Arial, sans-serif; color: #0f172a; background: #ffffff; border: 2px solid #0f172a; padding: 22px; border-radius: 10px; box-sizing: border-box;">
+        <div id="kartuDokumenTarget" style="width: 100%; max-width: 760px; margin: 0 auto; font-family: 'Inter', Arial, sans-serif; color: #0f172a; background: #ffffff; border: 2px solid #0f172a; padding: 22px; border-radius: 10px; box-sizing: border-box;">
           <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 3px double #0f172a; padding-bottom: 12px; margin-bottom: 14px;">
             <div style="display: flex; align-items: center; gap: 12px;">
               <img src="icon.png" alt="Logo" style="width: 48px; height: 48px; object-fit: contain;" onerror="this.style.display='none'">
               <div>
                 <div style="font-size: 15px; font-weight: 800; color: #0f172a;">SISAPI — SISTEM MANAJEMEN GUDANG</div>
                 <div style="font-size: 12px; font-weight: 800; color: #059669;">CV YUDISTIRA CATTLE AND FARM</div>
-                <div style="font-size: 9.5px; color: #64748b;">Dokumen Resmi Mutasi Pergudangan</div>
+                <div style="font-size: 9.5px; color: #64748b;">Dokumen Resmi Surat Jalan & Mutasi Pergudangan</div>
               </div>
             </div>
             <div style="text-align: right;">
@@ -2771,7 +2737,7 @@
               <td style="padding: 4px 0; font-weight: 700;">: ${l.armada || '-'} (${l.nopol || '-'})</td>
             </tr>
             <tr>
-              <td style="padding: 4px 0; color: #475569;"><b>Sopir / Relasi</b></td>
+              <td style="padding: 4px 0; color: #475569;"><b>${isKeluar ? 'Sopir & Tujuan' : 'Sopir & Supplier'}</b></td>
               <td style="padding: 4px 0; font-weight: 700;">: ${l.sopir || '-'}</td>
               <td style="padding: 4px 0; color: #475569;"><b>Admin Bertugas</b></td>
               <td style="padding: 4px 0; font-weight: 700;">: ${l.admin || 'ADMIN'}</td>
@@ -2809,18 +2775,7 @@
                 <div style="font-size: 8px; color: #64748b;">Verifikasi Surat Jalan SISAPI</div>
               </div>
             </div>
-            <div style="display: flex; gap: 24px; text-align: center; font-size: 10px;">
-              <div style="min-width: 110px;">
-                <div>Sopir / Pengirim,</div>
-                <div style="height: 36px;"></div>
-                <div style="font-weight: 800; border-top: 1px solid #0f172a; padding-top: 2px;">( ${l.sopir || '....................'} )</div>
-              </div>
-              <div style="min-width: 110px;">
-                <div>Admin Gudang,</div>
-                <div style="height: 36px;"></div>
-                <div style="font-weight: 800; border-top: 1px solid #0f172a; padding-top: 2px;">( ${l.admin || 'ADMIN'} )</div>
-              </div>
-            </div>
+            ${blokTandaTangan}
           </div>
         </div>
       `;
@@ -2922,10 +2877,17 @@
                 <div style="font-size: 8px; color: #64748b;">Bukti Invoice Resmi SISAPI</div>
               </div>
             </div>
-            <div style="text-align: center; font-size: 10px; min-width: 130px;">
-              <div>Hormat Kami,</div>
-              <div style="height: 36px;"></div>
-              <div style="font-weight: 800; border-top: 1px solid #0f172a; padding-top: 2px;">( ${inv.admin || 'ADMIN'} )</div>
+            <div style="display: flex; gap: 20px; text-align: center; font-size: 10px;">
+              <div style="min-width: 115px;">
+                <div>Penerima / Pembeli,</div>
+                <div style="height: 36px;"></div>
+                <div style="font-weight: 800; border-top: 1px solid #0f172a; padding-top: 2px;">( ${inv.namaPembeli || '....................'} )</div>
+              </div>
+              <div style="min-width: 115px;">
+                <div>Hormat Kami,</div>
+                <div style="height: 36px;"></div>
+                <div style="font-weight: 800; border-top: 1px solid #0f172a; padding-top: 2px;">( ${inv.admin || 'ADMIN'} )</div>
+              </div>
             </div>
           </div>
         </div>
@@ -3267,7 +3229,7 @@
     }
 
     /* ========================================================= */
-    /* 5. SINKRONISASI CLOUD GOOGLE SHEETS                       */
+    /* 5. SINKRONISASI CLOUD GOOGLE SHEETS (AMAN ANTI-RESET)     */
     /* ========================================================= */
     async function syncData(silent = false) {
       if (!SCRIPT_URL) return;
@@ -3276,18 +3238,19 @@
       if (!silent) showCenterLoading("Sinkronisasi Database...");
 
       try {
-        const res = await fetch(SCRIPT_URL);
+        const res = await fetch(SCRIPT_URL + "?t=" + Date.now(), { redirect: 'follow' });
         const data = await res.json();
-        if (data.status === 'success') {
+        if (data && data.status === 'success') {
           if (Array.isArray(data.stok) && data.stok.length > 0) {
             masterStok = data.stok;
             localStorage.setItem('FEEDMILL_STOK', JSON.stringify(masterStok));
           }
-          if (Array.isArray(data.logs)) {
+          // Hanya perbarui jika array valid (mencegah data lokal hilang jika sheet kosong/error)
+          if (Array.isArray(data.logs) && (data.logs.length > 0 || logTransaksi.length === 0)) {
             logTransaksi = data.logs;
             localStorage.setItem('FEEDMILL_LOGS', JSON.stringify(logTransaksi));
           }
-          if (Array.isArray(data.absensi)) {
+          if (Array.isArray(data.absensi) && (data.absensi.length > 0 || logAbsensi.length === 0)) {
             logAbsensi = data.absensi;
             localStorage.setItem('FEEDMILL_ABSENSI', JSON.stringify(logAbsensi));
           }
@@ -3295,7 +3258,7 @@
             listProduk = data.produk;
             localStorage.setItem('FEEDMILL_PRODUK', JSON.stringify(listProduk));
           }
-          if (Array.isArray(data.invoices)) {
+          if (Array.isArray(data.invoices) && (data.invoices.length > 0 || listInvoice.length === 0)) {
             listInvoice = data.invoices;
             localStorage.setItem('FEEDMILL_INVOICES', JSON.stringify(listInvoice));
           }
