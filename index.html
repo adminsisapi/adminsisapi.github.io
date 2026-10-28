@@ -16,7 +16,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
     html, body {
       max-width: 100%;
@@ -268,10 +267,6 @@
             <span class="hidden sm:inline">Aplikasi</span>
           </button>
 
-          <button onclick="openModal('modalPilihLaporan')" class="bg-slate-800 hover:bg-slate-700 text-blue-400 border border-slate-700 w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl text-xs transition flex items-center justify-center" title="Cetak & Unduh Laporan">
-            <i class="fa-solid fa-print text-[11px]"></i>
-          </button>
-
           <button onclick="toggleDarkMode()" class="bg-slate-800 hover:bg-slate-700 text-amber-400 border border-slate-700 w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl text-xs transition flex items-center justify-center" title="Mode Terang / Gelap">
             <i id="themeIcon" class="fa-solid fa-sun text-[11px]"></i>
           </button>
@@ -341,27 +336,16 @@
           <p class="text-xs text-slate-300">SISAPI — CV YUDISTIRA CATTLE AND FARM</p>
         </div>
 
-        <!-- KOTAK ADMIN SHIFT + TOMBOL INTEGRASI SIMKEU DI BAWAHNYA (SEUKURAN) -->
-        <div class="flex flex-col space-y-2 sm:min-w-[215px]">
-          <div class="bg-slate-950/60 border border-slate-700 rounded-xl p-3 flex flex-col justify-between">
-            <div class="flex items-center justify-between text-[11px] text-slate-400 mb-1">
-              <span>Admin Shift:</span>
-              <button onclick="openModal('modalAbsensi')" class="text-amber-400 hover:underline font-bold">Absensi</button>
-            </div>
-            <div class="text-sm font-extrabold text-white flex items-center space-x-2">
-              <i class="fa-solid fa-user-shield text-emerald-400"></i>
-              <span id="cardShiftAdmin">ADMIN</span>
-            </div>
-            <div id="cardShiftWaktu" class="text-[10px] text-slate-400 mt-0.5">Pagi</div>
+        <div class="bg-slate-950/60 border border-slate-700 rounded-xl p-3 sm:min-w-[200px] flex flex-col justify-between">
+          <div class="flex items-center justify-between text-[11px] text-slate-400 mb-1">
+            <span>Admin Shift:</span>
+            <button onclick="openModal('modalAbsensi')" class="text-amber-400 hover:underline font-bold">Absensi</button>
           </div>
-
-          <a href="https://adminsisapi.github.io/simkeu/" target="_blank" class="w-full bg-slate-950/75 hover:bg-emerald-600 border border-emerald-500/40 text-emerald-300 hover:text-white py-2 px-3 rounded-xl text-xs font-extrabold transition flex items-center justify-between shadow-sm">
-            <span class="flex items-center space-x-2">
-              <i class="fa-solid fa-wallet text-emerald-400"></i>
-              <span>Buka Simkeu (Kas)</span>
-            </span>
-            <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-80"></i>
-          </a>
+          <div class="text-sm font-extrabold text-white flex items-center space-x-2">
+            <i class="fa-solid fa-user-shield text-emerald-400"></i>
+            <span id="cardShiftAdmin">ADMIN</span>
+          </div>
+          <div id="cardShiftWaktu" class="text-[10px] text-slate-400 mt-0.5">Pagi</div>
         </div>
       </div>
 
@@ -385,8 +369,8 @@
         </div>
       </div>
 
-      <!-- KOTAK MENU UTAMA (6 MENU TERMASUK CETAK & UNDUH LAPORAN LANDSCAPE) -->
-      <div class="grid grid-cols-2 lg:grid-cols-6 gap-2.5 sm:gap-3">
+      <!-- KOTAK MENU UTAMA (5 MENU) -->
+      <div class="grid grid-cols-2 lg:grid-cols-5 gap-2.5 sm:gap-3">
         <div onclick="navigatePage('PRODUK')" class="bg-white hover:border-emerald-500 border-2 border-slate-200 rounded-2xl p-3.5 sm:p-4 shadow-sm transition cursor-pointer flex flex-col justify-between group">
           <div>
             <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-sm sm:text-base shadow group-hover:scale-105 transition"><i class="fa-solid fa-tags"></i></div>
@@ -423,7 +407,7 @@
           <div class="mt-2.5 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-indigo-600"><span>Buka</span><i class="fa-solid fa-arrow-right"></i></div>
         </div>
 
-        <div id="cardMenuManual" onclick="bukaHalamanTransaksi('MANUAL')" class="bg-white hover:border-amber-500 border-2 border-slate-200 rounded-2xl p-3.5 sm:p-4 shadow-sm transition cursor-pointer flex flex-col justify-between group">
+        <div id="cardMenuManual" onclick="bukaHalamanTransaksi('MANUAL')" class="col-span-2 lg:col-span-1 bg-white hover:border-amber-500 border-2 border-slate-200 rounded-2xl p-3.5 sm:p-4 shadow-sm transition cursor-pointer flex flex-col justify-between group">
           <div>
             <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center text-sm sm:text-base shadow group-hover:scale-105 transition"><i class="fa-solid fa-sliders"></i></div>
             <h4 class="text-xs sm:text-sm font-extrabold text-slate-800 mt-2.5">Kontrol Manual</h4>
@@ -431,21 +415,9 @@
           </div>
           <div class="mt-2.5 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-amber-600"><span>Buka</span><i class="fa-solid fa-arrow-right"></i></div>
         </div>
-
-        <div onclick="openModal('modalPilihLaporan')" class="bg-white hover:border-rose-500 border-2 border-slate-200 rounded-2xl p-3.5 sm:p-4 shadow-sm transition cursor-pointer flex flex-col justify-between group">
-          <div>
-            <div class="flex items-center justify-between">
-              <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-rose-600 text-white flex items-center justify-center text-sm sm:text-base shadow group-hover:scale-105 transition"><i class="fa-solid fa-print"></i></div>
-              <span class="text-[9px] font-extrabold bg-rose-100 text-rose-800 px-2 py-0.5 rounded-full">LANDSCAPE</span>
-            </div>
-            <h4 class="text-xs sm:text-sm font-extrabold text-slate-800 mt-2.5">Cetak & Unduh</h4>
-            <p class="text-[10px] sm:text-[11px] text-slate-500 mt-0.5">Nota Laporan & CSV</p>
-          </div>
-          <div class="mt-2.5 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-rose-600"><span>Pilih</span><i class="fa-solid fa-arrow-right"></i></div>
-        </div>
       </div>
 
-      <!-- TABEL LOG ABSENSI ADMIN GUDANG -->
+      <!-- TABEL LOG ABSENSI ADMIN GUDANG (LENGKAP DENGAN FILTER & UNDUH) -->
       <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden p-4 space-y-3">
         <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-2.5">
           <div class="flex flex-wrap items-center gap-2">
@@ -505,6 +477,7 @@
         </div>
       </div>
 
+      <!-- Ringkasan Cepat Invoice -->
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
         <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
           <div>
@@ -529,6 +502,7 @@
         </div>
       </div>
 
+      <!-- Sub-Tab Katalog vs Riwayat Invoice -->
       <div class="bg-white p-2 rounded-2xl shadow-sm border border-slate-200 flex space-x-2">
         <button type="button" onclick="switchProdukTab('KATALOG')" id="btnTabKatalog" class="flex-1 py-2.5 rounded-xl text-xs font-extrabold bg-emerald-600 text-white shadow transition flex items-center justify-center space-x-1.5">
           <i class="fa-solid fa-store"></i><span>Katalog Produk</span>
@@ -538,8 +512,10 @@
         </button>
       </div>
 
+      <!-- KONTEN TAB 1: KATALOG PRODUK -->
       <div id="tabContentKatalog" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
 
+      <!-- KONTEN TAB 2: RIWAYAT TAGIHAN & INVOICE -->
       <div id="tabContentInvoice" class="hidden bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden p-4 space-y-3">
         <div class="flex flex-wrap justify-between items-center gap-2 border-b border-slate-100 pb-3">
           <div>
@@ -762,14 +738,11 @@
     <section id="pageRiwayat" class="hidden space-y-4">
       <div class="flex flex-wrap items-center justify-between gap-2">
         <h2 class="text-base sm:text-lg font-extrabold text-slate-800">Riwayat & Laporan Mutasi</h2>
-        <div class="flex flex-wrap items-center gap-1.5">
+        <div class="flex items-center space-x-1.5">
           <button onclick="syncData()" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-xl text-xs font-bold shadow transition flex items-center space-x-1">
             <i class="fa-solid fa-rotate"></i><span>Refresh</span>
           </button>
-          <button onclick="bukaModalCetakLaporan(modeLaporanAktif, false)" class="bg-rose-600 hover:bg-rose-700 text-white px-3 py-1.5 rounded-xl text-xs font-extrabold shadow transition flex items-center space-x-1">
-            <i class="fa-solid fa-print"></i><span id="btnQuickPrintText">Cetak Nota Laporan (Harian)</span>
-          </button>
-          <button onclick="exportCSV(modeLaporanAktif)" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-xl text-xs font-bold shadow transition flex items-center space-x-1">
+          <button onclick="exportCSV()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-xl text-xs font-bold shadow transition flex items-center space-x-1">
             <i class="fa-solid fa-file-excel"></i><span>CSV</span>
           </button>
           <button onclick="navigatePage('BERANDA')" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-3 py-1.5 rounded-xl text-xs font-bold transition">
@@ -778,14 +751,13 @@
         </div>
       </div>
 
-      <!-- 4 TOMBOL FILTER LAPORAN -->
+      <!-- 3 TOMBOL FILTER LAPORAN -->
       <div class="bg-white p-3.5 rounded-2xl shadow-sm border border-slate-200 space-y-3">
         <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-2.5">
-          <div class="flex flex-wrap gap-1.5">
+          <div class="flex space-x-1.5">
             <button type="button" onclick="setModeLaporan('HARIAN')" id="btnLapHarian" class="sub-tab-active px-3 py-1.5 rounded-xl text-xs font-extrabold bg-slate-100 text-slate-700 border border-slate-300 transition">Harian</button>
             <button type="button" onclick="setModeLaporan('MINGGUAN')" id="btnLapMingguan" class="px-3 py-1.5 rounded-xl text-xs font-extrabold bg-slate-100 text-slate-700 border border-slate-300 transition">Mingguan</button>
             <button type="button" onclick="setModeLaporan('BULANAN')" id="btnLapBulanan" class="px-3 py-1.5 rounded-xl text-xs font-extrabold bg-slate-100 text-slate-700 border border-slate-300 transition">Bulanan</button>
-            <button type="button" onclick="setModeLaporan('SEMUA')" id="btnLapSemua" class="px-3 py-1.5 rounded-xl text-xs font-extrabold bg-slate-100 text-slate-700 border border-slate-300 transition">Semua Data</button>
           </div>
           <div class="text-[11px] font-bold text-slate-500" id="infoModeLaporan">Mode: <span class="text-emerald-600">Harian</span></div>
         </div>
@@ -824,11 +796,6 @@
                 <option value="2026" selected>2026</option><option value="2027">2027</option>
               </select>
             </div>
-          </div>
-
-          <div id="filterBoxSemua" class="hidden col-span-2 sm:col-span-1">
-            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Rentang</label>
-            <div class="px-2.5 py-1.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-bold text-slate-600">Semua Riwayat</div>
           </div>
 
           <div>
@@ -877,101 +844,10 @@
   </main>
 
   <!-- ========================================================= -->
-  <!-- MODAL PILIHAN CETAK LAPORAN NOTA LANDSCAPE & CSV          -->
-  <!-- ========================================================= -->
-  <div id="modalPilihLaporan" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-slate-200 overflow-hidden">
-      <div class="bg-slate-900 text-white px-4 py-3.5 flex items-center justify-between">
-        <div class="flex items-center space-x-2">
-          <i class="fa-solid fa-print text-emerald-400 text-base"></i>
-          <h3 class="font-bold text-xs sm:text-sm">Cetak Laporan (Nota Landscape) & CSV</h3>
-        </div>
-        <button type="button" onclick="closeModal('modalPilihLaporan')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-
-      <div class="p-4 space-y-3">
-        <p class="text-xs text-slate-500">Pilih periode laporan mutasi Gudang SISAPI. Klik <b>Print</b> untuk mencetak laporan model nota/invoice <b>Landscape</b> yang otomatis memanjang ke bawah, atau klik <b>CSV</b>:</p>
-
-        <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl flex items-center justify-between gap-2">
-          <div class="flex items-center space-x-2.5">
-            <span class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs"><i class="fa-solid fa-calendar-day"></i></span>
-            <div>
-              <div class="text-xs font-extrabold text-slate-800">Laporan Harian</div>
-              <div class="text-[10px] text-slate-500">Sesuai filter tanggal harian</div>
-            </div>
-          </div>
-          <div class="flex space-x-1.5">
-            <button type="button" onclick="closeModal('modalPilihLaporan'); bukaModalCetakLaporan('HARIAN', true);" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1.5 rounded-lg text-[11px] font-extrabold shadow flex items-center space-x-1">
-              <i class="fa-solid fa-print"></i><span>Print</span>
-            </button>
-            <button type="button" onclick="closeModal('modalPilihLaporan'); exportCSV('HARIAN');" class="bg-blue-600 hover:bg-blue-700 text-white px-2.5 py-1.5 rounded-lg text-[11px] font-extrabold shadow flex items-center space-x-1">
-              <i class="fa-solid fa-file-csv"></i><span>CSV</span>
-            </button>
-          </div>
-        </div>
-
-        <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl flex items-center justify-between gap-2">
-          <div class="flex items-center space-x-2.5">
-            <span class="w-8 h-8 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-xs"><i class="fa-solid fa-calendar-week"></i></span>
-            <div>
-              <div class="text-xs font-extrabold text-slate-800">Laporan Mingguan</div>
-              <div class="text-[10px] text-slate-500">Mutasi 7 hari terakhir</div>
-            </div>
-          </div>
-          <div class="flex space-x-1.5">
-            <button type="button" onclick="closeModal('modalPilihLaporan'); bukaModalCetakLaporan('MINGGUAN', true);" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1.5 rounded-lg text-[11px] font-extrabold shadow flex items-center space-x-1">
-              <i class="fa-solid fa-print"></i><span>Print</span>
-            </button>
-            <button type="button" onclick="closeModal('modalPilihLaporan'); exportCSV('MINGGUAN');" class="bg-blue-600 hover:bg-blue-700 text-white px-2.5 py-1.5 rounded-lg text-[11px] font-extrabold shadow flex items-center space-x-1">
-              <i class="fa-solid fa-file-csv"></i><span>CSV</span>
-            </button>
-          </div>
-        </div>
-
-        <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl flex items-center justify-between gap-2">
-          <div class="flex items-center space-x-2.5">
-            <span class="w-8 h-8 rounded-lg bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-xs"><i class="fa-solid fa-calendar-days"></i></span>
-            <div>
-              <div class="text-xs font-extrabold text-slate-800">Laporan Bulanan</div>
-              <div class="text-[10px] text-slate-500">Sesuai bulan & tahun terpilih</div>
-            </div>
-          </div>
-          <div class="flex space-x-1.5">
-            <button type="button" onclick="closeModal('modalPilihLaporan'); bukaModalCetakLaporan('BULANAN', true);" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1.5 rounded-lg text-[11px] font-extrabold shadow flex items-center space-x-1">
-              <i class="fa-solid fa-print"></i><span>Print</span>
-            </button>
-            <button type="button" onclick="closeModal('modalPilihLaporan'); exportCSV('BULANAN');" class="bg-blue-600 hover:bg-blue-700 text-white px-2.5 py-1.5 rounded-lg text-[11px] font-extrabold shadow flex items-center space-x-1">
-              <i class="fa-solid fa-file-csv"></i><span>CSV</span>
-            </button>
-          </div>
-        </div>
-
-        <div class="bg-slate-900 text-white p-3 rounded-xl flex items-center justify-between gap-2">
-          <div class="flex items-center space-x-2.5">
-            <span class="w-8 h-8 rounded-lg bg-amber-500 text-slate-950 flex items-center justify-center font-bold text-xs"><i class="fa-solid fa-database"></i></span>
-            <div>
-              <div class="text-xs font-extrabold">Semua Riwayat Gudang</div>
-              <div class="text-[10px] text-slate-300">Rekap seluruh mutasi keluar masuk</div>
-            </div>
-          </div>
-          <div class="flex space-x-1.5">
-            <button type="button" onclick="closeModal('modalPilihLaporan'); bukaModalCetakLaporan('SEMUA', true);" class="bg-amber-500 hover:bg-amber-400 text-slate-950 px-2.5 py-1.5 rounded-lg text-[11px] font-extrabold shadow flex items-center space-x-1">
-              <i class="fa-solid fa-print"></i><span>Print</span>
-            </button>
-            <button type="button" onclick="closeModal('modalPilihLaporan'); exportCSV('SEMUA');" class="bg-blue-600 hover:bg-blue-500 text-white px-2.5 py-1.5 rounded-lg text-[11px] font-extrabold shadow flex items-center space-x-1">
-              <i class="fa-solid fa-file-csv"></i><span>CSV</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ========================================================= -->
-  <!-- MODAL PRATINJAU & CETAK SURAT JALAN, INVOICE & LAPORAN    -->
+  <!-- MODAL PRATINJAU & CETAK SURAT JALAN & INVOICE (A4 RAPI)   -->
   <!-- ========================================================= -->
   <div id="modalPreviewCetak" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm hidden items-center justify-center z-50 p-3 sm:p-4 overflow-y-auto">
-    <div class="bg-white rounded-2xl max-w-6xl w-full shadow-2xl border border-slate-200 overflow-hidden my-auto">
+    <div class="bg-white rounded-2xl max-w-3xl w-full shadow-2xl border border-slate-200 overflow-hidden my-auto">
       <div class="bg-slate-900 text-white px-4 py-3 flex justify-between items-center">
         <div class="flex items-center space-x-2">
           <i class="fa-solid fa-print text-emerald-400"></i>
@@ -980,20 +856,14 @@
         <button onclick="closeModal('modalPreviewCetak')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
 
-      <div class="p-3 sm:p-6 bg-slate-100 max-h-[75vh] overflow-y-auto overflow-x-auto custom-scrollbar">
+      <div class="p-3 sm:p-6 bg-slate-100 overflow-x-auto">
         <div id="areaDokumenCetak" class="bg-white text-slate-900 mx-auto"></div>
       </div>
 
-      <div class="bg-slate-50 px-4 py-3 border-t border-slate-200 flex flex-wrap justify-between items-center gap-2">
-        <span class="text-[11px] text-slate-500">Dilengkapi Barcode & QR Data Otomatis</span>
-        <div class="flex flex-wrap items-center gap-2">
+      <div class="bg-slate-50 px-4 py-3 border-t border-slate-200 flex justify-between items-center">
+        <span class="text-[11px] text-slate-500">Dilengkapi Barcode & QR Data Otomatis (Proporsi A4)</span>
+        <div class="flex space-x-2">
           <button onclick="closeModal('modalPreviewCetak')" class="px-3.5 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold">Tutup</button>
-          <button type="button" id="btnModalExportCsv" onclick="exportCSV(modeLaporanAktif)" class="hidden px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-extrabold shadow items-center space-x-1.5">
-            <i class="fa-solid fa-file-csv"></i><span>Unduh CSV</span>
-          </button>
-          <button type="button" onclick="unduhDokumenPNG()" class="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-extrabold shadow flex items-center space-x-1.5">
-            <i class="fa-solid fa-image"></i><span>Unduh PNG</span>
-          </button>
           <button onclick="eksekusiPrintWindow()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold shadow flex items-center space-x-1.5">
             <i class="fa-solid fa-print"></i><span>Cetak / PDF</span>
           </button>
@@ -1108,17 +978,16 @@
     </div>
   </div>
   <!-- ========================================================= -->
-  <!-- SCRIPT UTAMA & KALKULATOR (100% PONDASI ASLI + LAPORAN)   -->
+  <!-- SCRIPT UTAMA TERINTEGRASI (PULIH 100% + INVOICE SEMPURNA) -->
   <!-- ========================================================= -->
   <script>
     const DEFAULT_GAS_URL = "https://script.google.com/macros/s/AKfycbzE4U0G1IX9a3ovI36jKzIjlbYmepEDINKm1Rp1CWxQZkkTCZS0fXlMPn0fMfQ71rGN/exec";
     let SCRIPT_URL = localStorage.getItem('FEEDMILL_SCRIPT_URL') || DEFAULT_GAS_URL;
 
-    // Daftar Akun Lengkap
+    // Daftar Akun Lengkap (Sufyan, Hasfhi, Pusat, Viewer)
     const ACCOUNTS_LIST = [
       { user: "admin",       pass: "Sufyan",       role: "ADMIN",  defaultWorker: "SUFYAN" },
       { user: "admin",       pass: "AdminSufyan",  role: "ADMIN",  defaultWorker: "SUFYAN" },
-      { user: "admin",       pass: "adminss",      role: "ADMIN",  defaultWorker: "ADMIN" },
       { user: "admin",       pass: "Hasfhi",       role: "ADMIN",  defaultWorker: "HASFHI" },
       { user: "adminsecond", pass: "Hasfhi",       role: "ADMIN",  defaultWorker: "HASFHI" },
       { user: "adminsecond", pass: "Adminsecond",  role: "ADMIN",  defaultWorker: "HASFHI" },
@@ -1153,7 +1022,6 @@
     let modeLaporanAktif = 'HARIAN';
     let modeAbsensiAktif = 'HARIAN';
     let dataCetakAktif = null;
-    let tipeDokumenCetak = 'SURAT_JALAN';
     let liveTimeString = "";
     let deferredPrompt = null;
 
@@ -1253,10 +1121,7 @@
 
     function setDefaultTanggalForm() {
       const now = new Date();
-      const yyyy = now.getFullYear();
-      const mm = String(now.getMonth() + 1).padStart(2, '0');
-      const dd = String(now.getDate()).padStart(2, '0');
-      const todayIso = `${yyyy}-${mm}-${dd}`;
+      const todayIso = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
       if (document.getElementById('inputTanggal')) document.getElementById('inputTanggal').value = todayIso;
       if (document.getElementById('filterTanggal')) document.getElementById('filterTanggal').value = todayIso;
     }
@@ -1326,19 +1191,16 @@
       if (confirm("Keluar dari sesi SISAPI?")) {
         localStorage.removeItem('FEEDMILL_SESSION');
         currentSession = null;
-        checkAuthSession();
+        document.getElementById('loginScreen').classList.remove('hidden');
       }
     }
 
     function checkAuthSession() {
-      const calcWrapper = document.getElementById('floatingCalcWrapper');
       if (!currentSession) {
         document.getElementById('loginScreen').classList.remove('hidden');
-        if (calcWrapper) calcWrapper.classList.add('hidden');
         return;
       }
       document.getElementById('loginScreen').classList.add('hidden');
-      if (calcWrapper) calcWrapper.classList.remove('hidden');
 
       const isViewer = currentSession.role === 'VIEWER';
       const roleBadge = document.getElementById('roleBadge');
@@ -1409,13 +1271,23 @@
       });
       localStorage.setItem('FEEDMILL_ABSENSI', JSON.stringify(logAbsensi));
 
-      await eksekusiPerubahanData({ action: "CATAT_ABSENSI", waktuLive: liveTimeString, namaAdmin, akun, shift, status: statusAbsen }, () => {});
+      if (SCRIPT_URL) {
+        try {
+          await fetch(SCRIPT_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({ action: "CATAT_ABSENSI", waktuLive: liveTimeString, namaAdmin, akun, shift, status: statusAbsen })
+          });
+        } catch(err) {}
+      }
 
-      hideCenterLoading();
-      updateShiftUI();
-      renderTabelAbsensi();
-      closeModal('modalAbsensi');
-      showToast(`Absen ${statusAbsen} Berhasil: ${namaAdmin}`);
+      setTimeout(() => {
+        hideCenterLoading();
+        updateShiftUI();
+        renderTabelAbsensi();
+        closeModal('modalAbsensi');
+        showToast(`Absen ${statusAbsen} Berhasil: ${namaAdmin}`);
+      }, 350);
     }
 
     function updateShiftUI() {
@@ -1553,11 +1425,16 @@
       }
     }
 
+        /* ========================================================= */
+    /* PERBAIKAN FITUR FOTO PRODUK (AUTO-KOMPRES & DRIVE LINK)   */
     /* ========================================================= */
-    /* FITUR FOTO PRODUK & KATALOG                               */
-    /* ========================================================= */
+
+    // 1. Helper Konversi Link Google Drive / Base64 agar pasti tampil di <img>
     function resolveProductImage(p) {
+      // Cek semua kemungkinan nama kolom dari Google Sheets (.gs)
       let raw = p.fotoUrl || p.foto || p.fotoBase64 || p.gambar || p.image || "";
+      
+      // Jika dari server kosong, cek cadangan foto di memori lokal berdasarkan kodeBarang / nama
       if (!raw) {
         const localCache = JSON.parse(localStorage.getItem('SISAPI_FOTO_CACHE') || '{}');
         raw = localCache[p.idProduk] || localCache[p.kodeBarang] || localCache[p.nama] || "";
@@ -1565,17 +1442,24 @@
       if (!raw) return "";
 
       raw = String(raw).trim();
+
+      // Jika berupa Link Google Drive, ubah ke format Thumbnail Direct Image agar tidak diblokir browser
       if (raw.includes("drive.google.com")) {
         let fileId = "";
         const match1 = raw.match(/\/d\/([a-zA-Z0-9_-]+)/);
         const match2 = raw.match(/[?&]id=([a-zA-Z0-9_-]+)/);
         if (match1 && match1[1]) fileId = match1[1];
         else if (match2 && match2[1]) fileId = match2[1];
-        if (fileId) return `https://drive.google.com/thumbnail?id=${fileId}&sz=w800`;
+
+        if (fileId) {
+          return `https://drive.google.com/thumbnail?id=${fileId}&sz=w800`;
+        }
       }
+
       return raw;
     }
 
+    // 2. Helper Auto-Kompres Foto (Agar muat di 1 sel Google Sheets < 40.000 karakter & cepat diupload)
     function compressImageFile(file, maxWidth = 480, quality = 0.65) {
       return new Promise((resolve) => {
         const reader = new FileReader();
@@ -1585,15 +1469,20 @@
             const canvas = document.createElement('canvas');
             let width = img.width;
             let height = img.height;
+
             if (width > maxWidth) {
               height = Math.round((height * maxWidth) / width);
               width = maxWidth;
             }
             canvas.width = width;
             canvas.height = height;
+
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, width, height);
+
+            // Hasilkan JPEG terkompresi ringan
             let compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
+            // Jika masih di atas 45.000 karakter, turunkan sedikit kualitasnya agar aman masuk Google Sheets
             if (compressedDataUrl.length > 45000) {
               compressedDataUrl = canvas.toDataURL('image/jpeg', 0.45);
             }
@@ -1711,6 +1600,7 @@
       const satuan = stokRef ? stokRef.satuan : "Sak";
       const newId = "PRD-" + Date.now();
 
+      // Simpan foto ke Cache Lokal terlebih dahulu agar dijamin 100% langsung muncul
       if (payload.fotoBase64) {
         try {
           const localCache = JSON.parse(localStorage.getItem('SISAPI_FOTO_CACHE') || '{}');
@@ -1737,7 +1627,13 @@
           const res = await fetch(SCRIPT_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify({ action: "SIMPAN_PRODUK", idProduk: newId, satuan, fotoUrl: payload.fotoBase64 || "", ...payload })
+            body: JSON.stringify({
+              action: "SIMPAN_PRODUK",
+              idProduk: newId,
+              satuan,
+              fotoUrl: payload.fotoBase64 || "",
+              ...payload
+            })
           });
           const data = await res.json();
           if (data.status === 'success' && Array.isArray(data.produk)) {
@@ -1824,7 +1720,7 @@
       }
     }
 
-    async function submitFormInvoice(e) {
+          async function submitFormInvoice(e) {
       e.preventDefault();
       const idProduk = document.getElementById('invIdProduk').value;
       const prod = listProduk.find(p => p.idProduk === idProduk);
@@ -1902,6 +1798,7 @@
             } else {
               listInvoice.unshift(newInvObj);
             }
+            // Catatan: data.stok dan data.logs dari server diabaikan agar stok tidak terpotong otomatis di sini
             synced = true;
           }
         } catch(err) {}
@@ -1917,7 +1814,7 @@
       closeModal('modalFormInvoice');
       renderSemuaUI();
       switchProdukTab('INVOICE');
-      showToast(`Invoice ${createdInvNo} Berhasil Dibuat!`);
+      showToast(`Invoice ${createdInvNo} Berhasil Dibuat (Stok aman, menunggu Surat Jalan)!`);
 
       if (isAutoPrint) {
         bukaModalCetakInvoice(createdInvNo);
@@ -1972,26 +1869,24 @@
           <tr class="hover:bg-slate-50 transition">
             <td class="py-2.5 px-3 font-mono-code font-bold text-slate-800 whitespace-nowrap">${inv.noInvoice}</td>
             <td class="py-2.5 px-3 whitespace-nowrap">
-              <div class="font-bold text-slate-700">${tglTampil}</div>
-              <div class="text-[10px] text-slate-400">${inv.admin || 'ADMIN'}</div>
+              <div class="font-bold text-slate-800">${tglTampil}</div>
+              <div class="text-[10px] text-slate-400 font-mono-code">${inv.timestamp || ''}</div>
             </td>
             <td class="py-2.5 px-3">
               <div class="font-bold text-slate-800">${inv.namaPembeli || '-'}</div>
-              <div class="text-[10px] text-slate-500">${inv.kontakPembeli || '-'}</div>
+              <div class="text-[11px] text-slate-500"><i class="fa-solid fa-phone text-[9px] mr-1"></i>${inv.kontakPembeli || '-'}</div>
             </td>
             <td class="py-2.5 px-3">
-              <div class="font-bold text-slate-800">${inv.namaProduk || '-'}</div>
-              <div class="text-[10px] text-emerald-600 font-bold">${formatAngka(inv.jumlah)} ${inv.satuan || 'Sak'} @ ${formatRp(inv.harga)}</div>
+              <div class="font-bold text-slate-800">${inv.namaProduk || '-'} <span class="text-[10px] text-amber-600 font-semibold">(${inv.kualitas || 'Standar'})</span></div>
+              <div class="text-[11px] text-slate-500">${formatAngka(inv.jumlah)} ${inv.satuan || ''} × ${formatRp(inv.harga)}</div>
             </td>
-            <td class="py-2.5 px-3 text-right font-mono-code font-extrabold text-slate-900 whitespace-nowrap">${formatRp(inv.total)}</td>
+            <td class="py-2.5 px-3 text-right font-extrabold text-emerald-600 font-mono-code whitespace-nowrap">${formatRp(inv.total)}</td>
             <td class="py-2.5 px-3 text-center whitespace-nowrap">${badge}</td>
-            <td class="py-2.5 px-3 text-center whitespace-nowrap">
-              <div class="inline-flex items-center space-x-1">
-                ${btnLunas}
-                <button onclick="bukaModalCetakInvoice('${inv.noInvoice}')" class="bg-blue-600 hover:bg-blue-700 text-white px-2.5 py-1.5 rounded-xl text-[11px] font-bold transition shadow-sm inline-flex items-center space-x-1">
-                  <i class="fa-solid fa-print"></i><span>Nota</span>
-                </button>
-              </div>
+            <td class="py-2.5 px-3 text-center whitespace-nowrap space-x-1">
+              <button onclick="bukaModalCetakInvoice('${inv.noInvoice}')" class="bg-slate-900 hover:bg-emerald-600 text-white px-2.5 py-1.5 rounded-xl text-[11px] font-bold transition inline-flex items-center space-x-1 shadow-sm">
+                <i class="fa-solid fa-print"></i><span>Cetak</span>
+              </button>
+              ${btnLunas}
             </td>
           </tr>`;
       });
@@ -1999,198 +1894,261 @@
 
     async function ubahStatusLunas(noInvoice) {
       if (!confirm(`Tandai Invoice ${noInvoice} sebagai LUNAS?`)) return;
-      showCenterLoading("Memperbarui Status...");
+      showCenterLoading("Memperbarui Status Invoice...");
 
-      const idx = listInvoice.findIndex(i => i.noInvoice === noInvoice);
-      if (idx !== -1) {
-        listInvoice[idx].statusBayar = 'LUNAS';
-        localStorage.setItem('FEEDMILL_INVOICES', JSON.stringify(listInvoice));
+      const target = listInvoice.find(i => i.noInvoice === noInvoice);
+      if (target) target.statusBayar = "LUNAS";
+
+      // Update juga keterangan di logTransaksi jika ada
+      const relatedLog = logTransaksi.find(l => l.suratJalan === noInvoice);
+      if (relatedLog) {
+        relatedLog.keterangan = String(relatedLog.keterangan || '').replace('TAGIHAN', 'LUNAS');
       }
 
       if (SCRIPT_URL) {
         try {
-          await fetch(SCRIPT_URL, {
+          const res = await fetch(SCRIPT_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'text/plain;charset=utf-8' },
             body: JSON.stringify({ action: "UPDATE_STATUS_INVOICE", noInvoice, statusBayar: "LUNAS" })
           });
-        } catch (err) {}
+          const data = await res.json();
+          if (data.status === 'success' && Array.isArray(data.invoices)) {
+            listInvoice = data.invoices;
+          }
+        } catch(err) {}
       }
 
+      localStorage.setItem('FEEDMILL_INVOICES', JSON.stringify(listInvoice));
+      localStorage.setItem('FEEDMILL_LOGS', JSON.stringify(logTransaksi));
       hideCenterLoading();
       renderSemuaUI();
       showToast(`Invoice ${noInvoice} telah LUNAS!`);
     }
 
     function exportInvoiceCSV() {
-      const filtered = getFilteredInvoices();
-      if (filtered.length === 0) {
+      const dataToExport = getFilteredInvoices();
+      if (dataToExport.length === 0) {
         showToast("Tidak ada data invoice untuk diunduh!");
         return;
       }
-      let csv = "\uFEFFNo Invoice,Tanggal,Pembeli,Kontak,Produk,Kualitas,Harga Satuan,Jumlah,Satuan,Total Tagihan,Status,Admin\n";
-      filtered.forEach(i => {
-        csv += `"${i.noInvoice}","${normalizeDateStr(i.tanggal)}","${(i.namaPembeli || '').replace(/"/g, '""')}","${i.kontakPembeli || ''}","${(i.namaProduk || '').replace(/"/g, '""')}","${i.kualitas || ''}",${i.harga || 0},${i.jumlah || 0},"${i.satuan || ''}",${i.total || 0},"${i.statusBayar || ''}","${i.admin || ''}"\n`;
+      let csv = "NoInvoice,Tanggal,Pembeli,Kontak,KodeBarang,Produk,Kualitas,Jumlah,Satuan,HargaSatuan,TotalTagihan,StatusBayar,Admin\n";
+      dataToExport.forEach(i => {
+        csv += `"${i.noInvoice || ''}","${i.tanggal || ''}","${i.namaPembeli || ''}","${i.kontakPembeli || ''}","${i.kodeBarang || ''}","${i.namaProduk || ''}","${i.kualitas || ''}",${i.jumlah || 0},"${i.satuan || ''}",${i.harga || 0},${i.total || 0},"${i.statusBayar || ''}","${i.admin || 'ADMIN'}"\n`;
       });
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
-      link.download = `Rekap_Invoice_SISAPI_${new Date().toISOString().split('T')[0]}.csv`;
+      link.download = `Laporan_Invoice_SISAPI_${new Date().toISOString().split('T')[0]}.csv`;
       link.click();
-      showToast("CSV Invoice Berhasil Diunduh!");
+      showToast("CSV Invoice berhasil diunduh!");
     }
 
     /* ========================================================= */
-    /* FORM MUTASI (MENGGUNAKAN EKSEKUSI ASLI: CATAT_TRANSAKSI)  */
+    /* CETAK INVOICE PENJUALAN (DESAIN A4 LENGKAP & PRESISI)     */
     /* ========================================================= */
-    async function submitTransaksi(e) {
-      e.preventDefault();
-      const jenis = document.getElementById('jenisTransaksi').value;
-      const tanggal = document.getElementById('inputTanggal').value;
-      const suratJalan = document.getElementById('inputSuratJalan').value.trim().toUpperCase();
-      const armada = document.getElementById('inputArmada').value;
-      const nopol = document.getElementById('inputNopol').value.trim().toUpperCase();
-      const sopir = document.getElementById('inputSopir').value.trim();
-      const kodeBarang = document.getElementById('inputBarang').value;
-      const jumlah = Number(document.getElementById('inputJumlah').value);
-      const keterangan = document.getElementById('inputKeterangan').value.trim() || "-";
-      const autoPrint = document.getElementById('autoPrintCheck').checked;
-      const adminBertugas = activeShift ? activeShift.namaAdmin : "ADMIN";
-
-      const idxBarang = masterStok.findIndex(b => b.kode === kodeBarang);
-      if (idxBarang === -1) return;
-      const barang = masterStok[idxBarang];
-
-      if (jenis === 'KELUAR' && jumlah > barang.stok) {
-        alert(`Stok tidak mencukupi! Sisa stok ${barang.nama}: ${formatAngka(barang.stok)} ${barang.satuan}`);
+    function bukaModalCetakInvoice(noInvoice) {
+      const inv = listInvoice.find(i => i.noInvoice === noInvoice);
+      if (!inv) {
+        showToast("Data Invoice tidak ditemukan!");
         return;
       }
+      dataCetakAktif = inv;
+      const isLunas = String(inv.statusBayar || '').toUpperCase() === 'LUNAS';
+      const adminName = String(inv.admin || (activeShift ? activeShift.namaAdmin : "ADMIN")).toUpperCase();
+      const tglTampil = normalizeDateStr(inv.tanggal) || inv.tanggal || '-';
 
-      showCenterLoading("Menyimpan Mutasi ke Sheets...");
+      if (document.getElementById('judulModalCetak')) {
+        document.getElementById('judulModalCetak').innerText = `Cetak Invoice: ${inv.noInvoice}`;
+      }
 
-      await eksekusiPerubahanData({
-        action: "CATAT_TRANSAKSI",
-        waktuLive: liveTimeString,
-        jenis,
-        tanggal,
-        suratJalan,
-        armada,
-        nopol,
-        sopir,
-        kodeBarang,
-        jumlah,
-        keterangan,
-        admin: adminBertugas
-      }, () => {
-        if (jenis === 'MASUK') barang.stok += jumlah;
-        else barang.stok -= jumlah;
+      const badgeStempel = isLunas
+        ? `<div style="background: #059669; color: #ffffff; font-weight: 800; font-size: 11px; padding: 5px 12px; border-radius: 4px; display: inline-block; letter-spacing: 0.5px;">STATUS: LUNAS (PAID)</div>`
+        : `<div style="background: #d97706; color: #ffffff; font-weight: 800; font-size: 11px; padding: 5px 12px; border-radius: 4px; display: inline-block; letter-spacing: 0.5px;">TAGIHAN (UNPAID)</div>`;
 
-        logTransaksi.unshift({
-          id: "TRX-" + Date.now(),
-          timestamp: liveTimeString,
-          tanggal,
-          jenis,
-          suratJalan,
-          armada,
-          nopol,
-          sopir,
-          kodeBarang: barang.kode,
-          namaBarang: barang.nama,
-          jumlah,
-          satuan: barang.satuan,
-          stokAkhir: barang.stok,
-          keterangan,
-          admin: adminBertugas
-        });
+      const qrText = [
+        "INVOICE - CV YUDISTIRA CATTLE AND FARM",
+        "No Invoice: " + inv.noInvoice,
+        "Tanggal: " + tglTampil,
+        "Pembeli: " + inv.namaPembeli + " (" + (inv.kontakPembeli || "-") + ")",
+        "Produk: [" + (inv.kodeBarang || "-") + "] " + inv.namaProduk,
+        "Qty: " + formatAngka(inv.jumlah) + " " + inv.satuan,
+        "Total: " + formatRp(inv.total),
+        "Status: " + inv.statusBayar,
+        "Admin: " + adminName
+      ].join("\n");
+
+      const qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=110x110&margin=2&data=" + encodeURIComponent(qrText);
+
+      document.getElementById('areaDokumenCetak').innerHTML = `
+        <div class="sj-print-wrapper" style="width: 100%; max-width: 760px; margin: 0 auto; font-family: 'Inter', Arial, sans-serif; color: #0f172a; background: #ffffff; border: 2px solid #0f172a; padding: 24px; border-radius: 8px; box-sizing: border-box;">
+          
+          <!-- KOP INVOICE -->
+          <table style="width: 100%; border-bottom: 3px double #0f172a; padding-bottom: 12px; margin-bottom: 16px;">
+            <tr>
+              <td style="width: 60px; vertical-align: middle;">
+                <img src="sj.png" alt="Logo" style="width: 52px; height: 52px; object-fit: contain;" onerror="this.src='icon.png'; this.onerror=function(){this.style.display='none'};">
+              </td>
+              <td style="vertical-align: middle;">
+                <div style="font-size: 20px; font-weight: 800; letter-spacing: 0.5px; color: #0f172a;">CV YUDISTIRA CATTLE AND FARM</div>
+                <div style="font-size: 11px; font-weight: 600; color: #334155;">INVOICE PENJUALAN & BUKTI PENGELUARAN BARANG</div>
+                <div style="font-size: 10px; color: #64748b; margin-top: 2px;">Waktu Cetak/Input: ${inv.timestamp || tglTampil}</div>
+              </td>
+              <td style="text-align: right; vertical-align: middle;">
+                ${badgeStempel}
+                <div style="font-size: 13px; font-weight: 800; margin-top: 6px; font-family: monospace;">No. Inv: ${inv.noInvoice}</div>
+              </td>
+            </tr>
+          </table>
+
+          <!-- INFO PELANGGAN & TRANSAKSI -->
+          <table style="width: 100%; font-size: 12px; margin-bottom: 16px; border-collapse: collapse;">
+            <tr>
+              <td style="padding: 4px 0; width: 18%;"><b>Kepada Yth.</b></td>
+              <td style="padding: 4px 0; width: 35%;">: <b>${inv.namaPembeli || '-'}</b></td>
+              <td style="padding: 4px 0; width: 18%;"><b>Tanggal Invoice</b></td>
+              <td style="padding: 4px 0; width: 29%;">: ${tglTampil}</td>
+            </tr>
+            <tr>
+              <td style="padding: 4px 0;"><b>Kontak / HP</b></td>
+              <td style="padding: 4px 0;">: ${inv.kontakPembeli || '-'}</td>
+              <td style="padding: 4px 0;"><b>Status Bayar</b></td>
+              <td style="padding: 4px 0;">: <b>${inv.statusBayar}</b></td>
+            </tr>
+            <tr>
+              <td style="padding: 4px 0;"><b>Catatan</b></td>
+              <td style="padding: 4px 0;">: ${inv.catatan || '-'}</td>
+              <td style="padding: 4px 0;"><b>Admin Gudang</b></td>
+              <td style="padding: 4px 0;">: ${adminName}</td>
+            </tr>
+          </table>
+
+          <!-- TABEL ITEM INVOICE -->
+          <table style="width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 18px;">
+            <thead>
+              <tr style="background: #f1f5f9; border-top: 2px solid #0f172a; border-bottom: 2px solid #0f172a;">
+                <th style="padding: 8px 10px; text-align: left; width: 14%;">Kode</th>
+                <th style="padding: 8px 10px; text-align: left; width: 38%;">Nama Produk & Kualitas</th>
+                <th style="padding: 8px 10px; text-align: center; width: 14%;">Qty</th>
+                <th style="padding: 8px 10px; text-align: right; width: 16%;">Harga Satuan</th>
+                <th style="padding: 8px 10px; text-align: right; width: 18%;">Subtotal</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid #cbd5e1;">
+                <td style="padding: 12px 10px; font-family: monospace; font-weight: 700;">${inv.kodeBarang || '-'}</td>
+                <td style="padding: 12px 10px;">
+                  <div style="font-weight: 800; font-size: 13px;">${inv.namaProduk}</div>
+                  <div style="font-size: 11px; color: #475569;">Kualitas: ${inv.kualitas || 'Standar'}</div>
+                </td>
+                <td style="padding: 12px 10px; text-align: center; font-weight: 700;">${formatAngka(inv.jumlah)} ${inv.satuan}</td>
+                <td style="padding: 12px 10px; text-align: right; font-family: monospace;">${formatRp(inv.harga)}</td>
+                <td style="padding: 12px 10px; text-align: right; font-weight: 800; font-family: monospace; font-size: 13px;">${formatRp(inv.total)}</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr style="background: #f8fafc; border-top: 2px solid #0f172a; border-bottom: 2px solid #0f172a;">
+                <td colspan="4" style="padding: 10px; text-align: right; font-weight: 800; font-size: 13px;">TOTAL TAGIHAN :</td>
+                <td style="padding: 10px; text-align: right; font-weight: 800; font-size: 15px; color: #059669; font-family: monospace;">${formatRp(inv.total)}</td>
+              </tr>
+            </tfoot>
+          </table>
+
+          <!-- QR CODE, BARCODE & TANDA TANGAN -->
+          <table style="width: 100%; margin-top: 12px; border-collapse: collapse;">
+            <tr>
+              <td style="width: 42%; vertical-align: bottom; text-align: left;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <img src="${qrUrl}" alt="QR Invoice" style="width: 78px; height: 78px; border: 1px solid #cbd5e1; padding: 2px; border-radius: 4px;">
+                  <div>
+                    <svg id="barcodeInv"></svg>
+                    <div style="font-size: 9px; color: #64748b; margin-top: 2px;">Scan QR/Barcode untuk verifikasi Invoice</div>
+                  </div>
+                </div>
+              </td>
+              <td style="width: 58%; vertical-align: top;">
+                <table style="width: 100%; text-align: center; font-size: 11px;">
+                  <tr>
+                    <td style="width: 50%;">Penerima / Pembeli,<br><br><br><br><b>( ${inv.namaPembeli || '....................'} )</b></td>
+                    <td style="width: 50%;">Hormat Kami / Admin,<br><br><br><br><b>( ${adminName} )</b></td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+
+        </div>`;
+
+      openModal('modalPreviewCetak');
+
+      setTimeout(() => {
+        try {
+          if (window.JsBarcode) {
+            JsBarcode("#barcodeInv", String(inv.noInvoice || "INVOICE"), {
+              format: "CODE128",
+              width: 1.3,
+              height: 34,
+              displayValue: true,
+              fontSize: 10,
+              margin: 0
+            });
+          }
+        } catch(e) {}
+      }, 80);
+    }
+
+    /* ========================================================= */
+    /* RENDER UI UTAMA, STOK, MUTASI, OPNAME & TAMBAH BARANG     */
+    /* ========================================================= */
+    function renderSemuaUI() {
+      populateDropdownBarang();
+      renderKatalogProduk();
+      renderTabelInvoice();
+      renderTabelStok();
+      renderTabelLog();
+      renderTabelAbsensi();
+      hitungKPI();
+    }
+
+    function populateDropdownBarang() {
+      const selectTransaksi = document.getElementById('inputBarang');
+      const selectManual = document.getElementById('manualPilihBarang');
+      if (!selectTransaksi || !selectManual) return;
+      const currentVal1 = selectTransaksi.value;
+      const currentVal2 = selectManual.value;
+      selectTransaksi.innerHTML = '';
+      selectManual.innerHTML = '';
+
+      masterStok.forEach(item => {
+        selectTransaksi.innerHTML += `<option value="${item.kode}">[${item.kode}] ${item.nama} (${formatAngka(item.stok)} ${item.satuan})</option>`;
+        selectManual.innerHTML += `<option value="${item.kode}">[${item.kode}] ${item.nama}</option>`;
       });
+      if (currentVal1) selectTransaksi.value = currentVal1;
+      if (currentVal2) selectManual.value = currentVal2;
+      updateInfoStokPilihan();
+      updateInfoStokManual();
+    }
 
-      hideCenterLoading();
-      document.getElementById('inputJumlah').value = '';
-      document.getElementById('inputKeterangan').value = '';
-      showToast(`Mutasi ${jenis} Berhasil Disimpan!`);
-
-      if (autoPrint && logTransaksi.length > 0) {
-        bukaModalCetak(0);
+    function updateInfoStokPilihan() {
+      const el = document.getElementById('inputBarang');
+      if (!el) return;
+      const barang = masterStok.find(b => b.kode === el.value);
+      if (barang) {
+        document.getElementById('infoStokPilihan').innerHTML = `Tersedia: <b class="text-emerald-600">${formatAngka(barang.stok)} ${barang.satuan}</b>`;
+        document.getElementById('badgeSatuanInput').innerText = barang.satuan;
       }
     }
 
-    async function submitManualAdjust(e) {
-      e.preventDefault();
-      const kodeBarang = document.getElementById('manualPilihBarang').value;
-      const stokBaru = Number(document.getElementById('manualStokBaru').value);
-      const suratJalan = document.getElementById('manualRef').value.trim().toUpperCase() || "BA-OPNAME";
-      const keterangan = document.getElementById('manualAlasan').value.trim();
-      const adminBertugas = activeShift ? activeShift.namaAdmin : "ADMIN";
-      const barang = masterStok.find(b => b.kode === kodeBarang);
-      if (!barang) return;
-
-      showCenterLoading("Menyimpan Opname...");
-      await eksekusiPerubahanData({
-        action: "CATAT_TRANSAKSI",
-        waktuLive: liveTimeString,
-        jenis: "MANUAL_ADJUST",
-        tanggal: new Date().toISOString().split('T')[0],
-        suratJalan,
-        armada: "Opname",
-        nopol: "-",
-        sopir: "-",
-        kodeBarang,
-        jumlah: stokBaru,
-        keterangan,
-        admin: adminBertugas
-      }, () => {
-        const selisih = stokBaru - barang.stok;
-        barang.stok = stokBaru;
-        logTransaksi.unshift({
-          id: "ADJ-" + Date.now(),
-          timestamp: liveTimeString,
-          tanggal: new Date().toISOString().split('T')[0],
-          jenis: "MANUAL_ADJUST",
-          suratJalan,
-          armada: "Opname",
-          nopol: "-",
-          sopir: "-",
-          kodeBarang: barang.kode,
-          namaBarang: barang.nama,
-          jumlah: selisih,
-          satuan: barang.satuan,
-          stokAkhir: stokBaru,
-          keterangan,
-          admin: adminBertugas
-        });
-      });
-      hideCenterLoading();
-      document.getElementById('manualAlasan').value = '';
-      showToast("Stock Opname Berhasil Disimpan!");
+    function updateInfoStokManual() {
+      const el = document.getElementById('manualPilihBarang');
+      if (!el) return;
+      const barang = masterStok.find(b => b.kode === el.value);
+      if (barang) {
+        document.getElementById('infoStokManual').innerHTML = `Stok Sistem: <b>${formatAngka(barang.stok)} ${barang.satuan}</b>`;
+        document.getElementById('manualStokBaru').value = barang.stok;
+      }
     }
 
-    async function submitBarangBaru(e) {
-      e.preventDefault();
-      const kode = document.getElementById('newKode').value.trim().toUpperCase();
-      const nama = document.getElementById('newNama').value.trim();
-      const kategori = document.getElementById('newKategori').value;
-      const satuan = document.getElementById('newSatuan').value;
-      const stokAwal = Number(document.getElementById('newStokAwal').value);
-
-      showCenterLoading("Menambah Barang...");
-      await eksekusiPerubahanData({
-        action: "TAMBAH_BARANG_BARU",
-        kode,
-        nama,
-        kategori,
-        satuan,
-        stokAwal
-      }, () => {
-        masterStok.push({ kode, nama, kategori, satuan, stok: stokAwal, updated: liveTimeString });
-      });
-      hideCenterLoading();
-      e.target.reset();
-      showToast("Barang Baru Berhasil Ditambahkan!");
-    }
-
-    /* ========================================================= */
-    /* RENDER STOK & LOG RIWAYAT                                 */
-    /* ========================================================= */
     function renderTabelStok() {
       const keyword = (document.getElementById('searchStok')?.value || '').toLowerCase();
       const tbody = document.getElementById('tbodyStok');
@@ -2235,65 +2193,206 @@
       document.getElementById('inputSuratJalan').focus();
     }
 
-    function renderTabelLog() {
-      const tbody = document.getElementById('tbodyLog');
-      if (!tbody) return;
-      tbody.innerHTML = '';
+    function switchFormTab(mode) {
+      document.getElementById('tabBtnMasuk').className = "py-3.5 px-2 border-b-4 border-transparent text-slate-500 hover:text-slate-900 transition flex items-center justify-center space-x-1";
+      document.getElementById('tabBtnKeluar').className = "py-3.5 px-2 border-b-4 border-transparent text-slate-500 hover:text-slate-900 transition flex items-center justify-center space-x-1";
+      document.getElementById('tabBtnManual').className = "py-3.5 px-2 border-b-4 border-transparent text-slate-500 hover:text-slate-900 transition flex items-center justify-center space-x-1";
 
-      const filtered = getFilteredLogTransaksi();
-      if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-slate-400">Tidak ada transaksi pada filter ini.</td></tr>`;
+      if (mode === 'MANUAL') {
+        document.getElementById('tabBtnManual').className = "py-3.5 px-2 border-b-4 border-amber-500 text-amber-600 bg-white transition flex items-center justify-center space-x-1";
+        document.getElementById('formTransaksi').classList.add('hidden');
+        document.getElementById('panelManual').classList.remove('hidden');
         return;
       }
 
-      filtered.forEach(({ item: log, originalIndex }) => {
-        const tglTampil = normalizeDateStr(log.tanggal) || log.tanggal || '-';
-        let badgeJenis = log.jenis === 'MASUK'
-          ? `<span class="bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-extrabold text-[10px]">MASUK</span>`
-          : log.jenis === 'KELUAR'
-          ? `<span class="bg-rose-100 text-rose-800 px-1.5 py-0.5 rounded font-extrabold text-[10px]">KELUAR</span>`
-          : `<span class="bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-extrabold text-[10px]">OPNAME</span>`;
-        let tanda = log.jenis === 'KELUAR' ? '-' : '+';
-        let warna = log.jenis === 'KELUAR' ? 'text-rose-600 font-extrabold' : 'text-emerald-600 font-extrabold';
+      document.getElementById('formTransaksi').classList.remove('hidden');
+      document.getElementById('panelManual').classList.add('hidden');
+      document.getElementById('jenisTransaksi').value = mode;
 
-        const isInvoiceRow = String(log.suratJalan || '').startsWith('INV') || listInvoice.some(i => i.noInvoice === log.suratJalan);
-        const btnCetakHtml = isInvoiceRow
-          ? `<div class="inline-flex space-x-1">
-               <button onclick="bukaModalCetakInvoice('${log.suratJalan}')" class="bg-amber-600 hover:bg-amber-500 text-white px-2 py-1.5 rounded-xl text-[10px] font-bold transition shadow-sm" title="Cetak Format Invoice"><i class="fa-solid fa-file-invoice mr-1"></i>Inv</button>
-               <button onclick="bukaModalCetak(${originalIndex})" class="bg-slate-900 hover:bg-emerald-600 text-white px-2 py-1.5 rounded-xl text-[10px] font-bold transition shadow-sm" title="Cetak Format SJ"><i class="fa-solid fa-print"></i></button>
-             </div>`
-          : `<button onclick="bukaModalCetak(${originalIndex})" class="bg-slate-900 hover:bg-emerald-600 text-white px-2.5 py-1.5 rounded-xl text-[11px] font-bold transition inline-flex items-center space-x-1 shadow-sm">
-               <i class="fa-solid fa-print"></i><span>Cetak</span>
-             </button>`;
+      if (mode === 'MASUK') {
+        document.getElementById('tabBtnMasuk').className = "py-3.5 px-2 border-b-4 border-emerald-600 text-emerald-600 bg-white transition flex items-center justify-center space-x-1";
+        document.getElementById('formBanner').className = "bg-emerald-50 border border-emerald-200 text-emerald-800 px-3.5 py-2.5 rounded-xl text-xs font-semibold flex items-center space-x-2";
+        document.getElementById('formBannerText').innerHTML = "Mode <b>BARANG MASUK</b> (+Stok Otomatis)";
+        document.getElementById('btnSubmitTransaksi').className = "w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-3 px-4 rounded-xl shadow-lg transition flex items-center justify-center space-x-2 text-sm";
+        document.getElementById('btnSubmitText').innerText = "Simpan Masuk";
+      } else {
+        document.getElementById('tabBtnKeluar').className = "py-3.5 px-2 border-b-4 border-rose-600 text-rose-600 bg-white transition flex items-center justify-center space-x-1";
+        document.getElementById('formBanner').className = "bg-rose-50 border border-rose-200 text-rose-800 px-3.5 py-2.5 rounded-xl text-xs font-semibold flex items-center space-x-2";
+        document.getElementById('formBannerText').innerHTML = "Mode <b>BARANG KELUAR</b> (-Stok Otomatis)";
+        document.getElementById('btnSubmitTransaksi').className = "w-full bg-rose-600 hover:bg-rose-700 text-white font-extrabold py-3 px-4 rounded-xl shadow-lg transition flex items-center justify-center space-x-2 text-sm";
+        document.getElementById('btnSubmitText').innerText = "Simpan Keluar";
+      }
+    }
 
-        tbody.innerHTML += `
-          <tr class="hover:bg-slate-50 transition">
-            <td class="py-2.5 px-3 whitespace-nowrap">
-              <div class="font-bold text-slate-800">${tglTampil}</div>
-              <div class="text-[10px] text-slate-400 font-mono-code">${log.timestamp || ''}</div>
-            </td>
-            <td class="py-2.5 px-3 whitespace-nowrap">
-              <div>${badgeJenis}</div>
-              <div class="font-mono-code font-bold text-slate-800 mt-0.5">${log.suratJalan || '-'}</div>
-            </td>
-            <td class="py-2.5 px-3">
-              <div class="font-bold text-slate-800">${log.armada || '-'} <span class="bg-slate-200 text-slate-800 px-1.5 py-0.5 rounded font-mono-code text-[10px]">${log.nopol || '-'}</span></div>
-              <div class="text-[11px] text-slate-500">${log.sopir || '-'}</div>
-            </td>
-            <td class="py-2.5 px-3">
-              <div class="font-bold text-slate-800">${log.namaBarang || '-'}</div>
-              <div class="text-[11px] text-slate-400">${log.keterangan || '-'}</div>
-            </td>
-            <td class="py-2.5 px-3 text-right ${warna} whitespace-nowrap">${tanda}${formatAngka(Math.abs(log.jumlah))} ${log.satuan || ''}</td>
-            <td class="py-2.5 px-3 text-right font-extrabold text-slate-800 whitespace-nowrap">${formatAngka(log.stokAkhir)} ${log.satuan || ''}</td>
-            <td class="py-2.5 px-3 text-center">
-              <span class="px-2 py-0.5 rounded-full font-extrabold text-[10px] bg-emerald-100 text-emerald-800">${log.admin || 'ADMIN'}</span>
-            </td>
-            <td class="py-2.5 px-3 text-center whitespace-nowrap">
-              ${btnCetakHtml}
-            </td>
-          </tr>`;
+    async function submitTransaksi(e) {
+      e.preventDefault();
+      const jenis = document.getElementById('jenisTransaksi').value;
+      const tanggal = document.getElementById('inputTanggal').value;
+      const suratJalan = document.getElementById('inputSuratJalan').value.trim().toUpperCase();
+      const armada = document.getElementById('inputArmada').value;
+      const nopol = document.getElementById('inputNopol').value.trim().toUpperCase();
+      const sopir = document.getElementById('inputSopir').value.trim();
+      const kodeBarang = document.getElementById('inputBarang').value;
+      const jumlah = Number(document.getElementById('inputJumlah').value);
+      const keterangan = document.getElementById('inputKeterangan').value.trim();
+      const adminBertugas = activeShift ? activeShift.namaAdmin : "ADMIN";
+      const isAutoPrint = document.getElementById('autoPrintCheck').checked;
+
+      const barang = masterStok.find(b => b.kode === kodeBarang);
+      if (!barang) return;
+      if (jenis === 'KELUAR' && barang.stok < jumlah) {
+        alert(`Stok tidak cukup! Sisa: ${formatAngka(barang.stok)} ${barang.satuan}`);
+        return;
+      }
+
+      const btn = document.getElementById('btnSubmitTransaksi');
+      const origBtnText = btn ? btn.innerHTML : '';
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Menyimpan...</span>`;
+      }
+      showCenterLoading("Menyimpan Data Mutasi...");
+
+      await eksekusiPerubahanData({
+        action: "CATAT_TRANSAKSI", waktuLive: liveTimeString, jenis, tanggal, suratJalan, armada, nopol, sopir, kodeBarang, jumlah, keterangan, admin: adminBertugas
+      }, () => {
+        if (jenis === 'MASUK') barang.stok += jumlah; else barang.stok -= jumlah;
+        logTransaksi.unshift({
+          id: "TRX-" + Date.now(),
+          timestamp: liveTimeString,
+          tanggal,
+          jenis,
+          suratJalan,
+          armada,
+          nopol,
+          sopir,
+          kodeBarang: barang.kode,
+          namaBarang: barang.nama,
+          jumlah,
+          satuan: barang.satuan,
+          stokAkhir: barang.stok,
+          keterangan,
+          admin: adminBertugas
+        });
       });
+
+      hideCenterLoading();
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = origBtnText;
+      }
+
+      document.getElementById('inputSuratJalan').value = '';
+      document.getElementById('inputNopol').value = '';
+      document.getElementById('inputJumlah').value = '';
+      document.getElementById('inputKeterangan').value = '';
+      showToast(`Transaksi ${jenis} Berhasil Disimpan!`);
+      if (isAutoPrint && logTransaksi.length > 0) bukaModalCetak(0);
+    }
+
+    // Pemulihan Fungsi Stock Opname Manual
+    async function submitManualAdjust(e) {
+      e.preventDefault();
+      const kodeBarang = document.getElementById('manualPilihBarang').value;
+      const stokBaru = Number(document.getElementById('manualStokBaru').value);
+      const suratJalan = document.getElementById('manualRef').value.trim().toUpperCase() || "BA-OPNAME";
+      const keterangan = document.getElementById('manualAlasan').value.trim();
+      const adminBertugas = activeShift ? activeShift.namaAdmin : "ADMIN";
+      const barang = masterStok.find(b => b.kode === kodeBarang);
+      if (!barang) return;
+
+      showCenterLoading("Menyimpan Opname...");
+      await eksekusiPerubahanData({
+        action: "CATAT_TRANSAKSI", waktuLive: liveTimeString, jenis: "MANUAL_ADJUST", tanggal: new Date().toISOString().split('T')[0], suratJalan, armada: "Opname", nopol: "-", sopir: "-", kodeBarang, jumlah: stokBaru, keterangan, admin: adminBertugas
+      }, () => {
+        const selisih = stokBaru - barang.stok;
+        barang.stok = stokBaru;
+        logTransaksi.unshift({
+          id: "ADJ-" + Date.now(),
+          timestamp: liveTimeString,
+          tanggal: new Date().toISOString().split('T')[0],
+          jenis: "MANUAL_ADJUST",
+          suratJalan,
+          armada: "Opname",
+          nopol: "-",
+          sopir: "-",
+          kodeBarang: barang.kode,
+          namaBarang: barang.nama,
+          jumlah: selisih,
+          satuan: barang.satuan,
+          stokAkhir: stokBaru,
+          keterangan,
+          admin: adminBertugas
+        });
+      });
+      hideCenterLoading();
+      document.getElementById('manualAlasan').value = '';
+      showToast("Stok Fisik Berhasil Disesuaikan!");
+    }
+
+    // Pemulihan Fungsi Tambah Barang Baru
+    async function submitBarangBaru(e) {
+      e.preventDefault();
+      const kode = document.getElementById('newKode').value.trim().toUpperCase();
+      const nama = document.getElementById('newNama').value.trim();
+      const kategori = document.getElementById('newKategori').value;
+      const satuan = document.getElementById('newSatuan').value;
+      const stokAwal = Number(document.getElementById('newStokAwal').value);
+
+      showCenterLoading("Menambah Barang...");
+      await eksekusiPerubahanData({ action: "TAMBAH_BARANG_BARU", kode, nama, kategori, satuan, stokAwal }, () => {
+        masterStok.push({ kode, nama, kategori, satuan, stok: stokAwal, updated: liveTimeString });
+      });
+      hideCenterLoading();
+      e.target.reset();
+      showToast("Barang Baru Berhasil Ditambahkan!");
+    }
+
+    /* ========================================================= */
+    /* RIWAYAT LOG, FILTER LAPORAN & CETAK SURAT JALAN           */
+    /* ========================================================= */
+    function normalizeDateStr(rawDate) {
+      if (!rawDate) return '';
+      const str = String(rawDate).trim();
+      if (/^\d{4}-\d{2}-\d{2}$/.test(str)) return str;
+      if (/^\d{2}\/\d{2}\/\d{4}$/.test(str)) {
+        const [d, m, y] = str.split('/');
+        return `${y}-${m}-${d}`;
+      }
+      const parsed = new Date(str);
+      if (!isNaN(parsed.getTime())) {
+        const yyyy = parsed.getFullYear();
+        const mm = String(parsed.getMonth() + 1).padStart(2, '0');
+        const dd = String(parsed.getDate()).padStart(2, '0');
+        return `${yyyy}-${mm}-${dd}`;
+      }
+      return str.split('T')[0];
+    }
+
+    function setModeLaporan(mode) {
+      modeLaporanAktif = mode;
+      document.getElementById('btnLapHarian').className = "px-3 py-1.5 rounded-xl text-xs font-extrabold bg-slate-100 text-slate-700 border border-slate-300 transition";
+      document.getElementById('btnLapMingguan').className = "px-3 py-1.5 rounded-xl text-xs font-extrabold bg-slate-100 text-slate-700 border border-slate-300 transition";
+      document.getElementById('btnLapBulanan').className = "px-3 py-1.5 rounded-xl text-xs font-extrabold bg-slate-100 text-slate-700 border border-slate-300 transition";
+
+      document.getElementById('filterBoxTanggal').classList.add('hidden');
+      document.getElementById('filterBoxMingguan').classList.add('hidden');
+      document.getElementById('filterBoxBulanan').classList.add('hidden');
+
+      if (mode === 'HARIAN') {
+        document.getElementById('btnLapHarian').className = "sub-tab-active px-3 py-1.5 rounded-xl text-xs font-extrabold transition";
+        document.getElementById('filterBoxTanggal').classList.remove('hidden');
+        document.getElementById('infoModeLaporan').innerHTML = `Mode: <span class="text-emerald-600">Harian</span>`;
+      } else if (mode === 'MINGGUAN') {
+        document.getElementById('btnLapMingguan').className = "sub-tab-active px-3 py-1.5 rounded-xl text-xs font-extrabold transition";
+        document.getElementById('filterBoxMingguan').classList.remove('hidden');
+        document.getElementById('infoModeLaporan').innerHTML = `Mode: <span class="text-emerald-600">Mingguan</span>`;
+      } else if (mode === 'BULANAN') {
+        document.getElementById('btnLapBulanan').className = "sub-tab-active px-3 py-1.5 rounded-xl text-xs font-extrabold transition";
+        document.getElementById('filterBoxBulanan').classList.remove('hidden');
+        document.getElementById('infoModeLaporan').innerHTML = `Mode: <span class="text-emerald-600">Bulanan</span>`;
+      }
+      renderTabelLog();
     }
 
     function getFilteredLogTransaksi() {
@@ -2339,6 +2438,78 @@
       });
     }
 
+    function renderTabelLog() {
+      const tbody = document.getElementById('tbodyLog');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      const filtered = getFilteredLogTransaksi();
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="8" class="text-center py-8 text-slate-400 space-y-2">
+              <div>Tidak ada transaksi pada filter tanggal ini.</div>
+              <button onclick="document.getElementById('filterTanggal').value=''; setModeLaporan('HARIAN');" class="mt-1 bg-slate-200 hover:bg-slate-300 text-slate-700 px-3 py-1 rounded-lg text-[11px] font-bold transition">
+                Tampilkan Semua Transaksi
+              </button>
+            </td>
+          </tr>`;
+        return;
+      }
+
+      filtered.forEach(({ item: log, originalIndex }) => {
+        const tglTampil = normalizeDateStr(log.tanggal) || log.tanggal || '-';
+        let badgeJenis = log.jenis === 'MASUK'
+          ? `<span class="bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-extrabold text-[10px]">MASUK</span>`
+          : log.jenis === 'KELUAR'
+          ? `<span class="bg-rose-100 text-rose-800 px-1.5 py-0.5 rounded font-extrabold text-[10px]">KELUAR</span>`
+          : `<span class="bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-extrabold text-[10px]">OPNAME</span>`;
+        let tanda = log.jenis === 'KELUAR' ? '-' : '+';
+        let warna = log.jenis === 'KELUAR' ? 'text-rose-600 font-extrabold' : 'text-emerald-600 font-extrabold';
+
+        // Cek apakah baris log ini adalah Invoice
+        const isInvoiceRow = String(log.suratJalan || '').startsWith('INV') || listInvoice.some(i => i.noInvoice === log.suratJalan);
+        const btnCetakHtml = isInvoiceRow
+          ? `<div class="inline-flex space-x-1">
+               <button onclick="bukaModalCetakInvoice('${log.suratJalan}')" class="bg-amber-600 hover:bg-amber-500 text-white px-2 py-1.5 rounded-xl text-[10px] font-bold transition shadow-sm" title="Cetak Format Invoice"><i class="fa-solid fa-file-invoice mr-1"></i>Inv</button>
+               <button onclick="bukaModalCetak(${originalIndex})" class="bg-slate-900 hover:bg-emerald-600 text-white px-2 py-1.5 rounded-xl text-[10px] font-bold transition shadow-sm" title="Cetak Format SJ"><i class="fa-solid fa-print"></i></button>
+             </div>`
+          : `<button onclick="bukaModalCetak(${originalIndex})" class="bg-slate-900 hover:bg-emerald-600 text-white px-2.5 py-1.5 rounded-xl text-[11px] font-bold transition inline-flex items-center space-x-1 shadow-sm">
+               <i class="fa-solid fa-print"></i><span>Cetak</span>
+             </button>`;
+
+        tbody.innerHTML += `
+          <tr class="hover:bg-slate-50 transition">
+            <td class="py-2.5 px-3 whitespace-nowrap">
+              <div class="font-bold text-slate-800">${tglTampil}</div>
+              <div class="text-[10px] text-slate-400 font-mono-code">${log.timestamp || ''}</div>
+            </td>
+            <td class="py-2.5 px-3 whitespace-nowrap">
+              <div>${badgeJenis}</div>
+              <div class="font-mono-code font-bold text-slate-800 mt-0.5">${log.suratJalan || '-'}</div>
+            </td>
+            <td class="py-2.5 px-3">
+              <div class="font-bold text-slate-800">${log.armada || '-'} <span class="bg-slate-200 text-slate-800 px-1.5 py-0.5 rounded font-mono-code text-[10px]">${log.nopol || '-'}</span></div>
+              <div class="text-[11px] text-slate-500">${log.sopir || '-'}</div>
+            </td>
+            <td class="py-2.5 px-3">
+              <div class="font-bold text-slate-800">${log.namaBarang || '-'}</div>
+              <div class="text-[11px] text-slate-400">${log.keterangan || '-'}</div>
+            </td>
+            <td class="py-2.5 px-3 text-right ${warna} whitespace-nowrap">${tanda}${formatAngka(Math.abs(log.jumlah))} ${log.satuan || ''}</td>
+            <td class="py-2.5 px-3 text-right font-extrabold text-slate-800 whitespace-nowrap">${formatAngka(log.stokAkhir)} ${log.satuan || ''}</td>
+            <td class="py-2.5 px-3 text-center">
+              <span class="px-2 py-0.5 rounded-full font-extrabold text-[10px] bg-emerald-100 text-emerald-800">${log.admin || 'ADMIN'}</span>
+            </td>
+            <td class="py-2.5 px-3 text-center whitespace-nowrap">
+              ${btnCetakHtml}
+            </td>
+          </tr>`;
+      });
+    }
+
+    // Pemulihan Fungsi Hitung KPI Lengkap
     function hitungKPI() {
       if (document.getElementById('kpiTotalItem')) {
         document.getElementById('kpiTotalItem').innerText = masterStok.length + " Item";
@@ -2361,26 +2532,12 @@
       if (document.getElementById('kpiStokRendah')) document.getElementById('kpiStokRendah').innerText = stokRendah + " Item";
     }
 
-    function renderSemuaUI() {
-      hitungKPI();
-      populateDropdownBarang();
-      renderKatalogProduk();
-      renderTabelInvoice();
-      renderTabelStok();
-      renderTabelLog();
-      renderTabelAbsensi();
-    }
-
-    /* ========================================================= */
-    /* CETAK SURAT JALAN (DENGAN TTD PENERIMA UNTUK BARANG KELUAR) */
-    /* ========================================================= */
     function bukaModalCetak(index) {
       const log = logTransaksi[index];
       if (!log) return;
       dataCetakAktif = log;
       const adminName = String(log.admin || "ADMIN").toUpperCase();
-      const isKeluar = String(log.jenis || '').toUpperCase() === 'KELUAR';
-      const tipeLabel = log.jenis === 'MASUK' ? 'BUKTI BARANG MASUK (INBOUND)' : isKeluar ? 'SURAT JALAN BARANG KELUAR' : 'BERITA ACARA STOCK OPNAME';
+      const tipeLabel = log.jenis === 'MASUK' ? 'BUKTI BARANG MASUK (INBOUND)' : log.jenis === 'KELUAR' ? 'SURAT JALAN BARANG KELUAR' : 'BERITA ACARA STOCK OPNAME';
       const tglTampil = normalizeDateStr(log.tanggal) || log.tanggal || '-';
 
       if (document.getElementById('judulModalCetak')) {
@@ -2403,27 +2560,10 @@
 
       const qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=110x110&margin=2&data=" + encodeURIComponent(qrDataText);
 
-      // Tambah kolom Tanda Tangan Penerima jika Barang Keluar
-      const blokTandaTangan = isKeluar
-        ? `<table style="width: 100%; text-align: center; font-size: 11px;">
-             <tr>
-               <td style="width: 25%;">Penerima Barang,<br><br><br><br><b>( .................... )</b></td>
-               <td style="width: 25%;">Sopir / Pengirim,<br><br><br><br><b>( ${String(log.sopir || '').split('-')[0].trim() || '....................'} )</b></td>
-               <td style="width: 25%;">Petugas Checker,<br><br><br><br><b>( .................... )</b></td>
-               <td style="width: 25%;">Admin Gudang,<br><br><br><br><b>( ${adminName} )</b></td>
-             </tr>
-           </table>`
-        : `<table style="width: 100%; text-align: center; font-size: 11px;">
-             <tr>
-               <td style="width: 33%;">Sopir / Supplier,<br><br><br><br><b>( ${String(log.sopir || '').split('-')[0].trim() || '....................'} )</b></td>
-               <td style="width: 33%;">Petugas Checker,<br><br><br><br><b>( .................... )</b></td>
-               <td style="width: 33%;">Admin Gudang,<br><br><br><br><b>( ${adminName} )</b></td>
-             </tr>
-           </table>`;
-
       document.getElementById('areaDokumenCetak').innerHTML = `
         <div class="sj-print-wrapper" style="width: 100%; max-width: 760px; margin: 0 auto; font-family: 'Inter', Arial, sans-serif; color: #0f172a; background: #ffffff; border: 2px solid #0f172a; padding: 24px; border-radius: 8px; box-sizing: border-box;">
           
+          <!-- KOP SURAT JALAN -->
           <table style="width: 100%; border-bottom: 3px double #0f172a; padding-bottom: 12px; margin-bottom: 16px;">
             <tr>
               <td style="width: 60px; vertical-align: middle;">
@@ -2441,6 +2581,7 @@
             </tr>
           </table>
 
+          <!-- INFORMASI ARMADA & PENGIRIMAN -->
           <table style="width: 100%; font-size: 12px; margin-bottom: 16px; border-collapse: collapse;">
             <tr>
               <td style="padding: 4px 0; width: 18%;"><b>Tanggal SJ</b></td>
@@ -2457,11 +2598,12 @@
             <tr>
               <td style="padding: 4px 0;"><b>ID Transaksi</b></td>
               <td style="padding: 4px 0;">: ${log.id || '-'}</td>
-              <td style="padding: 4px 0;"><b>${isKeluar ? 'Sopir & Tujuan' : 'Sopir & Supplier'}</b></td>
+              <td style="padding: 4px 0;"><b>Sopir / Relasi</b></td>
               <td style="padding: 4px 0;">: ${log.sopir}</td>
             </tr>
           </table>
 
+          <!-- TABEL RINCIAN BARANG -->
           <table style="width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 20px;">
             <thead>
               <tr style="background: #f1f5f9; border-top: 2px solid #0f172a; border-bottom: 2px solid #0f172a;">
@@ -2481,6 +2623,7 @@
             </tbody>
           </table>
 
+          <!-- BARCODE, QR DATA SHEET & TANDA TANGAN -->
           <table style="width: 100%; margin-top: 10px; border-collapse: collapse;">
             <tr>
               <td style="width: 38%; vertical-align: bottom; text-align: left;">
@@ -2488,12 +2631,18 @@
                   <img src="${qrUrl}" alt="QR Data" style="width: 78px; height: 78px; border: 1px solid #cbd5e1; padding: 2px; border-radius: 4px;">
                   <div>
                     <svg id="barcodeSJ"></svg>
-                    <div style="font-size: 9px; color: #64748b; margin-top: 2px;">Scan QR/Barcode untuk verifikasi Sheet</div>
+                    <div style="font-size: 9px; color: #64748b; margin-top: 2px;">Scan QR/Barcode untuk detail data Sheet</div>
                   </div>
                 </div>
               </td>
               <td style="width: 62%; vertical-align: top;">
-                ${blokTandaTangan}
+                <table style="width: 100%; text-align: center; font-size: 11px;">
+                  <tr>
+                    <td style="width: 33%;">Sopir / Pengirim,<br><br><br><br><b>( ${String(log.sopir || '').split('-')[0].trim() || '....................'} )</b></td>
+                    <td style="width: 33%;">Petugas Checker,<br><br><br><br><b>( .................... )</b></td>
+                    <td style="width: 33%;">Admin Gudang,<br><br><br><br><b>( ${adminName} )</b></td>
+                  </tr>
+                </table>
               </td>
             </tr>
           </table>
@@ -2518,244 +2667,39 @@
       }, 80);
     }
 
-    /* ========================================================= */
-    /* CETAK LAPORAN LANDSCAPE MEMANJANG KE BAWAH                */
-    /* ========================================================= */
-    function bukaModalCetakLaporan(periodePilihan, autoTriggerPrint = false) {
-      const targetMode = periodePilihan || modeLaporanAktif;
-      setModeLaporan(targetMode);
-
-      const filtered = getFilteredLogTransaksi();
-      tipeDokumenCetak = 'LAPORAN_LANDSCAPE';
-
-      const btnCsvModal = document.getElementById('btnModalExportCsv');
-      if (btnCsvModal) {
-        btnCsvModal.classList.remove('hidden');
-        btnCsvModal.classList.add('flex');
-      }
-
-      const kronologis = filtered.map(f => f.item).reverse();
-      const totalMasuk = kronologis.filter(l => l.jenis === 'MASUK').reduce((a, b) => a + Number(b.jumlah || 0), 0);
-      const totalKeluar = kronologis.filter(l => l.jenis === 'KELUAR').reduce((a, b) => a + Number(b.jumlah || 0), 0);
-      const totalStokAktif = masterStok.reduce((a, b) => a + Number(b.stok || 0), 0);
-
-      let ketPeriode = "SEMUA RIWAYAT MUTASI GUDANG";
-      if (targetMode === 'HARIAN') {
-        ketPeriode = "LAPORAN HARIAN (" + (document.getElementById('filterTanggal')?.value || "Hari Ini") + ")";
-      } else if (targetMode === 'MINGGUAN') {
-        ketPeriode = "LAPORAN MINGGUAN (7 HARI TERAKHIR)";
-      } else if (targetMode === 'BULANAN') {
-        ketPeriode = "LAPORAN BULANAN";
-      }
-
-      const kodeLap = `LAP-SISAPI-${targetMode}-${new Date().toISOString().split('T')[0].replace(/-/g, '')}`;
-      dataCetakAktif = { kodeRef: kodeLap };
-
-      const qrData = [
-        "LAPORAN MUTASI GUDANG SISAPI",
-        "CV YUDISTIRA CATTLE AND FARM",
-        "Periode: " + ketPeriode,
-        "Total Transaksi: " + kronologis.length + " SJ",
-        "Total Masuk: +" + formatAngka(totalMasuk) + " Unit",
-        "Total Keluar: -" + formatAngka(totalKeluar) + " Unit",
-        "Total Stok Gudang: " + formatAngka(totalStokAktif) + " Unit"
-      ].join("\n");
-      const qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=110x110&margin=2&data=" + encodeURIComponent(qrData);
-
-      let rowsHtml = '';
-      if (kronologis.length === 0) {
-        rowsHtml = `<tr><td colspan="10" style="padding: 18px; text-align: center; color: #64748b;">Tidak ada transaksi pada periode ini.</td></tr>`;
-      } else {
-        kronologis.forEach((item, idx) => {
-          const isMasuk = item.jenis === 'MASUK';
-          const isKeluar = item.jenis === 'KELUAR';
-          rowsHtml += `
-            <tr style="border-bottom: 1px solid #e2e8f0; page-break-inside: avoid;">
-              <td style="padding: 7px 6px; text-align: center; color: #64748b; font-weight: 700;">${idx + 1}</td>
-              <td style="padding: 7px 6px; white-space: nowrap;">
-                <div style="font-weight: 700;">${normalizeDateStr(item.tanggal)}</div>
-                <div style="font-size: 9px; color: #64748b; font-family: monospace;">${item.timestamp || ''}</div>
-              </td>
-              <td style="padding: 7px 6px; white-space: nowrap;">
-                <div style="font-family: monospace; font-weight: 800; color: #0f172a;">${item.suratJalan}</div>
-                <div style="font-size: 9px; font-weight: 700; color: ${isMasuk ? '#059669' : (isKeluar ? '#e11d48' : '#d97706')};">${item.jenis}</div>
-              </td>
-              <td style="padding: 7px 6px;">
-                <div style="font-weight: 700;">${item.armada || '-'} (${item.nopol || '-'})</div>
-                <div style="font-size: 9.5px; color: #475569;">${item.sopir || '-'}</div>
-              </td>
-              <td style="padding: 7px 6px;">
-                <div style="font-weight: 800; color: #0f172a;">${item.namaBarang}</div>
-                <div style="font-size: 9px; color: #64748b; font-family: monospace;">[${item.kodeBarang}] ${item.kategori || ''}</div>
-              </td>
-              <td style="padding: 7px 6px; text-align: right; font-family: monospace; color: #475569; white-space: nowrap;">
-                ${formatAngka(item.jumlah)} ${item.satuan}
-              </td>
-              <td style="padding: 7px 6px; text-align: right; font-family: monospace; font-weight: 800; color: #059669; white-space: nowrap;">
-                ${isMasuk ? '+' + formatAngka(item.jumlah) + ' ' + item.satuan : '-'}
-              </td>
-              <td style="padding: 7px 6px; text-align: right; font-family: monospace; font-weight: 800; color: #e11d48; white-space: nowrap;">
-                ${isKeluar ? '-' + formatAngka(item.jumlah) + ' ' + item.satuan : '-'}
-              </td>
-              <td style="padding: 7px 6px; text-align: right; font-family: monospace; font-weight: 800; color: #0f172a; white-space: nowrap;">
-                ${formatAngka(item.stokAkhir)} ${item.satuan}
-              </td>
-              <td style="padding: 7px 6px; text-align: center; font-weight: 700; font-size: 9.5px;">
-                ${item.admin || 'ADMIN'}
-              </td>
-            </tr>`;
-        });
-      }
-
-      if (document.getElementById('judulModalCetak')) {
-        document.getElementById('judulModalCetak').innerText = `Laporan Landscape (${targetMode})`;
-      }
-
-      document.getElementById('areaDokumenCetak').innerHTML = `
-        <div id="kartuDokumenTarget" style="width: 100%; max-width: 1080px; margin: 0 auto; font-family: 'Inter', Arial, sans-serif; color: #0f172a; background: #ffffff; border: 2px solid #0f172a; padding: 22px; border-radius: 10px; box-sizing: border-box;">
-          
-          <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 3px double #0f172a; padding-bottom: 12px; margin-bottom: 14px;">
-            <div style="display: flex; align-items: center; gap: 12px;">
-              <img src="icon.png" alt="Logo" style="width: 52px; height: 52px; object-fit: contain;" onerror="this.style.display='none'">
-              <div>
-                <div style="font-size: 16px; font-weight: 800; color: #0f172a; letter-spacing: 0.4px;">SISAPI — LAPORAN MUTASI KELUAR MASUK BARANG GUDANG</div>
-                <div style="font-size: 12px; font-weight: 800; color: #059669;">CV YUDISTIRA CATTLE AND FARM</div>
-                <div style="font-size: 10px; color: #64748b;">Waktu Cetak: ${new Date().toLocaleString('id-ID')} WIB</div>
-              </div>
-            </div>
-            <div style="text-align: right;">
-              <div style="background: #0f172a; color: #ffffff; font-weight: 800; font-size: 10px; padding: 5px 10px; border-radius: 4px; display: inline-block;">${ketPeriode}</div>
-              <div style="font-size: 11px; font-weight: 800; font-family: monospace; margin-top: 5px;">No: ${kodeLap}</div>
-            </div>
-          </div>
-
-          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; background: #f8fafc; border: 1.5px dashed #94a3b8; border-radius: 8px; padding: 10px 12px; margin-bottom: 14px; font-size: 11px;">
-            <div>
-              <div style="font-size: 9px; font-weight: 700; color: #64748b; text-transform: uppercase;">Total Surat Jalan</div>
-              <div style="font-weight: 800; font-family: monospace; color: #0f172a; margin-top: 2px; font-size: 13px;">${kronologis.length} Transaksi</div>
-            </div>
-            <div>
-              <div style="font-size: 9px; font-weight: 700; color: #64748b; text-transform: uppercase;">Total Masuk (+)</div>
-              <div style="font-weight: 800; font-family: monospace; color: #059669; margin-top: 2px; font-size: 13px;">+${formatAngka(totalMasuk)} Unit</div>
-            </div>
-            <div>
-              <div style="font-size: 9px; font-weight: 700; color: #64748b; text-transform: uppercase;">Total Keluar (-)</div>
-              <div style="font-weight: 800; font-family: monospace; color: #e11d48; margin-top: 2px; font-size: 13px;">-${formatAngka(totalKeluar)} Unit</div>
-            </div>
-            <div style="background: #0f172a; color: #ffffff; padding: 5px 10px; border-radius: 6px;">
-              <div style="font-size: 9px; font-weight: 700; color: #cbd5e1; text-transform: uppercase;">Stok Gudang Saat Ini</div>
-              <div style="font-weight: 800; font-family: monospace; color: #fbbf24; margin-top: 2px; font-size: 13px;">${formatAngka(totalStokAktif)} Unit</div>
-            </div>
-          </div>
-
-          <table style="width: 100%; border-collapse: collapse; font-size: 10.5px; margin-bottom: 16px;">
-            <thead>
-              <tr style="background: #0f172a; color: #ffffff; text-transform: uppercase; font-size: 9.5px;">
-                <th style="padding: 7px 6px; text-align: center; width: 4%;">No</th>
-                <th style="padding: 7px 6px; text-align: left; width: 11%;">Tanggal</th>
-                <th style="padding: 7px 6px; text-align: left; width: 14%;">No. SJ / Ref</th>
-                <th style="padding: 7px 6px; text-align: left; width: 17%;">Armada & Relasi</th>
-                <th style="padding: 7px 6px; text-align: left; width: 18%;">Nama Barang</th>
-                <th style="padding: 7px 6px; text-align: right; width: 9%;">Jumlah</th>
-                <th style="padding: 7px 6px; text-align: right; width: 9%;">Masuk (+)</th>
-                <th style="padding: 7px 6px; text-align: right; width: 9%;">Keluar (-)</th>
-                <th style="padding: 7px 6px; text-align: right; width: 9%;">Stok Akhir</th>
-                <th style="padding: 7px 6px; text-align: center; width: 6%;">Admin</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${rowsHtml}
-            </tbody>
-            <tfoot>
-              <tr style="background: #f1f5f9; border-top: 2px solid #0f172a; border-bottom: 2px solid #0f172a; font-weight: 800;">
-                <td colspan="6" style="padding: 8px 6px; text-align: right; text-transform: uppercase;">TOTAL VOLUME MUTASI (${targetMode}) :</td>
-                <td style="padding: 8px 6px; text-align: right; font-family: monospace; color: #059669;">+${formatAngka(totalMasuk)}</td>
-                <td style="padding: 8px 6px; text-align: right; font-family: monospace; color: #e11d48;">-${formatAngka(totalKeluar)}</td>
-                <td colspan="2" style="padding: 8px 6px; text-align: right; font-family: monospace; color: #0f172a;">${kronologis.length} SJ</td>
-              </tr>
-            </tfoot>
-          </table>
-
-          <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin-top: 12px; page-break-inside: avoid;">
-            <div style="display: flex; align-items: center; gap: 10px;">
-              <img src="${qrUrl}" crossorigin="anonymous" alt="QR" style="width: 68px; height: 68px; border: 1px solid #cbd5e1; padding: 2px; border-radius: 4px;">
-              <div>
-                <svg id="barcodeCetakTarget"></svg>
-                <div style="font-size: 8.5px; color: #64748b; margin-top: 2px;">Dokumen Sah Laporan Pergudangan SISAPI</div>
-              </div>
-            </div>
-            <div style="display: flex; gap: 32px; text-align: center; font-size: 10px;">
-              <div style="min-width: 130px;">
-                <div>Mengetahui / Manager,</div>
-                <div style="height: 38px;"></div>
-                <div style="font-weight: 800; border-top: 1px solid #0f172a; padding-top: 2px;">( MANAGER OPERASIONAL )</div>
-              </div>
-              <div style="min-width: 130px;">
-                <div>Admin Gudang SISAPI,</div>
-                <div style="height: 38px;"></div>
-                <div style="font-weight: 800; border-top: 1px solid #0f172a; padding-top: 2px;">( ${activeShift ? activeShift.namaAdmin : 'ADMIN'} )</div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      `;
-
-      openModal('modalPreviewCetak');
-      setTimeout(() => {
-        try {
-          if (window.JsBarcode) {
-            JsBarcode("#barcodeCetakTarget", kodeLap, { format: "CODE128", width: 1.15, height: 28, displayValue: true, fontSize: 9, margin: 0 });
-          }
-        } catch(e) {}
-      }, 80);
-
-      if (autoTriggerPrint) {
-        setTimeout(() => eksekusiPrintWindow(), 250);
-      }
-    }
-
-    async function unduhDokumenPNG() {
-      const target = document.getElementById('kartuDokumenTarget');
-      if (!target || !window.html2canvas) {
-        eksekusiPrintWindow();
-        return;
-      }
-      showCenterLoading("Mengunduh Gambar Nota...");
-      try {
-        const canvas = await html2canvas(target, { scale: 2, useCORS: true, backgroundColor: "#ffffff" });
-        const link = document.createElement('a');
-        const kode = dataCetakAktif ? String(dataCetakAktif.suratJalan || dataCetakAktif.noInvoice || dataCetakAktif.kodeRef || 'SISAPI').replace(/[^a-zA-Z0-9_-]/g, '_') : 'SISAPI_DOKUMEN';
-        link.download = `${kode}.png`;
-        link.href = canvas.toDataURL('image/png');
-        link.click();
-        showToast("Gambar Berhasil Diunduh!");
-      } catch (err) {
-        eksekusiPrintWindow();
-      }
-      hideCenterLoading();
-    }
-
     function eksekusiPrintWindow() {
       const content = document.getElementById('areaDokumenCetak').innerHTML;
-      const isLandscape = tipeDokumenCetak === 'LAPORAN_LANDSCAPE';
-      const printWin = window.open('', '_blank', 'width=1100,height=780');
+      const printWin = window.open('', '_blank', 'width=950,height=700');
       printWin.document.write(`
         <!DOCTYPE html>
         <html>
         <head>
-          <title>Cetak Dokumen SISAPI</title>
+          <title>Cetak Dokumen - SISAPI CV YUDISTIRA CATTLE AND FARM</title>
           <style>
-            @page { size: ${isLandscape ? 'landscape' : 'auto'}; margin: 8mm; }
-            body { margin: 0; padding: 0; font-family: 'Inter', Arial, sans-serif; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-            .sj-print-wrapper { width: 100% !important; max-width: 100% !important; box-sizing: border-box; }
-            tr { page-break-inside: avoid; }
+            @page { size: A4 portrait; margin: 12mm; }
+            body {
+              margin: 0;
+              padding: 0;
+              font-family: 'Inter', Arial, sans-serif;
+              -webkit-print-color-adjust: exact !important;
+              print-color-adjust: exact !important;
+            }
+            .sj-print-wrapper {
+              width: 100% !important;
+              max-width: 100% !important;
+              box-sizing: border-box;
+            }
           </style>
         </head>
         <body>
           ${content}
           <script>
-            window.onload = function() { setTimeout(function() { window.print(); window.close(); }, 400); };
+            window.onload = function() {
+              setTimeout(function() {
+                window.print();
+                window.close();
+              }, 450);
+            };
           <\/script>
         </body>
         </html>
@@ -2764,7 +2708,7 @@
     }
 
     /* ========================================================= */
-    /* SINKRONISASI SERVER ASLI (100% AMAN & COCOK DENGAN KODE.GS) */
+    /* SINKRONISASI SERVER & HELPERS                             */
     /* ========================================================= */
     async function eksekusiPerubahanData(payload, fallbackLocalFn) {
       if (SCRIPT_URL) {
@@ -2833,23 +2777,20 @@
       }, 500);
     }
 
-    function exportCSV(periodePilihan) {
-      const targetMode = periodePilihan || modeLaporanAktif;
-      const filtered = getFilteredLogTransaksi();
-      const dataToExport = filtered.map(f => f.item);
-
+    function exportCSV() {
+      const dataToExport = getFilteredLogTransaksi();
       if (dataToExport.length === 0) {
         showToast("Tidak ada data untuk diexport!");
         return;
       }
-      let csv = "\uFEFFID,Waktu,Tanggal,Jenis,SJ,Armada,Nopol,Sopir,Kode,Barang,Jumlah,Satuan,StokAkhir,Keterangan,Admin\n";
-      dataToExport.forEach(r => {
-        csv += `"${r.id || ''}","${r.timestamp || ''}","${r.tanggal || ''}","${r.jenis || ''}","${r.suratJalan || ''}","${r.armada || ''}","${r.nopol || ''}","${String(r.sopir || '').replace(/"/g, '""')}","${r.kodeBarang || ''}","${String(r.namaBarang || '').replace(/"/g, '""')}",${r.jumlah || 0},"${r.satuan || ''}",${r.stokAkhir || 0},"${String(r.keterangan || '').replace(/"/g, '""')}","${r.admin || 'ADMIN'}"\n`;
+      let csv = "ID,Waktu,Tanggal,Jenis,SJ,Armada,Nopol,Sopir,Kode,Barang,Jumlah,Satuan,StokAkhir,Keterangan,Admin\n";
+      dataToExport.forEach(({ item: r }) => {
+        csv += `"${r.id || ''}","${r.timestamp || ''}","${r.tanggal || ''}","${r.jenis || ''}","${r.suratJalan || ''}","${r.armada || ''}","${r.nopol || ''}","${r.sopir || ''}","${r.kodeBarang || ''}","${r.namaBarang || ''}",${r.jumlah || 0},"${r.satuan || ''}",${r.stokAkhir || 0},"${r.keterangan || ''}","${r.admin || 'ADMIN'}"\n`;
       });
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
-      link.download = `Laporan_SISAPI_${targetMode}_${new Date().toISOString().split('T')[0]}.csv`;
+      link.download = `Laporan_SISAPI_${modeLaporanAktif}_${new Date().toISOString().split('T')[0]}.csv`;
       link.click();
       showToast("Laporan CSV berhasil diunduh!");
     }
@@ -2887,7 +2828,7 @@
   </script>
 
   <!-- ========================================================= -->
-  <!-- FLOATING POPUP KALKULATOR GUDANG (DENGAN KONVERSI SAK/KG) -->
+  <!-- FLOATING POPUP KALKULATOR GUDANG (PULIH DARI KODE ASLI)   -->
   <!-- ========================================================= -->
   <div id="floatingCalcWrapper" class="fixed bottom-6 right-6 z-50">
     <button type="button" onclick="toggleCalculator()" class="w-12 h-12 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white shadow-2xl flex items-center justify-center text-lg transition transform hover:scale-110 border-2 border-white/20" title="Buka Kalkulator Gudang">
@@ -2932,6 +2873,7 @@
         <button type="button" onclick="calcInput('.')" class="bg-slate-800 hover:bg-slate-700 py-2.5 rounded-xl transition">.</button>
       </div>
 
+      <!-- Kotak Pintasan Konversi Sak ⇄ Kg (1 Sak = 50 Kg) -->
       <div class="pt-2 border-t border-slate-800 text-[11px] space-y-1.5">
         <div class="text-slate-400 font-semibold">Konversi 1:50 (Sak ⇄ Kg)</div>
         <div class="flex space-x-1">
@@ -2947,31 +2889,58 @@
   </div>
 
   <script>
+    /* ========================================================= */
+    /* LOGIKA JAVASCRIPT KALKULATOR POPUP & KONVERSI SAK         */
+    /* ========================================================= */
     let calcExpression = "0";
+
     function toggleCalculator() {
       const box = document.getElementById('calcPopupBox');
       if (box) box.classList.toggle('hidden');
     }
+
     function updateCalcScreen() {
       const screen = document.getElementById('calcScreen');
       if (screen) screen.innerText = calcExpression;
     }
-    function calcClear() { calcExpression = "0"; updateCalcScreen(); }
+
+    function calcClear() {
+      calcExpression = "0";
+      updateCalcScreen();
+    }
+
     function calcBack() {
-      calcExpression = calcExpression.length > 1 ? calcExpression.slice(0, -1) : "0";
+      if (calcExpression.length > 1) {
+        calcExpression = calcExpression.slice(0, -1);
+      } else {
+        calcExpression = "0";
+      }
       updateCalcScreen();
     }
+
     function calcInput(char) {
-      calcExpression = (calcExpression === "0" && !['+', '-', '*', '/','.'].includes(char)) ? char : calcExpression + char;
+      if (calcExpression === "0" && !['+', '-', '*', '/'].includes(char)) {
+        calcExpression = char;
+      } else {
+        calcExpression += char;
+      }
       updateCalcScreen();
     }
+
     function calcResult() {
       try {
         let hasil = Function('"use strict"; return (' + calcExpression + ')')();
-        calcExpression = isFinite(hasil) ? String(Math.round(hasil * 1000) / 1000) : "Error";
-      } catch (err) { calcExpression = "Error"; }
+        if (isNaN(hasil) || !isFinite(hasil)) {
+          calcExpression = "Error";
+        } else {
+          calcExpression = String(Math.round(hasil * 1000) / 1000);
+        }
+      } catch (err) {
+        calcExpression = "Error";
+      }
       updateCalcScreen();
     }
+
     function convertSakToKg() {
       const inputSak = document.getElementById('calcSakInput');
       if (!inputSak || !inputSak.value) return;
@@ -2979,9 +2948,12 @@
       const hasilKg = val * 50;
       calcExpression = String(hasilKg);
       updateCalcScreen();
-      if (document.getElementById('calcKgInput')) document.getElementById('calcKgInput').value = hasilKg;
+      if (document.getElementById('calcKgInput')) {
+        document.getElementById('calcKgInput').value = hasilKg;
+      }
       showToast(`${val} Sak = ${formatAngka(hasilKg)} Kg`);
     }
+
     function convertKgToSak() {
       const inputKg = document.getElementById('calcKgInput');
       if (!inputKg || !inputKg.value) return;
@@ -2989,7 +2961,9 @@
       const hasilSak = Math.round((val / 50) * 100) / 100;
       calcExpression = String(hasilSak);
       updateCalcScreen();
-      if (document.getElementById('calcSakInput')) document.getElementById('calcSakInput').value = hasilSak;
+      if (document.getElementById('calcSakInput')) {
+        document.getElementById('calcSakInput').value = hasilSak;
+      }
       showToast(`${formatAngka(val)} Kg = ${hasilSak} Sak`);
     }
   </script>
