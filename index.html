@@ -1663,8 +1663,8 @@
         showToast("Mode Lihat Saja!");
         return;
       }
-      const pages = { 'BERANDA': 'pageBeranda', 'STOK': 'pageStok', 'RIWAYAT': 'pageRiwayat' };
-      const navs = { 'BERANDA': 'navBeranda', 'STOK': 'navStok', 'RIWAYAT': 'navRiwayat' };
+      const pages = { 'BERANDA': 'pageBeranda', 'PRODUK': 'pageProduk', 'TRANSAKSI': 'pageTransaksi', 'STOK': 'pageStok', 'RIWAYAT': 'pageRiwayat' };
+      const navs = { 'BERANDA': 'navBeranda', 'PRODUK': 'navProduk', 'TRANSAKSI': 'navTransaksi', 'STOK': 'navStok', 'RIWAYAT': 'navRiwayat' };
 
       Object.values(pages).forEach(id => { const el = document.getElementById(id); if (el) el.classList.add('hidden'); });
       Object.values(navs).forEach(id => { const el = document.getElementById(id); if (el) el.classList.remove('nav-btn-active'); });
