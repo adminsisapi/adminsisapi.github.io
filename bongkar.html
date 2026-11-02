@@ -1,0 +1,1891 @@
+<!DOCTYPE html>
+<html lang="id" class="overflow-x-hidden">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Rekap Bongkar Muat & Kuli - CV. YUDISTIRA CATTLE AND FARM</title>
+  <link rel="icon" type="image/png" href="cv.png">
+  <link rel="apple-touch-icon" href="cv.png">
+  <meta name="theme-color" content="#0f172a">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
+      font-family: 'Inter', sans-serif;
+      background-color: #f1f5f9;
+      -webkit-tap-highlight-color: transparent;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+    .font-mono-code { font-family: 'JetBrains Mono', monospace; }
+    .sub-tab-active {
+      background-color: #059669 !important;
+      color: #ffffff !important;
+      border-color: #059669 !important;
+      box-shadow: 0 4px 6px -1px rgba(5, 150, 105, 0.25);
+    }
+    .chip-active {
+      background-color: #059669 !important;
+      color: #ffffff !important;
+      border-color: #059669 !important;
+    }
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+    /* Tema Mode Gelap (Dark Mode) */
+    body.dark-mode { background-color: #090d16 !important; color: #e2e8f0 !important; }
+    body.dark-mode .bg-white { background-color: #1e293b !important; color: #f1f5f9 !important; }
+    body.dark-mode .bg-slate-50, body.dark-mode .bg-slate-100 { background-color: #0f172a !important; color: #cbd5e1 !important; }
+    body.dark-mode .text-slate-800, body.dark-mode .text-slate-900, body.dark-mode .text-slate-700 { color: #f1f5f9 !important; }
+    body.dark-mode .text-slate-500, body.dark-mode .text-slate-600 { color: #94a3b8 !important; }
+    body.dark-mode .border-slate-200, body.dark-mode .border-slate-300, body.dark-mode .border-slate-100 { border-color: #334155 !important; }
+    body.dark-mode .divide-slate-200 > :not([hidden]) ~ :not([hidden]) { border-color: #334155 !important; }
+    body.dark-mode input, body.dark-mode select, body.dark-mode textarea {
+      background-color: #0f172a !important;
+      color: #f8fafc !important;
+      border-color: #334155 !important;
+    }
+    body.dark-mode tr.hover\:bg-slate-50:hover { background-color: rgba(51, 65, 85, 0.45) !important; }
+
+    @keyframes pulseLogo {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(0.88); opacity: 0.45; }
+    }
+    .animate-logo-blink { animation: pulseLogo 1s infinite ease-in-out; }
+  </style>
+</head>
+<body class="dark-mode text-slate-800 min-h-screen flex flex-col w-full">
+
+  <!-- OVERLAY LOADING TENGAH -->
+  <div id="centerLoadingOverlay" class="fixed inset-0 bg-slate-950/50 backdrop-blur-[2px] z-[90] hidden items-center justify-center p-4">
+    <div class="bg-slate-900/95 border border-slate-700 text-white px-5 py-4 rounded-2xl shadow-2xl flex flex-col items-center space-y-2.5 min-w-[150px]">
+      <div class="relative w-11 h-11 rounded-xl bg-emerald-500/20 border border-emerald-500/40 p-1.5 flex items-center justify-center animate-logo-blink">
+        <img src="cv.png" alt="Loading" class="w-full h-full object-contain rounded-lg" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+        <div class="hidden w-full h-full items-center justify-center text-emerald-400 text-lg"><i class="fa-solid fa-truck-ramp-box"></i></div>
+      </div>
+      <span id="centerLoadingText" class="text-[11px] font-bold tracking-wider uppercase text-emerald-400">Memproses...</span>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFIKASI MELAYANG -->
+  <div id="toast" class="fixed top-4 left-1/2 -translate-x-1/2 bg-slate-900/95 text-white px-4 py-2.5 rounded-full shadow-2xl border border-emerald-500/50 hidden items-center space-x-2 z-[100] text-xs font-bold backdrop-blur-md max-w-[90vw] truncate">
+    <i class="fa-solid fa-circle-check text-emerald-400 text-sm shrink-0"></i>
+    <span id="toastMsg" class="truncate">Berhasil!</span>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- 1. BARIS HEADER UTAMA DI ATAS (RESPONSIF HP & TABLET)     -->
+  <!-- ========================================================= -->
+  <header class="bg-slate-900 text-white shadow-lg sticky top-0 z-30 border-b border-slate-800 w-full">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2.5">
+      <div class="flex items-center justify-between gap-2">
+        
+        <!-- Identitas Gudang & Perusahaan -->
+        <div class="flex items-center space-x-2.5 min-w-0">
+          <div class="w-10 h-10 rounded-xl bg-white/10 border border-slate-700 p-1 flex items-center justify-center shadow shrink-0 overflow-hidden">
+            <img src="cv.png" alt="Logo" class="w-full h-full object-contain rounded-lg" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="hidden w-full h-full bg-emerald-600 text-white items-center justify-center font-extrabold rounded-lg text-sm">
+              <i class="fa-solid fa-truck-ramp-box"></i>
+            </div>
+          </div>
+          <div class="min-w-0">
+            <div class="flex items-center space-x-1.5">
+              <h1 class="text-xs sm:text-base font-extrabold tracking-wide text-white truncate">Rekap Bongkar Muat & Kuli</h1>
+              <span class="hidden sm:inline-block bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[9px] px-2 py-0.5 rounded-full font-extrabold uppercase shrink-0">CLOUD AKTIF</span>
+            </div>
+            <p class="text-[10px] sm:text-xs text-amber-400 font-bold tracking-wider uppercase truncate">CV. YUDISTIRA CATTLE AND FARM</p>
+          </div>
+        </div>
+
+        <!-- Jam Live (Tampil di Tablet/Desktop) -->
+        <div class="hidden lg:flex items-center space-x-2 bg-slate-800/90 border border-slate-700 px-3 py-1.5 rounded-xl text-xs shrink-0">
+          <i class="fa-regular fa-clock text-emerald-400"></i>
+          <span id="liveClockHeader" class="font-mono-code font-semibold text-slate-200">Memuat...</span>
+        </div>
+
+        <!-- Deretan Tombol Baris Atas -->
+        <div class="flex items-center space-x-1.5 shrink-0">
+          <button onclick="syncFromGoogleSheets(false)" class="bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-slate-700 px-2.5 h-8 rounded-xl text-xs font-bold transition flex items-center space-x-1.5" title="Sinkronisasi Google Sheets">
+            <i id="syncIcon" class="fa-solid fa-rotate"></i>
+            <span class="hidden sm:inline">Sync</span>
+          </button>
+
+          <button onclick="openModal('modalCloudSync')" class="bg-slate-800 hover:bg-slate-700 text-blue-400 border border-slate-700 w-8 h-8 rounded-xl text-xs transition flex items-center justify-center" title="Pengaturan URL Script GS">
+            <i class="fa-solid fa-link"></i>
+          </button>
+
+          <button onclick="toggleDarkMode()" class="bg-slate-800 hover:bg-slate-700 text-amber-400 border border-slate-700 w-8 h-8 rounded-xl text-xs transition flex items-center justify-center" title="Mode Gelap / Terang">
+            <i id="themeIcon" class="fa-solid fa-sun"></i>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================= -->
+  <!-- 2. KONTEN UTAMA (KOTAK KPI, AKSI CEPAT & TABEL REKAP)     -->
+  <!-- ========================================================= -->
+  <main class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6 flex-grow w-full space-y-5">
+
+    <!-- BARIS 1: 3 KOTAK RINGKASAN TONASE OTOMATIS (KPI CARDS) -->
+    <section class="grid grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-4">
+
+      <!-- Kotak 1: Total Tonase Keseluruhan (Turun + Naik) -->
+      <div class="col-span-2 lg:col-span-1 bg-gradient-to-br from-emerald-900 via-slate-900 to-slate-900 text-white p-4 rounded-2xl shadow-lg border border-emerald-500/40 flex flex-col justify-between">
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] sm:text-xs font-extrabold text-emerald-300 uppercase tracking-wider">TOTAL TONASE (TURUN + NAIK)</span>
+          <span class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center text-sm"><i class="fa-solid fa-weight-hanging"></i></span>
+        </div>
+        <div class="mt-2.5">
+          <h2 id="kpiTotalTon" class="text-xl sm:text-2xl font-extrabold font-mono-code text-amber-400 tracking-tight">0,0 TON</h2>
+          <p id="kpiSubTotal" class="text-[10px] text-slate-300 mt-0.5">Shift Pagi: 0,0 Ton • Shift Malam: 0,0 Ton</p>
+        </div>
+      </div>
+
+      <!-- Kotak 2: Total Bongkar / Turun -->
+      <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] sm:text-xs font-extrabold text-blue-500 uppercase">TOTAL TURUN / BONGKAR</span>
+          <span class="w-8 h-8 rounded-xl bg-blue-500/15 text-blue-500 flex items-center justify-center text-xs"><i class="fa-solid fa-arrow-down-long"></i></span>
+        </div>
+        <div class="mt-2">
+          <h3 id="kpiTotalTurun" class="text-sm sm:text-lg font-extrabold font-mono-code text-blue-500">0,0 TON</h3>
+          <p id="kpiCountTurun" class="text-[10px] text-slate-500 font-semibold mt-0.5">0 Armada Turun</p>
+        </div>
+      </div>
+
+      <!-- Kotak 3: Total Muat / Naik -->
+      <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] sm:text-xs font-extrabold text-emerald-500 uppercase">TOTAL NAIK / MUAT</span>
+          <span class="w-8 h-8 rounded-xl bg-emerald-500/15 text-emerald-500 flex items-center justify-center text-xs"><i class="fa-solid fa-arrow-up-long"></i></span>
+        </div>
+        <div class="mt-2">
+          <h3 id="kpiTotalNaik" class="text-sm sm:text-lg font-extrabold font-mono-code text-emerald-500">0,0 TON</h3>
+          <p id="kpiCountNaik" class="text-[10px] text-slate-500 font-semibold mt-0.5">0 Armada Naik</p>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- BARIS 2: MENU KOTAK-KOTAK AKSI CEPAT DI DEPAN -->
+    <section class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4">
+      
+      <!-- Menu Kotak 1: Input Naik / Muat Kuli -->
+      <button type="button" onclick="bukaModalBM('NAIK')" class="bg-white hover:border-emerald-500 border-2 border-slate-200 rounded-2xl p-4 shadow-sm transition flex flex-col justify-between text-left group active:scale-95">
+        <div class="flex items-center justify-between w-full">
+          <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-base shadow group-hover:scale-105 transition">
+            <i class="fa-solid fa-truck-loading"></i>
+          </div>
+          <span class="text-[10px] font-extrabold bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full">+ NAIK / MUAT</span>
+        </div>
+        <div class="mt-3">
+          <h4 class="text-xs sm:text-sm font-extrabold text-slate-800">Input Naik / Muat</h4>
+          <p class="text-[10px] sm:text-[11px] text-slate-500 mt-0.5">Muat Kontainer / Truck & Kuli</p>
+        </div>
+      </button>
+
+      <!-- Menu Kotak 2: Input Turun / Bongkar Kuli -->
+      <button type="button" onclick="bukaModalBM('TURUN')" class="bg-white hover:border-blue-500 border-2 border-slate-200 rounded-2xl p-4 shadow-sm transition flex flex-col justify-between text-left group active:scale-95">
+        <div class="flex items-center justify-between w-full">
+          <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center text-base shadow group-hover:scale-105 transition">
+            <i class="fa-solid fa-dolly"></i>
+          </div>
+          <span class="text-[10px] font-extrabold bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded-full">TURUN / BONGKAR</span>
+        </div>
+        <div class="mt-3">
+          <h4 class="text-xs sm:text-sm font-extrabold text-slate-800">Input Turun / Bongkar</h4>
+          <p class="text-[10px] sm:text-[11px] text-slate-500 mt-0.5">Bongkar Barang Kontainer / Truck</p>
+        </div>
+      </button>
+
+      <!-- Menu Kotak 3: Kelola Tim & Nama Kuli Manual -->
+      <button type="button" onclick="openModal('modalKelolaKuli')" class="bg-white hover:border-amber-500 border-2 border-slate-200 rounded-2xl p-4 shadow-sm transition flex flex-col justify-between text-left group active:scale-95">
+        <div class="flex items-center justify-between w-full">
+          <div class="w-10 h-10 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center text-base shadow group-hover:scale-105 transition">
+            <i class="fa-solid fa-users-gear"></i>
+          </div>
+          <span class="text-[10px] font-extrabold bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded-full">TIM & KULI</span>
+        </div>
+        <div class="mt-3">
+          <h4 class="text-xs sm:text-sm font-extrabold text-slate-800">Tim & Nama Kuli</h4>
+          <p class="text-[10px] sm:text-[11px] text-slate-500 mt-0.5">Tim 1, Tim 2 & Tambah Manual</p>
+        </div>
+      </button>
+
+      <!-- Menu Kotak 4: Pilihan Cetak & Unduh Laporan -->
+      <button type="button" onclick="openModal('modalPilihLaporan')" class="bg-white hover:border-purple-500 border-2 border-slate-200 rounded-2xl p-4 shadow-sm transition flex flex-col justify-between text-left group active:scale-95">
+        <div class="flex items-center justify-between w-full">
+          <div class="w-10 h-10 rounded-xl bg-purple-600 text-white flex items-center justify-center text-base shadow group-hover:scale-105 transition">
+            <i class="fa-solid fa-print"></i>
+          </div>
+          <span class="text-[10px] font-extrabold bg-purple-500/20 text-purple-400 px-2 py-0.5 rounded-full">CETAK / CSV</span>
+        </div>
+        <div class="mt-3">
+          <h4 class="text-xs sm:text-sm font-extrabold text-slate-800">Cetak & Unduh Rekap</h4>
+          <p class="text-[10px] sm:text-[11px] text-slate-500 mt-0.5">Format Tabel Kontainer & CSV</p>
+        </div>
+      </button>
+
+    </section>
+
+    <!-- BARIS 3: FILTER PERIODE (HARIAN, MINGGUAN, BULANAN) & TABEL REKAP -->
+    <section class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden p-4 sm:p-5 space-y-4">
+      
+      <!-- Baris Atas: Tab Harian / Mingguan / Bulanan / Semua & Tombol Cetak / CSV -->
+      <div class="flex flex-wrap items-center justify-between gap-2.5 border-b border-slate-100 pb-3">
+        <div class="flex flex-wrap items-center gap-1.5">
+          <button type="button" onclick="setModePeriode('HARIAN')" id="tabPeriodeHarian" class="sub-tab-active px-3 py-1.5 rounded-xl text-xs font-extrabold bg-slate-100 text-slate-700 border border-slate-300 transition">Harian</button>
+          <button type="button" onclick="setModePeriode('MINGGUAN')" id="tabPeriodeMingguan" class="px-3 py-1.5 rounded-xl text-xs font-extrabold bg-slate-100 text-slate-700 border border-slate-300 transition">Mingguan</button>
+          <button type="button" onclick="setModePeriode('BULANAN')" id="tabPeriodeBulanan" class="px-3 py-1.5 rounded-xl text-xs font-extrabold bg-slate-100 text-slate-700 border border-slate-300 transition">Bulanan</button>
+          <button type="button" onclick="setModePeriode('SEMUA')" id="tabPeriodeSemua" class="px-3 py-1.5 rounded-xl text-xs font-extrabold bg-slate-100 text-slate-700 border border-slate-300 transition">Semua Data</button>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-1.5">
+          <button type="button" onclick="bukaModalCetakRekap(modePeriodeAktif, false)" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-xl text-xs font-extrabold shadow flex items-center space-x-1.5 transition">
+            <i class="fa-solid fa-table-list"></i>
+            <span id="btnQuickPrintText">Lihat & Cetak Rekap (Harian)</span>
+          </button>
+          <button type="button" onclick="exportRekapCSV(modePeriodeAktif)" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-xl text-xs font-extrabold shadow flex items-center space-x-1.5 transition">
+            <i class="fa-solid fa-file-csv"></i>
+            <span>CSV</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Baris Sub-Filter Detail (Tanggal / Minggu / Bulan / Shift / Barang / Cari) -->
+      <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5 items-end">
+        
+        <!-- Box Filter Harian -->
+        <div id="boxFilterHarian" class="col-span-2 sm:col-span-1">
+          <div class="flex justify-between mb-1">
+            <label class="text-[10px] font-bold text-slate-500 uppercase">Pilih Tanggal</label>
+            <button type="button" onclick="setTodayFilter()" class="text-[10px] font-extrabold text-emerald-500 hover:underline">Hari Ini</button>
+          </div>
+          <input type="date" id="filterTanggalHarian" onchange="renderSeluruhAplikasi()" class="w-full rounded-xl border border-slate-300 px-2.5 py-1.5 text-xs font-bold bg-white">
+        </div>
+
+        <!-- Box Filter Mingguan -->
+        <div id="boxFilterMingguan" class="hidden col-span-2 sm:col-span-1">
+          <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Rentang Mingguan</label>
+          <select id="filterRentangMinggu" onchange="renderSeluruhAplikasi()" class="w-full rounded-xl border border-slate-300 px-2.5 py-1.5 text-xs font-bold bg-white">
+            <option value="7">7 Hari Terakhir</option>
+            <option value="14">14 Hari Terakhir</option>
+            <option value="MINGGU_INI">Minggu Kalender Ini</option>
+          </select>
+        </div>
+
+        <!-- Box Filter Bulanan -->
+        <div id="boxFilterBulanan" class="hidden col-span-2 sm:col-span-1 grid grid-cols-2 gap-1.5">
+          <div>
+            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Bulan</label>
+            <select id="filterBulan" onchange="renderSeluruhAplikasi()" class="w-full rounded-xl border border-slate-300 px-2 py-1.5 text-xs font-bold bg-white">
+              <option value="01">Jan</option><option value="02">Feb</option><option value="03">Mar</option>
+              <option value="04">Apr</option><option value="05">Mei</option><option value="06">Jun</option>
+              <option value="07">Jul</option><option value="08">Agu</option><option value="09">Sep</option>
+              <option value="10">Okt</option><option value="11">Nov</option><option value="12">Des</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Tahun</label>
+            <select id="filterTahun" onchange="renderSeluruhAplikasi()" class="w-full rounded-xl border border-slate-300 px-2 py-1.5 text-xs font-bold bg-white">
+              <option value="2025">2025</option>
+              <option value="2026" selected>2026</option>
+              <option value="2027">2027</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Info Box Saat Mode SEMUA -->
+        <div id="boxFilterSemua" class="hidden col-span-2 sm:col-span-1">
+          <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Rentang Waktu</label>
+          <div class="px-3 py-1.5 rounded-xl border border-slate-200 bg-slate-50 text-xs font-bold text-slate-500">Semua Riwayat</div>
+        </div>
+
+        <!-- Filter Shift -->
+        <div>
+          <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Shift / Admin</label>
+          <select id="filterShift" onchange="renderSeluruhAplikasi()" class="w-full rounded-xl border border-slate-300 px-2.5 py-1.5 text-xs font-bold bg-white">
+            <option value="SEMUA">Semua Shift</option>
+            <option value="PAGI">Shift Pagi (SUFYAN)</option>
+            <option value="MALAM">Shift Malam (HASFHI)</option>
+          </select>
+        </div>
+
+        <!-- Filter Nama Barang -->
+        <div>
+          <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Nama Barang</label>
+          <select id="filterBarang" onchange="renderSeluruhAplikasi()" class="w-full rounded-xl border border-slate-300 px-2.5 py-1.5 text-xs font-bold bg-white">
+            <option value="SEMUA">Semua Barang</option>
+            <option value="Super Potong">Super Potong</option>
+            <option value="Super Gemuk">Super Gemuk</option>
+            <option value="Super Max">Super Max</option>
+            <option value="Super Sayyan">Super Sayyan</option>
+            <option value="CGF">CGF</option>
+          </select>
+        </div>
+
+        <!-- Pencarian Cepat -->
+        <div class="col-span-2">
+          <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Pencarian Cepat</label>
+          <div class="relative">
+            <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
+            <input type="text" id="searchBM" oninput="renderSeluruhAplikasi()" placeholder="Cari Kontainer, Truck, Barang, Driver, atau Nama Kuli..." class="w-full pl-8 pr-3 py-1.5 rounded-xl border border-slate-300 text-xs font-semibold">
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabel Rekap Bongkar Muat (Gaya Spreadsheet Biru-Kuning) -->
+      <div class="overflow-x-auto custom-scrollbar rounded-xl border border-slate-300">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="bg-[#1e3a5f] text-white text-[10px] sm:text-[11px] uppercase tracking-wider">
+              <th class="py-3 px-3 font-extrabold border-r border-slate-600/40">Tanggal & Shift</th>
+              <th class="py-3 px-3 font-extrabold border-r border-slate-600/40">Tim / Armada</th>
+              <th class="py-3 px-3 font-extrabold border-r border-slate-600/40">Nama Barang</th>
+              <th class="py-3 px-2.5 font-extrabold text-center border-r border-slate-600/40">Waktu</th>
+              <th class="py-3 px-3 font-extrabold text-right text-sky-300 border-r border-slate-600/40">Turun (Ton)</th>
+              <th class="py-3 px-3 font-extrabold text-right text-emerald-300 border-r border-slate-600/40">Naik (Ton)</th>
+              <th class="py-3 px-3 font-extrabold text-right text-amber-300 border-r border-slate-600/40">Total (Ton)</th>
+              <th class="py-3 px-3 font-extrabold text-center border-r border-slate-600/40">Driver</th>
+              <th class="py-3 px-3 font-extrabold border-r border-slate-600/40">Kuli</th>
+              <th class="py-3 px-2.5 font-extrabold text-center">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="tbodyBM" class="divide-y divide-slate-200 text-xs"></tbody>
+          <tfoot id="tfootBM" class="bg-slate-100 font-extrabold text-xs border-t-2 border-slate-400"></tfoot>
+        </table>
+      </div>
+
+      <!-- Kotak Ringkasan Admin Gudang Pagi & Malam (Persis Gambar Spreadsheet) -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+        <!-- Box Admin Pagi -->
+        <div class="border-2 border-slate-300 rounded-xl overflow-hidden text-center text-xs font-bold shadow-sm">
+          <div id="boxTglPagi" class="bg-slate-100 py-1.5 px-3 text-slate-700 border-b border-slate-300 font-mono-code">02/11/2026</div>
+          <div class="bg-[#ffff00] text-slate-950 py-1.5 px-3 font-extrabold uppercase tracking-wider border-b border-slate-300">ADMIN GUDANG</div>
+          <div class="bg-white py-1.5 px-3 text-slate-700 border-b border-slate-200">PAGI</div>
+          <div class="bg-white py-2 px-3 text-emerald-600 font-extrabold text-sm tracking-wide">SUFYAN</div>
+        </div>
+
+        <!-- Box Admin Malam -->
+        <div class="border-2 border-slate-300 rounded-xl overflow-hidden text-center text-xs font-bold shadow-sm">
+          <div id="boxTglMalam" class="bg-slate-100 py-1.5 px-3 text-slate-700 border-b border-slate-300 font-mono-code">02/11/2026</div>
+          <div class="bg-[#ffff00] text-slate-950 py-1.5 px-3 font-extrabold uppercase tracking-wider border-b border-slate-300">ADMIN GUDANG</div>
+          <div class="bg-white py-1.5 px-3 text-slate-700 border-b border-slate-200">MALAM</div>
+          <div class="bg-white py-2 px-3 text-blue-600 font-extrabold text-sm tracking-wide">HASFHI</div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- FOOTER RINGKAS -->
+  <footer class="max-w-7xl mx-auto px-4 py-4 text-center text-[11px] text-slate-500 w-full">
+    Sistem Rekap Bongkar Muat & Kuli — <b>CV. YUDISTIRA CATTLE AND FARM</b>
+  </footer>
+
+
+  <!-- ========================================================= -->
+  <!-- MODAL 1: INPUT BONGKAR MUAT & NAIK KULI (SUPER MUDAH)     -->
+  <!-- ========================================================= -->
+  <div id="modalInputBM" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden items-center justify-center p-2.5 sm:p-4 overflow-y-auto">
+    <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden my-auto max-h-[94vh] flex flex-col">
+      
+      <!-- Header Modal -->
+      <div id="headerModalBM" class="bg-emerald-700 text-white px-4 py-3.5 flex items-center justify-between shrink-0">
+        <div class="flex items-center space-x-2">
+          <i id="iconModalBM" class="fa-solid fa-truck-ramp-box text-base"></i>
+          <h3 id="judulModalBM" class="font-extrabold text-sm">Input Bongkar Muat / Naik Kuli</h3>
+        </div>
+        <button type="button" onclick="closeModal('modalInputBM')" class="text-white/80 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <!-- Form Body (Scrollable) -->
+      <form onsubmit="submitBongkarMuat(event)" class="p-4 sm:p-5 space-y-4 overflow-y-auto custom-scrollbar text-xs">
+        <input type="hidden" id="editIdBM" value="">
+
+        <!-- 1. PILIH SHIFT & ADMIN GUDANG (OTOMATIS PASANGAN PAGI-SUFYAN / MALAM-HASFHI) -->
+        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-2.5">
+          <label class="block text-[11px] font-extrabold text-slate-700 uppercase">1. Pilih Shift & Admin Gudang *</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button type="button" id="btnShiftPagi" onclick="pilihShiftModal('PAGI')" class="py-2.5 px-3 rounded-xl font-extrabold text-xs border-2 border-emerald-600 bg-emerald-600 text-white shadow flex items-center justify-center space-x-1.5 transition">
+              <i class="fa-solid fa-sun"></i>
+              <span>SHIFT PAGI (SUFYAN)</span>
+            </button>
+            <button type="button" id="btnShiftMalam" onclick="pilihShiftModal('MALAM')" class="py-2.5 px-3 rounded-xl font-extrabold text-xs border-2 border-slate-300 text-slate-600 flex items-center justify-center space-x-1.5 transition">
+              <i class="fa-solid fa-moon"></i>
+              <span>SHIFT MALAM (HASFHI)</span>
+            </button>
+          </div>
+          <div class="grid grid-cols-3 gap-2 pt-1">
+            <div>
+              <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Shift Aktif</label>
+              <select id="inputShiftBM" class="w-full rounded-lg border border-slate-300 px-2.5 py-1.5 font-extrabold text-xs">
+                <option value="PAGI">PAGI</option>
+                <option value="MALAM">MALAM</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Admin Gudang</label>
+              <select id="inputAdminBM" class="w-full rounded-lg border border-slate-300 px-2.5 py-1.5 font-extrabold text-xs">
+                <option value="SUFYAN">SUFYAN</option>
+                <option value="HASFHI">HASFHI</option>
+              </select>
+            </div>
+            <div>
+              <div class="flex justify-between mb-1">
+                <label class="text-[10px] font-bold text-slate-500 uppercase">Waktu (Jam)</label>
+                <button type="button" onclick="setWaktuSekarang()" class="text-[10px] font-extrabold text-emerald-500 hover:underline">Sekarang</button>
+              </div>
+              <input type="time" id="inputWaktuBM" required class="w-full rounded-lg border border-slate-300 px-2 py-1.5 font-mono-code font-bold text-xs">
+            </div>
+          </div>
+          <div>
+            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Tanggal Kegiatan *</label>
+            <input type="date" id="inputTanggalBM" required class="w-full rounded-lg border border-slate-300 px-3 py-1.5 font-bold text-xs">
+          </div>
+        </div>
+
+        <!-- 2. PILIH ARMADA (KONTAINER 1-8 / TRUCK 1-5 / KETIK MANUAL) -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <label class="text-[11px] font-extrabold text-slate-700 uppercase">2. Pilih Armada (Kontainer / Truck) *</label>
+            <span class="text-[10px] text-emerald-500 font-bold">Klik tombol atau ketik langsung</span>
+          </div>
+          <!-- Tombol Cepat Armada -->
+          <div class="flex flex-wrap gap-1.5" id="chipContainerArmada">
+            <button type="button" onclick="pilihArmadaCepat('KONTAINER 1', 'KONTAINER')" class="armada-chip px-2.5 py-1 rounded-lg border border-slate-300 text-[11px] font-bold hover:border-emerald-500 transition">KONTAINER 1</button>
+            <button type="button" onclick="pilihArmadaCepat('KONTAINER 2', 'KONTAINER')" class="armada-chip px-2.5 py-1 rounded-lg border border-slate-300 text-[11px] font-bold hover:border-emerald-500 transition">KONTAINER 2</button>
+            <button type="button" onclick="pilihArmadaCepat('KONTAINER 3', 'KONTAINER')" class="armada-chip px-2.5 py-1 rounded-lg border border-slate-300 text-[11px] font-bold hover:border-emerald-500 transition">KONTAINER 3</button>
+            <button type="button" onclick="pilihArmadaCepat('KONTAINER 4', 'KONTAINER')" class="armada-chip px-2.5 py-1 rounded-lg border border-slate-300 text-[11px] font-bold hover:border-emerald-500 transition">KONTAINER 4</button>
+            <button type="button" onclick="pilihArmadaCepat('KONTAINER 5', 'KONTAINER')" class="armada-chip px-2.5 py-1 rounded-lg border border-slate-300 text-[11px] font-bold hover:border-emerald-500 transition">KONTAINER 5</button>
+            <button type="button" onclick="pilihArmadaCepat('KONTAINER 6', 'KONTAINER')" class="armada-chip px-2.5 py-1 rounded-lg border border-slate-300 text-[11px] font-bold hover:border-emerald-500 transition">KONTAINER 6</button>
+            <button type="button" onclick="pilihArmadaCepat('KONTAINER 7', 'KONTAINER')" class="armada-chip px-2.5 py-1 rounded-lg border border-slate-300 text-[11px] font-bold hover:border-emerald-500 transition">KONTAINER 7</button>
+            <button type="button" onclick="pilihArmadaCepat('KONTAINER 8', 'KONTAINER')" class="armada-chip px-2.5 py-1 rounded-lg border border-slate-300 text-[11px] font-bold hover:border-emerald-500 transition">KONTAINER 8</button>
+            <button type="button" onclick="pilihArmadaCepat('TRUCK 1', '')" class="armada-chip px-2.5 py-1 rounded-lg border border-amber-500/50 text-amber-500 text-[11px] font-bold hover:bg-amber-500 hover:text-slate-950 transition">TRUCK 1</button>
+            <button type="button" onclick="pilihArmadaCepat('TRUCK 2', '')" class="armada-chip px-2.5 py-1 rounded-lg border border-amber-500/50 text-amber-500 text-[11px] font-bold hover:bg-amber-500 hover:text-slate-950 transition">TRUCK 2</button>
+            <button type="button" onclick="pilihArmadaCepat('TRUCK 3', '')" class="armada-chip px-2.5 py-1 rounded-lg border border-amber-500/50 text-amber-500 text-[11px] font-bold hover:bg-amber-500 hover:text-slate-950 transition">TRUCK 3</button>
+            <button type="button" onclick="pilihArmadaCepat('TRUCK 4', '')" class="armada-chip px-2.5 py-1 rounded-lg border border-amber-500/50 text-amber-500 text-[11px] font-bold hover:bg-amber-500 hover:text-slate-950 transition">TRUCK 4</button>
+            <button type="button" onclick="pilihArmadaCepat('TRUCK 5', '')" class="armada-chip px-2.5 py-1 rounded-lg border border-amber-500/50 text-amber-500 text-[11px] font-bold hover:bg-amber-500 hover:text-slate-950 transition">TRUCK 5</button>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2.5 pt-1">
+            <div>
+              <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Nama Armada / Tim *</label>
+              <input type="text" id="inputArmadaBM" required placeholder="KONTAINER 1 / TRUCK 1" class="w-full rounded-xl border border-slate-300 px-3 py-2 font-extrabold uppercase text-xs">
+            </div>
+            <div>
+              <div class="flex justify-between mb-1">
+                <label class="text-[10px] font-bold text-slate-500 uppercase">Nama Driver / Sopir *</label>
+                <button type="button" onclick="document.getElementById('inputDriverBM').value='KONTAINER'" class="text-[10px] font-extrabold text-amber-500 hover:underline">Set: KONTAINER</button>
+              </div>
+              <input type="text" id="inputDriverBM" required placeholder="Ketik Nama Driver / KONTAINER" value="KONTAINER" class="w-full rounded-xl border border-slate-300 px-3 py-2 font-bold uppercase text-xs">
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. PILIH NAMA BARANG (SUPER POTONG, SUPER GEMUK, SUPER MAX, SUPER SAYYAN, CGF) -->
+        <div class="space-y-2">
+          <label class="block text-[11px] font-extrabold text-slate-700 uppercase">3. Pilih Nama Barang *</label>
+          <div class="grid grid-cols-3 sm:grid-cols-5 gap-1.5">
+            <button type="button" onclick="pilihBarangCepat('Super Potong')" class="barang-chip py-2 px-2 rounded-xl border border-slate-300 font-extrabold text-[11px] text-center hover:border-emerald-500 transition">Super Potong</button>
+            <button type="button" onclick="pilihBarangCepat('Super Gemuk')" class="barang-chip py-2 px-2 rounded-xl border border-slate-300 font-extrabold text-[11px] text-center hover:border-emerald-500 transition">Super Gemuk</button>
+            <button type="button" onclick="pilihBarangCepat('Super Max')" class="barang-chip py-2 px-2 rounded-xl border border-slate-300 font-extrabold text-[11px] text-center hover:border-emerald-500 transition">Super Max</button>
+            <button type="button" onclick="pilihBarangCepat('Super Sayyan')" class="barang-chip py-2 px-2 rounded-xl border border-slate-300 font-extrabold text-[11px] text-center hover:border-emerald-500 transition">Super Sayyan</button>
+            <button type="button" onclick="pilihBarangCepat('CGF')" class="barang-chip py-2 px-2 rounded-xl border border-slate-300 font-extrabold text-[11px] text-center hover:border-emerald-500 transition">CGF</button>
+          </div>
+          <input type="text" id="inputBarangBM" required placeholder="Pilih tombol di atas atau ketik nama barang..." value="Super Potong" class="w-full rounded-xl border border-slate-300 px-3 py-2 font-bold text-xs">
+        </div>
+
+        <!-- 4. TONASE TURUN, NAIK & TOTAL OTOMATIS (TON) -->
+        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-2">
+          <div class="flex items-center justify-between">
+            <label class="text-[11px] font-extrabold text-slate-700 uppercase">4. Tonase Bongkar (Turun) & Muat (Naik) *</label>
+            <div class="flex gap-1">
+              <button type="button" onclick="setTonaseCepat(0, 15)" class="bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded text-[10px] font-extrabold hover:bg-emerald-600 hover:text-white transition">Naik 15 Ton</button>
+              <button type="button" onclick="setTonaseCepat(15, 0)" class="bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded text-[10px] font-extrabold hover:bg-blue-600 hover:text-white transition">Turun 15 Ton</button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2.5">
+            <div>
+              <label class="block text-[10px] font-extrabold text-blue-500 uppercase mb-1">Turun (Ton)</label>
+              <input type="number" id="inputTurunBM" step="0.1" min="0" value="0" oninput="hitungTotalTonModal()" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm font-extrabold font-mono-code text-blue-500">
+            </div>
+            <div>
+              <label class="block text-[10px] font-extrabold text-emerald-500 uppercase mb-1">Naik (Ton)</label>
+              <input type="number" id="inputNaikBM" step="0.1" min="0" value="15" oninput="hitungTotalTonModal()" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm font-extrabold font-mono-code text-emerald-500">
+            </div>
+            <div>
+              <label class="block text-[10px] font-extrabold text-amber-500 uppercase mb-1">Total (Ton)</label>
+              <input type="text" id="inputTotalBM" readonly value="15,0" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm font-extrabold font-mono-code text-amber-400 bg-slate-900 text-center">
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. PILIH TIM KULI (TIM 1, TIM 2 & TAMBAH NAMA MANUAL) -->
+        <div class="space-y-2 bg-slate-50 p-3 rounded-xl border border-slate-200">
+          <div class="flex items-center justify-between">
+            <label class="text-[11px] font-extrabold text-slate-700 uppercase">5. Pilih Tim Kuli / Tambah Nama Manual *</label>
+            <button type="button" onclick="document.getElementById('inputKuliBM').value=''" class="text-[10px] font-bold text-rose-400 hover:underline">Kosongkan</button>
+          </div>
+
+          <!-- Tombol Tim Kuli (Tim 1, Tim 2, dst) -->
+          <div id="containerTombolTimKuli" class="grid grid-cols-1 sm:grid-cols-2 gap-1.5"></div>
+
+          <!-- Klik Nama Perorangan & Tambah Nama Manual Langsung -->
+          <div class="pt-1">
+            <span class="block text-[10px] font-bold text-slate-500 mb-1">Klik nama untuk menambah/mengurangi anggota kuli:</span>
+            <div id="containerChipNamaKuli" class="flex flex-wrap gap-1 mb-2"></div>
+
+            <!-- Baris Tambah Nama Kuli Baru Secara Manual -->
+            <div class="flex gap-1.5">
+              <input type="text" id="inputTambahNamaCepat" placeholder="Ketik nama kuli baru (misal: Budi)..." class="flex-1 rounded-lg border border-slate-300 px-2.5 py-1 text-xs font-semibold">
+              <button type="button" onclick="tambahNamaKuliLangsung()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold px-3 py-1 rounded-lg text-[11px] shrink-0 transition">
+                + Tambah Nama
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Daftar Kuli Bertugas (Bisa Diedit Manual) *</label>
+            <textarea id="inputKuliBM" rows="2" required placeholder="Juni, Asep, Askur, Hiro" class="w-full rounded-xl border border-slate-300 px-3 py-2 font-bold text-xs"></textarea>
+          </div>
+        </div>
+
+        <!-- Tombol Simpan -->
+        <button type="submit" id="btnSubmitBM" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-3 rounded-xl text-xs sm:text-sm shadow-lg transition flex items-center justify-center space-x-2">
+          <i class="fa-solid fa-floppy-disk"></i>
+          <span>Simpan Data Bongkar Muat</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- ========================================================= -->
+  <!-- MODAL 2: KELOLA TIM KULI & ANGGOTA MANUAL                 -->
+  <!-- ========================================================= -->
+  <div id="modalKelolaKuli" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-slate-200 overflow-hidden my-auto">
+      <div class="bg-slate-900 text-white px-4 py-3.5 flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+          <span class="w-7 h-7 rounded-lg bg-amber-500 text-slate-950 flex items-center justify-center font-bold text-xs"><i class="fa-solid fa-users"></i></span>
+          <h3 class="font-bold text-xs sm:text-sm">Kelola Tim Kuli & Nama Manual</h3>
+        </div>
+        <button type="button" onclick="closeModal('modalKelolaKuli')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="p-4 space-y-4 text-xs">
+        <div class="space-y-2" id="listMasterTimKuli"></div>
+
+        <form onsubmit="simpanTimKuliBaru(event)" class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-2.5">
+          <div class="font-extrabold text-slate-700 uppercase text-[11px]">+ Tambah / Update Tim Kuli</div>
+          <div>
+            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Nama Tim (Misal: TIM 3 / TIM CADANGAN)</label>
+            <input type="text" id="inputNamaTimBaru" required placeholder="TIM 3" class="w-full rounded-lg border border-slate-300 px-3 py-1.5 font-bold uppercase">
+          </div>
+          <div>
+            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Daftar Nama Anggota (Pisahkan dengan koma)</label>
+            <input type="text" id="inputAnggotaTimBaru" required placeholder="Contoh: Slamet, Rudi, Hendra" class="w-full rounded-lg border border-slate-300 px-3 py-1.5 font-semibold">
+          </div>
+          <button type="submit" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold py-2 rounded-xl shadow transition">
+            Simpan Tim ke Sistem & Cloud
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ========================================================= -->
+  <!-- MODAL 3: PILIHAN CETAK LAPORAN (HARIAN/MINGGUAN/BULANAN)  -->
+  <!-- ========================================================= -->
+  <div id="modalPilihLaporan" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-slate-200 overflow-hidden">
+      <div class="bg-slate-900 text-white px-4 py-3.5 flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+          <i class="fa-solid fa-print text-emerald-400 text-base"></i>
+          <h3 class="font-bold text-xs sm:text-sm">Cetak Rekap Bongkar Muat & CSV</h3>
+        </div>
+        <button type="button" onclick="closeModal('modalPilihLaporan')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="p-4 space-y-3">
+        <p class="text-xs text-slate-500">Pilih periode laporan Rekap Bongkar Muat & Kuli. Hasil cetak memiliki format tabel persis seperti Spreadsheet (Header Kuning, Tabel Biru, dan Kotak Admin Pagi SUFYAN & Malam HASFHI):</p>
+
+        <!-- Harian -->
+        <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl flex items-center justify-between gap-2">
+          <div class="flex items-center space-x-2.5">
+            <span class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs"><i class="fa-solid fa-calendar-day"></i></span>
+            <div>
+              <div class="text-xs font-extrabold text-slate-800">Rekap Harian</div>
+              <div class="text-[10px] text-slate-500">Sesuai tanggal harian terpilih</div>
+            </div>
+          </div>
+          <div class="flex space-x-1.5">
+            <button type="button" onclick="closeModal('modalPilihLaporan'); bukaModalCetakRekap('HARIAN', false);" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1.5 rounded-lg text-[11px] font-extrabold shadow flex items-center space-x-1">
+              <i class="fa-solid fa-print"></i><span>Lihat & Print</span>
+            </button>
+            <button type="button" onclick="closeModal('modalPilihLaporan'); exportRekapCSV('HARIAN');" class="bg-blue-600 hover:bg-blue-700 text-white px-2.5 py-1.5 rounded-lg text-[11px] font-extrabold shadow flex items-center space-x-1">
+              <i class="fa-solid fa-file-csv"></i><span>CSV</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mingguan -->
+        <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl flex items-center justify-between gap-2">
+          <div class="flex items-center space-x-2.5">
+            <span class="w-8 h-8 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-xs"><i class="fa-solid fa-calendar-week"></i></span>
+            <div>
+              <div class="text-xs font-extrabold text-slate-800">Rekap Mingguan</div>
+              <div class="text-[10px] text-slate-500">Data 7 hari terakhir</div>
+            </div>
+          </div>
+          <div class="flex space-x-1.5">
+            <button type="button" onclick="closeModal('modalPilihLaporan'); bukaModalCetakRekap('MINGGUAN', false);" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1.5 rounded-lg text-[11px] font-extrabold shadow flex items-center space-x-1">
+              <i class="fa-solid fa-print"></i><span>Lihat & Print</span>
+            </button>
+            <button type="button" onclick="closeModal('modalPilihLaporan'); exportRekapCSV('MINGGUAN');" class="bg-blue-600 hover:bg-blue-700 text-white px-2.5 py-1.5 rounded-lg text-[11px] font-extrabold shadow flex items-center space-x-1">
+              <i class="fa-solid fa-file-csv"></i><span>CSV</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Bulanan -->
+        <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl flex items-center justify-between gap-2">
+          <div class="flex items-center space-x-2.5">
+            <span class="w-8 h-8 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-xs"><i class="fa-solid fa-calendar-days"></i></span>
+            <div>
+              <div class="text-xs font-extrabold text-slate-800">Rekap Bulanan</div>
+              <div class="text-[10px] text-slate-500">Sesuai bulan & tahun terpilih</div>
+            </div>
+          </div>
+          <div class="flex space-x-1.5">
+            <button type="button" onclick="closeModal('modalPilihLaporan'); bukaModalCetakRekap('BULANAN', false);" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1.5 rounded-lg text-[11px] font-extrabold shadow flex items-center space-x-1">
+              <i class="fa-solid fa-print"></i><span>Lihat & Print</span>
+            </button>
+            <button type="button" onclick="closeModal('modalPilihLaporan'); exportRekapCSV('BULANAN');" class="bg-blue-600 hover:bg-blue-700 text-white px-2.5 py-1.5 rounded-lg text-[11px] font-extrabold shadow flex items-center space-x-1">
+              <i class="fa-solid fa-file-csv"></i><span>CSV</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Semua Data -->
+        <div class="bg-slate-900 text-white p-3 rounded-xl flex items-center justify-between gap-2">
+          <div class="flex items-center space-x-2.5">
+            <span class="w-8 h-8 rounded-lg bg-amber-500 text-slate-950 flex items-center justify-center font-bold text-xs"><i class="fa-solid fa-database"></i></span>
+            <div>
+              <div class="text-xs font-extrabold">Semua Data Bongkar Muat</div>
+              <div class="text-[10px] text-slate-300">Rekap keseluruhan</div>
+            </div>
+          </div>
+          <div class="flex space-x-1.5">
+            <button type="button" onclick="closeModal('modalPilihLaporan'); bukaModalCetakRekap('SEMUA', false);" class="bg-amber-500 hover:bg-amber-400 text-slate-950 px-2.5 py-1.5 rounded-lg text-[11px] font-extrabold shadow flex items-center space-x-1">
+              <i class="fa-solid fa-print"></i><span>Lihat & Print</span>
+            </button>
+            <button type="button" onclick="closeModal('modalPilihLaporan'); exportRekapCSV('SEMUA');" class="bg-blue-600 hover:bg-blue-500 text-white px-2.5 py-1.5 rounded-lg text-[11px] font-extrabold shadow flex items-center space-x-1">
+              <i class="fa-solid fa-file-csv"></i><span>CSV</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ========================================================= -->
+  <!-- MODAL 4: PRATINJAU CETAK REKAP (PERSIS GAMBAR SPREADSHEET) -->
+  <!-- ========================================================= -->
+  <div id="modalCetakRekap" class="fixed inset-0 bg-slate-900/85 backdrop-blur-sm z-50 hidden items-center justify-center p-2 sm:p-4 overflow-y-auto">
+    <div class="bg-white rounded-2xl max-w-4xl w-full shadow-2xl border border-slate-200 overflow-hidden my-auto">
+      
+      <div class="bg-slate-900 text-white px-4 py-3 flex flex-wrap items-center justify-between gap-2">
+        <div class="flex items-center space-x-2">
+          <i class="fa-solid fa-file-invoice text-emerald-400"></i>
+          <h3 id="judulModalCetak" class="font-bold text-xs sm:text-sm">Pratinjau Laporan Bongkar Muat</h3>
+        </div>
+        <div class="flex items-center space-x-2">
+          <!-- Opsi Tampilan Baris: Hanya yang Terisi vs Full Kontainer 1-8 Persis Gambar -->
+          <label class="flex items-center space-x-1.5 text-[11px] bg-slate-800 px-2.5 py-1 rounded-lg border border-slate-700 cursor-pointer">
+            <input type="checkbox" id="toggleFullKontainer" onchange="bukaModalCetakRekap(periodeCetakAktif, false)" checked class="rounded text-emerald-500">
+            <span>Tampilkan Kontainer 1-8 Penuh (Persis Gambar)</span>
+          </label>
+          <button type="button" onclick="closeModal('modalCetakRekap')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+        </div>
+      </div>
+
+      <!-- Area Dokumen Cetak -->
+      <div class="p-3 sm:p-6 bg-slate-200 max-h-[75vh] overflow-y-auto overflow-x-auto custom-scrollbar">
+        <div id="areaCetakTarget" class="bg-white text-slate-950 mx-auto shadow-md"></div>
+      </div>
+
+      <div class="bg-slate-50 px-4 py-3 border-t border-slate-200 flex flex-wrap items-center justify-between gap-2">
+        <button type="button" onclick="closeModal('modalCetakRekap')" class="px-3.5 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold">Tutup</button>
+        <div class="flex flex-wrap items-center gap-2">
+          <button type="button" onclick="exportRekapCSV(periodeCetakAktif)" class="px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-extrabold shadow flex items-center space-x-1.5">
+            <i class="fa-solid fa-file-csv"></i><span>Unduh CSV</span>
+          </button>
+          <button type="button" onclick="unduhRekapPNG()" class="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-extrabold shadow flex items-center space-x-1.5">
+            <i class="fa-solid fa-image"></i><span>Unduh Gambar PNG</span>
+          </button>
+          <button type="button" onclick="cetakRekapWindow()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold shadow flex items-center space-x-1.5">
+            <i class="fa-solid fa-print"></i><span>Cetak / Print PDF</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ========================================================= -->
+  <!-- MODAL 5: KONEKSI CLOUD GOOGLE SHEETS (URL SCRIPT GS)      -->
+  <!-- ========================================================= -->
+  <div id="modalCloudSync" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-slate-200 overflow-hidden">
+      <div class="bg-slate-900 text-white px-4 py-3.5 flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+          <i class="fa-solid fa-cloud text-emerald-400"></i>
+          <h3 class="font-bold text-xs sm:text-sm">Koneksi Google Sheets (Kode.gs)</h3>
+        </div>
+        <button type="button" onclick="closeModal('modalCloudSync')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="p-4 space-y-3.5 text-xs">
+        <div>
+          <label class="block font-bold text-slate-700 uppercase text-[11px] mb-1">URL Web App Google Apps Script</label>
+          <input type="url" id="inputGasUrl" placeholder="https://script.google.com/macros/s/.../exec" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-xs">
+          <p class="text-[10px] text-emerald-500 font-semibold mt-1">URL Google Apps Script Anda sudah terpasang otomatis.</p>
+        </div>
+        <div class="flex space-x-2 pt-1">
+          <button type="button" onclick="simpanKonfigurasiGas()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl shadow">Simpan & Sinkronkan</button>
+          <button type="button" onclick="resetSemuaDataLokal()" class="bg-rose-600/20 hover:bg-rose-600 text-rose-500 hover:text-white font-bold px-3 py-2.5 rounded-xl transition">Reset Lokal</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ========================================================= -->
+  <!-- FLOATING POPUP KALKULATOR CEPAT                           -->
+  <!-- ========================================================= -->
+  <div class="fixed bottom-5 right-5 z-40">
+    <button type="button" onclick="toggleCalc()" class="w-12 h-12 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white shadow-2xl flex items-center justify-center text-lg transition transform hover:scale-105 border-2 border-white/20" title="Kalkulator Tonase">
+      <i class="fa-solid fa-calculator"></i>
+    </button>
+
+    <div id="calcPopup" class="hidden absolute bottom-16 right-0 bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl w-64 p-3.5 text-white space-y-2.5">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-1.5 text-xs font-bold text-emerald-400">
+        <span>Kalkulator Tonase</span>
+        <button onclick="toggleCalc()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-right">
+        <div id="calcDisplay" class="text-lg font-mono-code font-extrabold text-amber-300 truncate">0</div>
+      </div>
+      <div class="grid grid-cols-4 gap-1.5 text-xs font-bold">
+        <button type="button" onclick="cClear()" class="bg-rose-600/30 text-rose-300 py-2 rounded-lg">C</button>
+        <button type="button" onclick="cBack()" class="bg-slate-800 py-2 rounded-lg">⌫</button>
+        <button type="button" onclick="cIn('/')" class="bg-slate-800 text-emerald-400 py-2 rounded-lg">÷</button>
+        <button type="button" onclick="cIn('*')" class="bg-slate-800 text-emerald-400 py-2 rounded-lg">×</button>
+        <button type="button" onclick="cIn('7')" class="bg-slate-800 py-2 rounded-lg">7</button>
+        <button type="button" onclick="cIn('8')" class="bg-slate-800 py-2 rounded-lg">8</button>
+        <button type="button" onclick="cIn('9')" class="bg-slate-800 py-2 rounded-lg">9</button>
+        <button type="button" onclick="cIn('-')" class="bg-slate-800 text-emerald-400 py-2 rounded-lg">-</button>
+        <button type="button" onclick="cIn('4')" class="bg-slate-800 py-2 rounded-lg">4</button>
+        <button type="button" onclick="cIn('5')" class="bg-slate-800 py-2 rounded-lg">5</button>
+        <button type="button" onclick="cIn('6')" class="bg-slate-800 py-2 rounded-lg">6</button>
+        <button type="button" onclick="cIn('+')" class="bg-slate-800 text-emerald-400 py-2 rounded-lg">+</button>
+        <button type="button" onclick="cIn('1')" class="bg-slate-800 py-2 rounded-lg">1</button>
+        <button type="button" onclick="cIn('2')" class="bg-slate-800 py-2 rounded-lg">2</button>
+        <button type="button" onclick="cIn('3')" class="bg-slate-800 py-2 rounded-lg">3</button>
+        <button type="button" onclick="cEq()" class="row-span-2 bg-emerald-600 text-white py-2 rounded-lg">=</button>
+        <button type="button" onclick="cIn('0')" class="col-span-2 bg-slate-800 py-2 rounded-lg">0</button>
+        <button type="button" onclick="cIn('.')" class="bg-slate-800 text-amber-300 py-2 rounded-lg">.</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ========================================================= -->
+  <!-- SCRIPT UTAMA SISTEM BONGKAR MUAT & NAIK KULI              -->
+  <!-- ========================================================= -->
+  <script>
+    const STORAGE_KEY_BM_DATA  = 'YCF_BM_TRANSAKSI_V1';
+    const STORAGE_KEY_TIM_KULI = 'YCF_BM_TIM_KULI_V1';
+    const STORAGE_KEY_GAS_URL  = 'YCF_BM_GAS_URL_V1';
+
+    // Link Web App Google Apps Script Anda sudah dipasang langsung sebagai default
+    const DEFAULT_GAS_URL = "https://script.google.com/macros/s/AKfycbwTbcaJXYrevZlIf7yBehwmQUKLkcpIK3E3N8qgs5fArMwYKZBScOaK1NwD3J2FGltovQ/exec";
+
+    // Daftar Default Tim Kuli sesuai permintaan
+    const DEFAULT_TIM_KULI = [
+      { namaTim: "TIM 1", anggota: "Juni, Asep, Askur, Hiro" },
+      { namaTim: "TIM 2", anggota: "Mahmud, Candra, Mat Asor" }
+    ];
+
+    let listTransaksiBM = JSON.parse(localStorage.getItem(STORAGE_KEY_BM_DATA)) || [];
+    let listTimKuli = JSON.parse(localStorage.getItem(STORAGE_KEY_TIM_KULI)) || DEFAULT_TIM_KULI;
+    let gasUrl = localStorage.getItem(STORAGE_KEY_GAS_URL) || DEFAULT_GAS_URL;
+
+    if (!gasUrl || gasUrl.startsWith("Https://")) {
+      gasUrl = DEFAULT_GAS_URL;
+      localStorage.setItem(STORAGE_KEY_GAS_URL, gasUrl);
+    }
+
+    let modePeriodeAktif = 'HARIAN'; // Default langsung Harian agar mudah cek per hari
+    let periodeCetakAktif = 'HARIAN';
+
+    window.addEventListener('DOMContentLoaded', () => {
+      initTheme();
+      startClock();
+      setDefaultDates();
+      document.getElementById('inputGasUrl').value = gasUrl;
+      renderPilihanKuli();
+      renderSeluruhAplikasi();
+      syncFromGoogleSheets(true);
+    });
+
+    /* ========================================================= */
+    /* 1. JAM LIVE, TEMA & TANGGAL OTOMATIS                      */
+    /* ========================================================= */
+    function getTodayISO() {
+      const now = new Date();
+      return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+    }
+
+    function setWaktuSekarang() {
+      const now = new Date();
+      const jam = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+      document.getElementById('inputWaktuBM').value = jam;
+    }
+
+    function setDefaultDates() {
+      const now = new Date();
+      const today = getTodayISO();
+      const mm = String(now.getMonth() + 1).padStart(2, '0');
+      const yyyy = String(now.getFullYear());
+
+      document.getElementById('inputTanggalBM').value = today;
+      document.getElementById('filterTanggalHarian').value = today;
+      document.getElementById('filterBulan').value = mm;
+      document.getElementById('filterTahun').value = yyyy;
+      setWaktuSekarang();
+    }
+
+    function setTodayFilter() {
+      document.getElementById('filterTanggalHarian').value = getTodayISO();
+      renderSeluruhAplikasi();
+    }
+
+    function startClock() {
+      const update = () => {
+        const now = new Date();
+        const str = now.toLocaleString('id-ID', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        const el = document.getElementById('liveClockHeader');
+        if (el) el.innerText = str + " WIB";
+      };
+      update();
+      setInterval(update, 1000);
+    }
+
+    function initTheme() {
+      const saved = localStorage.getItem('YCF_BM_DARK_MODE');
+      const isDark = saved === null ? true : saved === 'true';
+      document.body.classList.toggle('dark-mode', isDark);
+      document.getElementById('themeIcon').className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+    }
+
+    function toggleDarkMode() {
+      const isDark = document.body.classList.toggle('dark-mode');
+      localStorage.setItem('YCF_BM_DARK_MODE', isDark);
+      document.getElementById('themeIcon').className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+      showToast(isDark ? "Mode Gelap Aktif" : "Mode Terang Aktif");
+    }
+
+    function showCenterLoading(teks = "Memproses...") {
+      const el = document.getElementById('centerLoadingOverlay');
+      const txt = document.getElementById('centerLoadingText');
+      if (txt) txt.innerText = teks;
+      if (el) { el.classList.remove('hidden'); el.classList.add('flex'); }
+    }
+
+    function hideCenterLoading() {
+      const el = document.getElementById('centerLoadingOverlay');
+      if (el) { el.classList.add('hidden'); el.classList.remove('flex'); }
+    }
+
+    /* ========================================================= */
+    /* 2. MANAJEMEN TIM KULI (TIM 1, TIM 2 & NAMA MANUAL)        */
+    /* ========================================================= */
+    function renderPilihanKuli() {
+      const boxTim = document.getElementById('containerTombolTimKuli');
+      const boxChips = document.getElementById('containerChipNamaKuli');
+      const boxMaster = document.getElementById('listMasterTimKuli');
+
+      if (boxTim) {
+        boxTim.innerHTML = '';
+        listTimKuli.forEach((t) => {
+          const safeNamaTim = t.namaTim.replace(/'/g, "\\'");
+          const safeAnggota = t.anggota.replace(/'/g, "\\'");
+          boxTim.innerHTML += `
+            <button type="button" onclick="pilihTimKuliCepat('${safeAnggota}')" class="p-2.5 rounded-xl border-2 border-slate-300 hover:border-emerald-500 text-left transition bg-white flex flex-col justify-between">
+              <div class="flex items-center justify-between">
+                <span class="font-extrabold text-emerald-500 text-[11px] uppercase">${t.namaTim}</span>
+                <span class="text-[9px] bg-emerald-500/15 text-emerald-400 px-1.5 py-0.5 rounded font-bold">Pilih Tim</span>
+              </div>
+              <div class="text-[11px] font-bold text-slate-700 mt-1 leading-snug">${t.anggota}</div>
+            </button>
+          `;
+        });
+      }
+
+      // Kumpulkan seluruh nama unik dari semua tim untuk tombol klik perorangan
+      if (boxChips) {
+        const setNama = new Set();
+        listTimKuli.forEach(t => {
+          t.anggota.split(',').forEach(n => {
+            const clean = n.trim().replace(/\.$/, '');
+            if (clean) setNama.add(clean);
+          });
+        });
+
+        boxChips.innerHTML = '';
+        Array.from(setNama).forEach(nama => {
+          const safeNama = nama.replace(/'/g, "\\'");
+          boxChips.innerHTML += `
+            <button type="button" onclick="toggleSatuNamaKuli('${safeNama}')" class="px-2.5 py-1 rounded-lg bg-slate-200/70 hover:bg-emerald-600 hover:text-white text-slate-700 font-bold text-[11px] transition">
+              + ${nama}
+            </button>
+          `;
+        });
+      }
+
+      // Render di Modal Kelola Kuli
+      if (boxMaster) {
+        boxMaster.innerHTML = '';
+        listTimKuli.forEach((t, idx) => {
+          boxMaster.innerHTML += `
+            <div class="p-3 rounded-xl border border-slate-200 bg-slate-50 flex items-center justify-between gap-2">
+              <div>
+                <div class="font-extrabold text-emerald-500 text-xs">${t.namaTim}</div>
+                <div class="text-slate-600 font-semibold text-[11px] mt-0.5">${t.anggota}</div>
+              </div>
+              <button type="button" onclick="hapusTimKuli(${idx})" class="text-rose-400 hover:text-rose-600 px-2 py-1 rounded-lg text-xs font-bold">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </div>
+          `;
+        });
+      }
+    }
+
+    function pilihTimKuliCepat(anggotaStr) {
+      document.getElementById('inputKuliBM').value = anggotaStr;
+      showToast("Tim Kuli dipilih!");
+    }
+
+    function toggleSatuNamaKuli(nama) {
+      const el = document.getElementById('inputKuliBM');
+      let current = el.value.split(',').map(s => s.trim()).filter(Boolean);
+      const existsIdx = current.findIndex(n => n.toLowerCase() === nama.toLowerCase());
+      if (existsIdx >= 0) {
+        current.splice(existsIdx, 1);
+      } else {
+        current.push(nama);
+      }
+      el.value = current.join(', ');
+    }
+
+    function tambahNamaKuliLangsung() {
+      const inp = document.getElementById('inputTambahNamaCepat');
+      const namaBaru = inp.value.trim().replace(/,/g, '');
+      if (!namaBaru) return;
+
+      // Masukkan ke textarea aktif
+      const el = document.getElementById('inputKuliBM');
+      let current = el.value.split(',').map(s => s.trim()).filter(Boolean);
+      if (!current.some(n => n.toLowerCase() === namaBaru.toLowerCase())) {
+        current.push(namaBaru);
+      }
+      el.value = current.join(', ');
+
+      // Simpan juga ke grup "TAMBAHAN MANUAL" agar muncul terus sebagai tombol cepat
+      let timManual = listTimKuli.find(t => t.namaTim.toUpperCase() === 'MANUAL / TAMBAHAN');
+      if (!timManual) {
+        timManual = { namaTim: "MANUAL / TAMBAHAN", anggota: namaBaru };
+        listTimKuli.push(timManual);
+      } else {
+        const listAnggota = timManual.anggota.split(',').map(s => s.trim()).filter(Boolean);
+        if (!listAnggota.some(n => n.toLowerCase() === namaBaru.toLowerCase())) {
+          listAnggota.push(namaBaru);
+          timManual.anggota = listAnggota.join(', ');
+        }
+      }
+
+      localStorage.setItem(STORAGE_KEY_TIM_KULI, JSON.stringify(listTimKuli));
+      inp.value = '';
+      renderPilihanKuli();
+      syncTimKuliKeCloud();
+      showToast(`Nama "${namaBaru}" ditambahkan!`);
+    }
+
+    async function simpanTimKuliBaru(e) {
+      e.preventDefault();
+      const namaTim = document.getElementById('inputNamaTimBaru').value.trim().toUpperCase();
+      const anggota = document.getElementById('inputAnggotaTimBaru').value.trim();
+      if (!namaTim || !anggota) return;
+
+      const idx = listTimKuli.findIndex(t => t.namaTim.toUpperCase() === namaTim);
+      if (idx >= 0) {
+        listTimKuli[idx].anggota = anggota;
+      } else {
+        listTimKuli.push({ namaTim, anggota });
+      }
+
+      localStorage.setItem(STORAGE_KEY_TIM_KULI, JSON.stringify(listTimKuli));
+      document.getElementById('inputNamaTimBaru').value = '';
+      document.getElementById('inputAnggotaTimBaru').value = '';
+      renderPilihanKuli();
+      await syncTimKuliKeCloud();
+      showToast(`${namaTim} berhasil disimpan!`);
+    }
+
+    async function hapusTimKuli(idx) {
+      if (listTimKuli.length <= 1) {
+        alert("Minimal harus ada 1 tim kuli.");
+        return;
+      }
+      if (!confirm(`Hapus ${listTimKuli[idx].namaTim}?`)) return;
+      listTimKuli.splice(idx, 1);
+      localStorage.setItem(STORAGE_KEY_TIM_KULI, JSON.stringify(listTimKuli));
+      renderPilihanKuli();
+      await syncTimKuliKeCloud();
+    }
+
+    async function syncTimKuliKeCloud() {
+      if (!gasUrl) return;
+      try {
+        await fetch(gasUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: "SIMPAN_TIM_KULI", timKuli: listTimKuli })
+        });
+      } catch (err) {}
+    }
+
+    /* ========================================================= */
+    /* 3. FORM INPUT BONGKAR MUAT & HELPER TOMBOL CEPAT          */
+    /* ========================================================= */
+    function pilihShiftModal(shift) {
+      document.getElementById('inputShiftBM').value = shift;
+      const btnPagi = document.getElementById('btnShiftPagi');
+      const btnMalam = document.getElementById('btnShiftMalam');
+
+      if (shift === 'PAGI') {
+        document.getElementById('inputAdminBM').value = 'SUFYAN';
+        btnPagi.className = "py-2.5 px-3 rounded-xl font-extrabold text-xs border-2 border-emerald-600 bg-emerald-600 text-white shadow flex items-center justify-center space-x-1.5 transition";
+        btnMalam.className = "py-2.5 px-3 rounded-xl font-extrabold text-xs border-2 border-slate-300 text-slate-500 flex items-center justify-center space-x-1.5 transition";
+      } else {
+        document.getElementById('inputAdminBM').value = 'HASFHI';
+        btnMalam.className = "py-2.5 px-3 rounded-xl font-extrabold text-xs border-2 border-blue-600 bg-blue-600 text-white shadow flex items-center justify-center space-x-1.5 transition";
+        btnPagi.className = "py-2.5 px-3 rounded-xl font-extrabold text-xs border-2 border-slate-300 text-slate-500 flex items-center justify-center space-x-1.5 transition";
+      }
+    }
+
+    function pilihArmadaCepat(namaArmada, defaultDriver) {
+      document.getElementById('inputArmadaBM').value = namaArmada;
+      if (defaultDriver) {
+        document.getElementById('inputDriverBM').value = defaultDriver;
+      } else if (document.getElementById('inputDriverBM').value === 'KONTAINER') {
+        document.getElementById('inputDriverBM').value = '';
+        document.getElementById('inputDriverBM').focus();
+      }
+      document.querySelectorAll('.armada-chip').forEach(btn => {
+        btn.classList.toggle('chip-active', btn.innerText.trim() === namaArmada);
+      });
+    }
+
+    function pilihBarangCepat(namaBarang) {
+      document.getElementById('inputBarangBM').value = namaBarang;
+      document.querySelectorAll('.barang-chip').forEach(btn => {
+        btn.classList.toggle('chip-active', btn.innerText.trim() === namaBarang);
+      });
+    }
+
+    function setTonaseCepat(turunVal, naikVal) {
+      document.getElementById('inputTurunBM').value = turunVal;
+      document.getElementById('inputNaikBM').value = naikVal;
+      hitungTotalTonModal();
+    }
+
+    function hitungTotalTonModal() {
+      const turun = parseFloat(document.getElementById('inputTurunBM').value) || 0;
+      const naik = parseFloat(document.getElementById('inputNaikBM').value) || 0;
+      const total = turun + naik;
+      document.getElementById('inputTotalBM').value = formatTon(total);
+    }
+
+    function bukaModalBM(modeFokus = 'NAIK') {
+      document.getElementById('editIdBM').value = '';
+      setWaktuSekarang();
+
+      // Otomatis deteksi tanggal dari filter harian jika sedang buka Harian
+      const tglHarian = document.getElementById('filterTanggalHarian').value;
+      document.getElementById('inputTanggalBM').value = tglHarian || getTodayISO();
+
+      // Otomatis pilih Kontainer berikutnya yang belum diinput hari ini
+      const tglTarget = document.getElementById('inputTanggalBM').value;
+      const dataHariIni = listTransaksiBM.filter(d => normalizeDateStr(d.tanggal) === tglTarget);
+      const nextNum = Math.min(dataHariIni.length + 1, 8);
+      pilihArmadaCepat(`KONTAINER ${nextNum}`, 'KONTAINER');
+
+      pilihBarangCepat('Super Potong');
+
+      // Default Tim 1 jika kuli masih kosong
+      if (!document.getElementById('inputKuliBM').value && listTimKuli.length > 0) {
+        document.getElementById('inputKuliBM').value = listTimKuli[0].anggota;
+      }
+
+      if (modeFokus === 'TURUN') {
+        setTonaseCepat(15, 0);
+        document.getElementById('headerModalBM').className = "bg-blue-700 text-white px-4 py-3.5 flex items-center justify-between shrink-0";
+        document.getElementById('judulModalBM').innerText = "Input Bongkar / Turun Barang";
+      } else {
+        setTonaseCepat(0, 15);
+        document.getElementById('headerModalBM').className = "bg-emerald-700 text-white px-4 py-3.5 flex items-center justify-between shrink-0";
+        document.getElementById('judulModalBM').innerText = "Input Muat / Naik Kuli";
+      }
+
+      openModal('modalInputBM');
+    }
+
+    function editDataBM(id) {
+      const item = listTransaksiBM.find(x => x.id === id);
+      if (!item) return;
+
+      document.getElementById('editIdBM').value = item.id;
+      pilihShiftModal(item.shift || 'PAGI');
+      document.getElementById('inputAdminBM').value = item.admin || 'SUFYAN';
+      document.getElementById('inputTanggalBM').value = normalizeDateStr(item.tanggal);
+      document.getElementById('inputWaktuBM').value = item.waktu || '08:00';
+      document.getElementById('inputArmadaBM').value = item.armada || 'KONTAINER 1';
+      document.getElementById('inputDriverBM').value = item.driver || 'KONTAINER';
+      pilihBarangCepat(item.barang || 'Super Potong');
+      document.getElementById('inputTurunBM').value = Number(item.turun) || 0;
+      document.getElementById('inputNaikBM').value = Number(item.naik) || 0;
+      hitungTotalTonModal();
+      document.getElementById('inputKuliBM').value = item.kuli || '';
+
+      document.getElementById('judulModalBM').innerText = `Edit Data — ${item.armada}`;
+      openModal('modalInputBM');
+    }
+
+    async function submitBongkarMuat(e) {
+      e.preventDefault();
+      const editId = document.getElementById('editIdBM').value;
+      const shift = document.getElementById('inputShiftBM').value;
+      const admin = document.getElementById('inputAdminBM').value;
+      const tanggal = document.getElementById('inputTanggalBM').value;
+      const waktu = document.getElementById('inputWaktuBM').value;
+      const armada = document.getElementById('inputArmadaBM').value.trim().toUpperCase();
+      const driver = document.getElementById('inputDriverBM').value.trim().toUpperCase();
+      const barang = document.getElementById('inputBarangBM').value.trim();
+      const turun = parseFloat(document.getElementById('inputTurunBM').value) || 0;
+      const naik = parseFloat(document.getElementById('inputNaikBM').value) || 0;
+      const total = turun + naik;
+      const kuli = document.getElementById('inputKuliBM').value.trim();
+
+      const record = {
+        id: editId || ("BM-" + Date.now()),
+        createdAt: Date.now(),
+        tanggal,
+        waktu,
+        shift,
+        ref: `BM-${shift}-${String(listTransaksiBM.length + 1).padStart(3, '0')}`,
+        armada,
+        barang,
+        turun,
+        naik,
+        total,
+        driver,
+        kuli,
+        admin,
+        catatan: ""
+      };
+
+      showCenterLoading("Menyimpan Data...");
+
+      if (editId) {
+        // Jika edit, hapus data lama lalu simpan yang baru
+        listTransaksiBM = listTransaksiBM.filter(x => x.id !== editId);
+        if (gasUrl) {
+          try {
+            await fetch(gasUrl, {
+              method: 'POST',
+              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+              body: JSON.stringify({ action: "HAPUS_BONGKAR_MUAT", id: editId })
+            });
+          } catch (err) {}
+        }
+      }
+
+      listTransaksiBM.push(record);
+      localStorage.setItem(STORAGE_KEY_BM_DATA, JSON.stringify(listTransaksiBM));
+
+      if (gasUrl) {
+        try {
+          const res = await fetch(gasUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({ action: "TAMBAH_BONGKAR_MUAT", ...record })
+          });
+          const data = await res.json();
+          if (data.status === 'success' && Array.isArray(data.transaksi)) {
+            listTransaksiBM = data.transaksi;
+            localStorage.setItem(STORAGE_KEY_BM_DATA, JSON.stringify(listTransaksiBM));
+          }
+        } catch (err) {}
+      }
+
+      hideCenterLoading();
+      closeModal('modalInputBM');
+      renderSeluruhAplikasi();
+      showToast(`${armada} (${barang} - ${formatTon(total)} Ton) Tersimpan!`);
+    }
+
+    async function hapusDataBM(id) {
+      if (!confirm("Hapus data bongkar muat ini?")) return;
+      showCenterLoading("Menghapus Data...");
+
+      listTransaksiBM = listTransaksiBM.filter(t => t.id !== id);
+      localStorage.setItem(STORAGE_KEY_BM_DATA, JSON.stringify(listTransaksiBM));
+
+      if (gasUrl) {
+        try {
+          await fetch(gasUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({ action: "HAPUS_BONGKAR_MUAT", id })
+          });
+        } catch (err) {}
+      }
+
+      hideCenterLoading();
+      renderSeluruhAplikasi();
+      showToast("Data berhasil dihapus!");
+    }
+
+    /* ========================================================= */
+    /* 4. FILTER PERIODE (HARIAN, MINGGUAN, BULANAN, SEMUA)      */
+    /* ========================================================= */
+    function normalizeDateStr(rawDate) {
+      if (!rawDate) return '';
+      const str = String(rawDate).trim();
+      if (/^\d{4}-\d{2}-\d{2}$/.test(str)) return str;
+      const parsed = new Date(str);
+      if (!isNaN(parsed.getTime())) {
+        return `${parsed.getFullYear()}-${String(parsed.getMonth() + 1).padStart(2, '0')}-${String(parsed.getDate()).padStart(2, '0')}`;
+      }
+      return str.split('T')[0];
+    }
+
+    function setModePeriode(mode) {
+      modePeriodeAktif = mode;
+      const baseBtn = "px-3 py-1.5 rounded-xl text-xs font-extrabold bg-slate-100 text-slate-700 border border-slate-300 transition";
+      document.getElementById('tabPeriodeHarian').className   = mode === 'HARIAN'   ? `sub-tab-active ${baseBtn}` : baseBtn;
+      document.getElementById('tabPeriodeMingguan').className = mode === 'MINGGUAN' ? `sub-tab-active ${baseBtn}` : baseBtn;
+      document.getElementById('tabPeriodeBulanan').className  = mode === 'BULANAN'  ? `sub-tab-active ${baseBtn}` : baseBtn;
+      document.getElementById('tabPeriodeSemua').className    = mode === 'SEMUA'    ? `sub-tab-active ${baseBtn}` : baseBtn;
+
+      document.getElementById('boxFilterHarian').classList.toggle('hidden', mode !== 'HARIAN');
+      document.getElementById('boxFilterMingguan').classList.toggle('hidden', mode !== 'MINGGUAN');
+      document.getElementById('boxFilterBulanan').classList.toggle('hidden', mode !== 'BULANAN');
+      document.getElementById('boxFilterSemua').classList.toggle('hidden', mode !== 'SEMUA');
+
+      const labelMap = { 'HARIAN': 'Harian', 'MINGGUAN': 'Mingguan', 'BULANAN': 'Bulanan', 'SEMUA': 'Semua' };
+      document.getElementById('btnQuickPrintText').innerText = `Lihat & Cetak Rekap (${labelMap[mode]})`;
+
+      renderSeluruhAplikasi();
+    }
+
+    function filterDataBM(modeTarget) {
+      const mode = modeTarget || modePeriodeAktif;
+      const shiftFilter = document.getElementById('filterShift').value;
+      const barangFilter = document.getElementById('filterBarang').value;
+      const keyword = (document.getElementById('searchBM').value || '').toLowerCase();
+      const now = new Date();
+
+      const sorted = [...listTransaksiBM].sort((a, b) => {
+        const tglA = normalizeDateStr(a.tanggal);
+        const tglB = normalizeDateStr(b.tanggal);
+        if (tglA !== tglB) return tglA.localeCompare(tglB);
+        return (a.createdAt || 0) - (b.createdAt || 0);
+      });
+
+      return sorted.filter(item => {
+        const tglStr = normalizeDateStr(item.tanggal);
+        let matchPeriode = true;
+
+        if (mode === 'HARIAN') {
+          const tglPilih = document.getElementById('filterTanggalHarian').value;
+          matchPeriode = !tglPilih || tglStr === tglPilih;
+        } else if (mode === 'MINGGUAN') {
+          const rentang = document.getElementById('filterRentangMinggu').value;
+          if (tglStr) {
+            const itemDate = new Date(tglStr + "T00:00:00");
+            const diffDays = (now - itemDate) / (1000 * 60 * 60 * 24);
+            if (rentang === '7') matchPeriode = diffDays >= -1 && diffDays <= 7;
+            else if (rentang === '14') matchPeriode = diffDays >= -1 && diffDays <= 14;
+            else if (rentang === 'MINGGU_INI') {
+              const dayOfWeek = now.getDay() || 7;
+              const startOfWeek = new Date(now);
+              startOfWeek.setDate(now.getDate() - dayOfWeek + 1);
+              startOfWeek.setHours(0, 0, 0, 0);
+              matchPeriode = itemDate >= startOfWeek;
+            }
+          }
+        } else if (mode === 'BULANAN') {
+          const bln = document.getElementById('filterBulan').value;
+          const thn = document.getElementById('filterTahun').value;
+          matchPeriode = tglStr.startsWith(`${thn}-${bln}`);
+        }
+
+        const matchShift = shiftFilter === 'SEMUA' || String(item.shift).toUpperCase() === shiftFilter;
+        const matchBarang = barangFilter === 'SEMUA' || String(item.barang).toLowerCase() === barangFilter.toLowerCase();
+        const matchKey = !keyword ||
+          String(item.armada || '').toLowerCase().includes(keyword) ||
+          String(item.barang || '').toLowerCase().includes(keyword) ||
+          String(item.driver || '').toLowerCase().includes(keyword) ||
+          String(item.kuli || '').toLowerCase().includes(keyword) ||
+          String(item.admin || '').toLowerCase().includes(keyword);
+
+        return matchPeriode && matchShift && matchBarang && matchKey;
+      });
+    }
+
+    function renderSeluruhAplikasi() {
+      const filtered = filterDataBM(modePeriodeAktif);
+
+      let sumTurun = 0;
+      let sumNaik = 0;
+      let sumPagi = 0;
+      let sumMalam = 0;
+      let countTurun = 0;
+      let countNaik = 0;
+
+      filtered.forEach(item => {
+        const trn = Number(item.turun) || 0;
+        const nk = Number(item.naik) || 0;
+        const tot = trn + nk;
+        sumTurun += trn;
+        sumNaik += nk;
+        if (trn > 0) countTurun++;
+        if (nk > 0) countNaik++;
+        if (String(item.shift).toUpperCase() === 'MALAM') sumMalam += tot;
+        else sumPagi += tot;
+      });
+
+      const sumTotal = sumTurun + sumNaik;
+
+      document.getElementById('kpiTotalTon').innerText = `${formatTon(sumTotal)} TON`;
+      document.getElementById('kpiSubTotal').innerText = `Shift Pagi: ${formatTon(sumPagi)} Ton • Shift Malam: ${formatTon(sumMalam)} Ton`;
+      document.getElementById('kpiTotalTurun').innerText = `${formatTon(sumTurun)} TON`;
+      document.getElementById('kpiCountTurun').innerText = `${countTurun} Aktivitas Bongkar`;
+      document.getElementById('kpiTotalNaik').innerText = `${formatTon(sumNaik)} TON`;
+      document.getElementById('kpiCountNaik').innerText = `${countNaik} Aktivitas Muat`;
+
+      // Update tanggal kotak Admin Pagi & Malam di bawah tabel
+      const tglAktif = document.getElementById('filterTanggalHarian').value || getTodayISO();
+      const tglSlash = formatTglSlash(tglAktif);
+      document.getElementById('boxTglPagi').innerText = tglSlash;
+      document.getElementById('boxTglMalam').innerText = tglSlash;
+
+      const tbody = document.getElementById('tbodyBM');
+      const tfoot = document.getElementById('tfootBM');
+      tbody.innerHTML = '';
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="10" class="text-center py-9 text-slate-400 space-y-2">
+              <div>Belum ada data bongkar muat pada filter periode <b>${modePeriodeAktif}</b> ini.</div>
+              <div class="flex justify-center gap-2 pt-1">
+                <button onclick="bukaModalBM('NAIK')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-xl text-xs font-extrabold shadow">+ Input Bongkar Muat Sekarang</button>
+                ${modePeriodeAktif !== 'SEMUA' ? `<button onclick="setModePeriode('SEMUA')" class="bg-slate-700 hover:bg-slate-600 text-white px-3 py-1.5 rounded-xl text-xs font-bold">Lihat Semua Data</button>` : ''}
+              </div>
+            </td>
+          </tr>
+        `;
+        tfoot.innerHTML = '';
+        return;
+      }
+
+      filtered.forEach(item => {
+        const trn = Number(item.turun) || 0;
+        const nk = Number(item.naik) || 0;
+        const tot = trn + nk;
+        const isMalam = String(item.shift).toUpperCase() === 'MALAM';
+
+        const shiftBadge = isMalam
+          ? `<span class="bg-blue-500/20 text-blue-400 border border-blue-500/30 px-2 py-0.5 rounded text-[10px] font-extrabold">MALAM • ${item.admin || 'HASFHI'}</span>`
+          : `<span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded text-[10px] font-extrabold">PAGI • ${item.admin || 'SUFYAN'}</span>`;
+
+        tbody.innerHTML += `
+          <tr class="hover:bg-slate-50 transition">
+            <td class="py-2.5 px-3 whitespace-nowrap border-r border-slate-200/60">
+              <div class="font-bold text-slate-800">${normalizeDateStr(item.tanggal)}</div>
+              <div class="mt-0.5">${shiftBadge}</div>
+            </td>
+            <td class="py-2.5 px-3 font-extrabold text-slate-800 whitespace-nowrap border-r border-slate-200/60">${item.armada}</td>
+            <td class="py-2.5 px-3 whitespace-nowrap border-r border-slate-200/60">
+              <span class="bg-amber-500/15 text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded-lg font-extrabold text-[11px]">${item.barang || '-'}</span>
+            </td>
+            <td class="py-2.5 px-2.5 text-center font-mono-code font-bold text-slate-500 whitespace-nowrap border-r border-slate-200/60">${item.waktu || '-'}</td>
+            <td class="py-2.5 px-3 text-right font-mono-code font-extrabold text-blue-500 whitespace-nowrap border-r border-slate-200/60">${formatTon(trn)}</td>
+            <td class="py-2.5 px-3 text-right font-mono-code font-extrabold text-emerald-500 whitespace-nowrap border-r border-slate-200/60">${formatTon(nk)}</td>
+            <td class="py-2.5 px-3 text-right font-mono-code font-extrabold text-amber-400 whitespace-nowrap border-r border-slate-200/60">${formatTon(tot)}</td>
+            <td class="py-2.5 px-3 text-center font-bold text-slate-700 whitespace-nowrap border-r border-slate-200/60">${item.driver || 'KONTAINER'}</td>
+            <td class="py-2.5 px-3 font-semibold text-slate-700 text-center leading-snug border-r border-slate-200/60 max-w-[180px]">${item.kuli || '-'}</td>
+            <td class="py-2.5 px-2.5 text-center whitespace-nowrap">
+              <div class="inline-flex items-center space-x-1">
+                <button onclick="editDataBM('${item.id}')" class="bg-amber-500/20 hover:bg-amber-500 text-amber-400 hover:text-slate-950 px-2 py-1 rounded-lg text-[11px] font-bold transition" title="Edit Baris">
+                  <i class="fa-solid fa-pen"></i>
+                </button>
+                <button onclick="hapusDataBM('${item.id}')" class="bg-rose-500/15 hover:bg-rose-600 text-rose-400 hover:text-white px-2 py-1 rounded-lg text-[11px] transition" title="Hapus Baris">
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+
+      const shiftLabel = document.getElementById('filterShift').value === 'SEMUA'
+        ? `TOTAL (${modePeriodeAktif})`
+        : `TOTAL SHIFT ${document.getElementById('filterShift').value}`;
+
+      tfoot.innerHTML = `
+        <tr>
+          <td colspan="4" class="py-3 px-3 text-left font-extrabold uppercase text-slate-800 border-r border-slate-300">${shiftLabel}</td>
+          <td class="py-3 px-3 text-right font-mono-code text-blue-500 text-sm border-r border-slate-300">${formatTon(sumTurun)}</td>
+          <td class="py-3 px-3 text-right font-mono-code text-emerald-500 text-sm border-r border-slate-300">${formatTon(sumNaik)}</td>
+          <td class="py-3 px-3 text-right font-mono-code text-amber-400 text-sm border-r border-slate-300">${formatTon(sumTotal)}</td>
+          <td colspan="3"></td>
+        </tr>
+      `;
+    }
+
+    /* ========================================================= */
+    /* 5. CETAK LAPORAN PERSIS GAMBAR SPREADSHEET (KUNING-BIRU)  */
+    /* ========================================================= */
+    function bukaModalCetakRekap(periodePilihan, autoPrint = false) {
+      periodeCetakAktif = periodePilihan || modePeriodeAktif;
+      setModePeriode(periodeCetakAktif);
+
+      const filtered = filterDataBM(periodeCetakAktif);
+      const tampilkanFullKontainer = document.getElementById('toggleFullKontainer').checked;
+
+      // Judul Tanggal Kuning di Atas (Persis Gambar: "Minggu, 1 November 2026")
+      let bannerJudul = "";
+      let tglBoxSlash = formatTglSlash(getTodayISO());
+
+      if (periodeCetakAktif === 'HARIAN') {
+        const tglPilih = document.getElementById('filterTanggalHarian').value || getTodayISO();
+        bannerJudul = formatTanggalLengkapIndo(tglPilih);
+        tglBoxSlash = formatTglSlash(tglPilih);
+      } else if (periodeCetakAktif === 'MINGGUAN') {
+        bannerJudul = "REKAP MINGGUAN (7 HARI TERAKHIR)";
+      } else if (periodeCetakAktif === 'BULANAN') {
+        const namaBulan = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+        const bIdx = parseInt(document.getElementById('filterBulan').value, 10) - 1;
+        const thn = document.getElementById('filterTahun').value;
+        bannerJudul = `REKAP BULANAN — ${namaBulan[bIdx] || ''} ${thn}`;
+      } else {
+        bannerJudul = "REKAP KESELURUHAN BONGKAR MUAT & KULI";
+      }
+
+      // Susun baris tabel cetak
+      let rowsCetak = [];
+      if (tampilkanFullKontainer && periodeCetakAktif === 'HARIAN') {
+        // Susun KONTAINER 1 s/d KONTAINER 8 seperti template gambar + tambahan TRUCK atau kontainer ekstra
+        const usedIds = new Set();
+        for (let i = 1; i <= 8; i++) {
+          const namaKontainer = `KONTAINER ${i}`;
+          const matches = filtered.filter(x => String(x.armada).toUpperCase() === namaKontainer);
+          if (matches.length > 0) {
+            matches.forEach(m => {
+              usedIds.add(m.id);
+              rowsCetak.push(m);
+            });
+          } else {
+            rowsCetak.push({
+              armada: namaKontainer,
+              barang: "",
+              waktu: "",
+              turun: 0,
+              naik: 0,
+              total: 0,
+              driver: "KONTAINER",
+              kuli: ""
+            });
+          }
+        }
+        // Tambahkan baris Truck atau armada lain yang belum masuk di Kontainer 1-8
+        filtered.forEach(item => {
+          if (!usedIds.has(item.id)) {
+            rowsCetak.push(item);
+          }
+        });
+      } else {
+        rowsCetak = filtered.length > 0 ? filtered : [
+          { armada: "KONTAINER 1", barang: "-", waktu: "-", turun: 0, naik: 0, total: 0, driver: "KONTAINER", kuli: "" }
+        ];
+      }
+
+      let sumTurun = 0;
+      let sumNaik = 0;
+
+      let trHtml = '';
+      rowsCetak.forEach(r => {
+        const trn = Number(r.turun) || 0;
+        const nk = Number(r.naik) || 0;
+        const tot = trn + nk;
+        sumTurun += trn;
+        sumNaik += nk;
+
+        trHtml += `
+          <tr>
+            <td style="border: 1px solid #94a3b8; padding: 6px 8px; font-weight: 700; text-align: left;">${r.armada}</td>
+            <td style="border: 1px solid #94a3b8; padding: 6px 8px; font-weight: 600; text-align: center;">${r.barang || ''}</td>
+            <td style="border: 1px solid #94a3b8; padding: 6px 8px; text-align: center; font-family: monospace;">${r.waktu || ''}</td>
+            <td style="border: 1px solid #94a3b8; padding: 6px 8px; text-align: right; font-family: monospace;">${formatTon(trn)}</td>
+            <td style="border: 1px solid #94a3b8; padding: 6px 8px; text-align: right; font-family: monospace;">${formatTon(nk)}</td>
+            <td style="border: 1px solid #94a3b8; padding: 6px 8px; text-align: right; font-family: monospace; font-weight: 700;">${formatTon(tot)}</td>
+            <td style="border: 1px solid #94a3b8; padding: 6px 8px; text-align: center; font-weight: 600;">${r.driver || 'KONTAINER'}</td>
+            <td style="border: 1px solid #94a3b8; padding: 6px 8px; text-align: center; font-size: 11px; line-height: 1.35;">${r.kuli || ''}</td>
+          </tr>
+        `;
+      });
+
+      const sumTotal = sumTurun + sumNaik;
+      const shiftFilter = document.getElementById('filterShift').value;
+      const labelTotalBawah = shiftFilter === 'MALAM' ? 'TOTAL SHIFT MALAM' : (shiftFilter === 'PAGI' ? 'TOTAL SHIFT PAGI' : 'TOTAL SHIFT PAGI & MALAM');
+
+      document.getElementById('judulModalCetak').innerText = `Rekap Bongkar Muat — ${bannerJudul}`;
+
+      document.getElementById('areaCetakTarget').innerHTML = `
+        <div id="dokumenRekapTarget" style="width: 100%; max-width: 820px; margin: 0 auto; background: #ffffff; color: #0f172a; padding: 20px; font-family: 'Inter', Arial, sans-serif; box-sizing: border-box;">
+          
+          <!-- BARIS KUNING TANGGAL PERSIS SPREADSHEET -->
+          <div style="background: #ffff00; color: #000000; font-weight: 800; font-size: 15px; text-align: center; padding: 7px 12px; border: 1.5px solid #0f172a; margin-bottom: 12px;">
+            ${bannerJudul}
+          </div>
+
+          <!-- TABEL UTAMA BIRU PERSIS SPREADSHEET -->
+          <table style="width: 100%; border-collapse: collapse; font-size: 11.5px; color: #0f172a; margin-bottom: 18px;">
+            <thead>
+              <tr style="background: #2b4c7e; color: #ffffff; font-weight: 800; text-transform: uppercase;">
+                <th colspan="7" style="border: 1px solid #1e3a5f; padding: 7px 8px; text-align: center; letter-spacing: 0.5px;">REKAP BONGKAR MUAT KONTAINER & TRUCK</th>
+                <th rowspan="2" style="border: 1px solid #1e3a5f; padding: 7px 8px; text-align: center; width: 20%; vertical-align: middle;">KULI</th>
+              </tr>
+              <tr style="background: #2b4c7e; color: #ffffff; font-weight: 800; font-size: 10.5px; text-transform: uppercase;">
+                <th style="border: 1px solid #1e3a5f; padding: 6px 8px; text-align: center; width: 15%;">TIM / ARMADA</th>
+                <th style="border: 1px solid #1e3a5f; padding: 6px 8px; text-align: center; width: 14%;">BARANG</th>
+                <th style="border: 1px solid #1e3a5f; padding: 6px 8px; text-align: center; width: 9%;">WAKTU</th>
+                <th style="border: 1px solid #1e3a5f; padding: 6px 8px; text-align: center; width: 10%;">TURUN</th>
+                <th style="border: 1px solid #1e3a5f; padding: 6px 8px; text-align: center; width: 10%;">NAIK</th>
+                <th style="border: 1px solid #1e3a5f; padding: 6px 8px; text-align: center; width: 11%;">TOTAL (TON)</th>
+                <th style="border: 1px solid #1e3a5f; padding: 6px 8px; text-align: center; width: 11%;">DRIVER</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${trHtml}
+            </tbody>
+            <tfoot>
+              <tr style="background: #f8fafc; font-weight: 800; font-size: 12px;">
+                <td colspan="3" style="border: 1px solid #64748b; padding: 7px 8px; text-align: left;">${labelTotalBawah}</td>
+                <td style="border: 1px solid #64748b; padding: 7px 8px; text-align: right; font-family: monospace;">${formatTon(sumTurun)}</td>
+                <td style="border: 1px solid #64748b; padding: 7px 8px; text-align: right; font-family: monospace;">${formatTon(sumNaik)}</td>
+                <td style="border: 1px solid #64748b; padding: 7px 8px; text-align: right; font-family: monospace;">${formatTon(sumTotal)}</td>
+                <td style="border: 1px solid #64748b; padding: 7px 8px;"></td>
+                <td style="border: 1px solid #64748b; padding: 7px 8px;"></td>
+              </tr>
+            </tfoot>
+          </table>
+
+          <!-- DUA KOTAK ADMIN GUDANG (PAGI: SUFYAN & MALAM: HASFHI) PERSIS GAMBAR -->
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; margin-top: 14px; page-break-inside: avoid;">
+            
+            <!-- Kotak Kiri: Admin Pagi SUFYAN -->
+            <table style="width: 220px; border-collapse: collapse; font-size: 11.5px; text-align: center; font-weight: 700;">
+              <tr>
+                <td style="border: 1px solid #64748b; padding: 4px 8px;">${tglBoxSlash}</td>
+              </tr>
+              <tr>
+                <td style="border: 1px solid #64748b; background: #ffff00; color: #000000; font-weight: 800; padding: 4px 8px;">ADMIN GUDANG</td>
+              </tr>
+              <tr>
+                <td style="border: 1px solid #64748b; padding: 4px 8px;">PAGI</td>
+              </tr>
+              <tr>
+                <td style="border: 1px solid #64748b; padding: 5px 8px; font-weight: 800;">SUFYAN</td>
+              </tr>
+            </table>
+
+            <!-- Kotak Kanan: Admin Malam HASFHI -->
+            <table style="width: 220px; border-collapse: collapse; font-size: 11.5px; text-align: center; font-weight: 700;">
+              <tr>
+                <td style="border: 1px solid #64748b; padding: 4px 8px;">${tglBoxSlash}</td>
+              </tr>
+              <tr>
+                <td style="border: 1px solid #64748b; background: #ffff00; color: #000000; font-weight: 800; padding: 4px 8px;">ADMIN GUDANG</td>
+              </tr>
+              <tr>
+                <td style="border: 1px solid #64748b; padding: 4px 8px;">MALAM</td>
+              </tr>
+              <tr>
+                <td style="border: 1px solid #64748b; padding: 5px 8px; font-weight: 800;">HASFHI</td>
+              </tr>
+            </table>
+
+          </div>
+
+        </div>
+      `;
+
+      openModal('modalCetakRekap');
+
+      if (autoPrint) {
+        setTimeout(() => cetakRekapWindow(), 200);
+      }
+    }
+
+    async function unduhRekapPNG() {
+      const target = document.getElementById('dokumenRekapTarget');
+      if (!target || !window.html2canvas) {
+        cetakRekapWindow();
+        return;
+      }
+      showCenterLoading("Mengunduh Gambar Rekap...");
+      try {
+        const canvas = await html2canvas(target, { scale: 2, useCORS: true, backgroundColor: "#ffffff" });
+        const link = document.createElement('a');
+        link.download = `Rekap_Bongkar_Muat_${periodeCetakAktif}_${getTodayISO()}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        showToast("Gambar Rekap Berhasil Diunduh!");
+      } catch (err) {
+        cetakRekapWindow();
+      }
+      hideCenterLoading();
+    }
+
+    function cetakRekapWindow() {
+      const content = document.getElementById('areaCetakTarget').innerHTML;
+      const printWin = window.open('', '_blank', 'width=900,height=750');
+      printWin.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Cetak Rekap Bongkar Muat - CV. YUDISTIRA CATTLE AND FARM</title>
+          <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+          <style>
+            @page { size: auto; margin: 10mm; }
+            body {
+              margin: 0;
+              padding: 0;
+              font-family: 'Inter', Arial, sans-serif;
+              -webkit-print-color-adjust: exact !important;
+              print-color-adjust: exact !important;
+            }
+            #dokumenRekapTarget {
+              max-width: 100% !important;
+              width: 100% !important;
+            }
+            tr { page-break-inside: avoid; }
+          </style>
+        </head>
+        <body>
+          ${content}
+          <script>
+            window.onload = function() {
+              setTimeout(function() { window.print(); window.close(); }, 400);
+            };
+          <\/script>
+        </body>
+        </html>
+      `);
+      printWin.document.close();
+    }
+
+    /* ========================================================= */
+    /* 6. SINKRONISASI GOOGLE SHEETS & EKSPOR CSV                */
+    /* ========================================================= */
+    async function syncFromGoogleSheets(silent = false) {
+      if (!gasUrl) {
+        if (!silent) openModal('modalCloudSync');
+        return;
+      }
+      const icon = document.getElementById('syncIcon');
+      if (icon) icon.classList.add('fa-spin');
+      if (!silent) showCenterLoading("Sinkronisasi Google Sheets...");
+
+      try {
+        const res = await fetch(gasUrl);
+        const data = await res.json();
+        if (data.status === 'success') {
+          if (Array.isArray(data.transaksi)) {
+            listTransaksiBM = data.transaksi;
+            localStorage.setItem(STORAGE_KEY_BM_DATA, JSON.stringify(listTransaksiBM));
+          }
+          if (Array.isArray(data.timKuli) && data.timKuli.length > 0) {
+            listTimKuli = data.timKuli;
+            localStorage.setItem(STORAGE_KEY_TIM_KULI, JSON.stringify(listTimKuli));
+          }
+          renderPilihanKuli();
+          renderSeluruhAplikasi();
+          if (!silent) showToast("Tersinkron dengan Google Sheets!");
+        }
+      } catch (err) {
+        if (!silent) showToast("Mode Offline Lokal Aktif");
+      }
+
+      setTimeout(() => {
+        if (icon) icon.classList.remove('fa-spin');
+        if (!silent) hideCenterLoading();
+      }, 400);
+    }
+
+    function exportRekapCSV(periodePilihan) {
+      const targetMode = periodePilihan || modePeriodeAktif;
+      const filtered = filterDataBM(targetMode);
+
+      let sumTurun = 0;
+      let sumNaik = 0;
+      filtered.forEach(x => {
+        sumTurun += Number(x.turun) || 0;
+        sumNaik += Number(x.naik) || 0;
+      });
+      const sumTotal = sumTurun + sumNaik;
+
+      let csvRows = [
+        `"REKAP BONGKAR MUAT KONTAINER & TRUCK"`,
+        `"CV. YUDISTIRA CATTLE AND FARM"`,
+        `"Periode:","${targetMode}"`,
+        `"Waktu Unduh:","${new Date().toLocaleString('id-ID')}"`,
+        `""`,
+        `"NO","TANGGAL","SHIFT","ADMIN GUDANG","TIM / ARMADA","NAMA BARANG","WAKTU","TURUN (TON)","NAIK (TON)","TOTAL (TON)","DRIVER","KULI"`
+      ];
+
+      filtered.forEach((item, idx) => {
+        const trn = Number(item.turun) || 0;
+        const nk = Number(item.naik) || 0;
+        const tot = trn + nk;
+        const cleanKuli = String(item.kuli || '').replace(/"/g, '""');
+        const cleanBarang = String(item.barang || '').replace(/"/g, '""');
+        csvRows.push(
+          `"${idx + 1}","${normalizeDateStr(item.tanggal)}","${item.shift || 'PAGI'}","${item.admin || 'SUFYAN'}","${item.armada}","${cleanBarang}","${item.waktu || ''}",${trn},${nk},${tot},"${item.driver || 'KONTAINER'}","${cleanKuli}"`
+        );
+      });
+
+      csvRows.push(`"","","","","","","TOTAL",${sumTurun},${sumNaik},${sumTotal},"",""`);
+
+      const csvString = "\uFEFF" + csvRows.join("\n");
+      const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `Rekap_Bongkar_Muat_${targetMode}_${getTodayISO()}.csv`;
+      link.click();
+
+      showToast(`CSV Laporan ${targetMode} Berhasil Diunduh!`);
+    }
+
+    function simpanKonfigurasiGas() {
+      gasUrl = document.getElementById('inputGasUrl').value.trim();
+      localStorage.setItem(STORAGE_KEY_GAS_URL, gasUrl);
+      closeModal('modalCloudSync');
+      showToast("URL Script GS Disimpan!");
+      if (gasUrl) syncFromGoogleSheets(false);
+    }
+
+    function resetSemuaDataLokal() {
+      if (!confirm("PERINGATAN: Hapus data lokal di perangkat ini?")) return;
+      listTransaksiBM = [];
+      localStorage.setItem(STORAGE_KEY_BM_DATA, JSON.stringify(listTransaksiBM));
+      closeModal('modalCloudSync');
+      renderSeluruhAplikasi();
+      showToast("Data Lokal Berhasil Direset!");
+    }
+
+    /* ========================================================= */
+    /* 7. FORMATTER & KALKULATOR                                 */
+    /* ========================================================= */
+    function formatTon(num) {
+      const val = Number(num) || 0;
+      return val.toLocaleString('id-ID', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+    }
+
+    function formatTglSlash(yyyyMmDd) {
+      if (!yyyyMmDd) return '';
+      const parts = yyyyMmDd.split('-');
+      if (parts.length !== 3) return yyyyMmDd;
+      return `${parseInt(parts[2], 10)}/${parseInt(parts[1], 10)}/${parts[0]}`;
+    }
+
+    function formatTanggalLengkapIndo(yyyyMmDd) {
+      if (!yyyyMmDd) return '';
+      const dateObj = new Date(yyyyMmDd + "T00:00:00");
+      if (isNaN(dateObj.getTime())) return yyyyMmDd;
+      return dateObj.toLocaleDateString('id-ID', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      });
+    }
+
+    let cExp = "0";
+    function toggleCalc() { document.getElementById('calcPopup').classList.toggle('hidden'); }
+    function cUpd() { document.getElementById('calcDisplay').innerText = cExp; }
+    function cClear() { cExp = "0"; cUpd(); }
+    function cBack() { cExp = cExp.length > 1 ? cExp.slice(0, -1) : "0"; cUpd(); }
+    function cIn(ch) { cExp = (cExp === "0" && !['+','-','*','/','.'].includes(ch)) ? ch : cExp + ch; cUpd(); }
+    function cEq() {
+      try {
+        const res = Function('"use strict"; return (' + cExp + ')')();
+        cExp = isFinite(res) ? String(Math.round(res * 100) / 100) : "Error";
+      } catch (e) { cExp = "Error"; }
+      cUpd();
+    }
+
+    function openModal(id) {
+      const el = document.getElementById(id);
+      if (el) { el.classList.remove('hidden'); el.classList.add('flex'); }
+    }
+
+    function closeModal(id) {
+      const el = document.getElementById(id);
+      if (el) { el.classList.add('hidden'); el.classList.remove('flex'); }
+    }
+
+    let toastTimeout = null;
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      document.getElementById('toastMsg').innerText = msg;
+      t.classList.remove('hidden');
+      t.classList.add('flex');
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        t.classList.add('hidden');
+        t.classList.remove('flex');
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
