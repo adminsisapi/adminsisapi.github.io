@@ -127,7 +127,7 @@
         </div>
         <h1 class="text-2xl font-extrabold tracking-wider">SISAPI</h1>
         <p class="text-[11px] text-emerald-400 font-bold uppercase tracking-widest mt-0.5">CV YUDISTIRA CATTLE AND FARM</p>
-        <p class="text-[10px] text-slate-400 mt-1">Sistem Manajemen Gudang & Invoice</p>
+        <p class="text-[10px] text-slate-400 mt-1">Sistem Manajemen Gudang</p>
       </div>
 
       <form onsubmit="handleLogin(event)" class="p-5 space-y-4">
@@ -172,7 +172,7 @@
           </span>
           <div>
             <h3 class="font-bold text-xs sm:text-sm">Absensi</h3>
-            <p class="text-[10px] text-slate-400">Waktu Live</p>
+            <p class="text-[10px] text-slate-400">Waktu</p>
           </div>
         </div>
         <button type="button" onclick="closeModal('modalAbsensi')" class="text-slate-400 hover:text-white">
@@ -245,7 +245,7 @@
         <div class="flex items-center space-x-1 sm:space-x-1.5 shrink-0">
           <button id="btnInstallApp" onclick="triggerInstallApp()" class="bg-emerald-600 hover:bg-emerald-500 text-white w-7 h-7 sm:w-auto sm:h-auto sm:px-2.5 sm:py-1.5 rounded-lg sm:rounded-xl text-[11px] font-bold transition flex items-center justify-center sm:space-x-1 shadow" title="Instal Aplikasi">
             <i class="fa-solid fa-download text-[11px]"></i>
-            <span class="hidden sm:inline">Aplikasi</span>
+            <span class="hidden sm:inline">APP</span>
           </button>
 
           <button onclick="openModal('modalPilihLaporan')" class="bg-slate-800 hover:bg-slate-700 text-blue-400 border border-slate-700 w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl text-xs transition flex items-center justify-center" title="Cetak & Unduh Laporan">
@@ -280,19 +280,19 @@
 
         <nav class="grid grid-cols-5 gap-1 sm:gap-1.5 w-full sm:w-auto">
           <button onclick="navigatePage('BERANDA')" id="navBeranda" class="nav-btn-active px-2 py-1.5 rounded-xl text-[10px] sm:text-xs font-bold bg-slate-800 text-slate-300 hover:text-white transition flex items-center justify-center space-x-1">
-            <i class="fa-solid fa-grip"></i><span>Beranda</span>
+            <i class="fa-solid fa-grip"></i><span>BERANDA</span>
           </button>
           <button onclick="navigatePage('PRODUK')" id="navProduk" class="px-2 py-1.5 rounded-xl text-[10px] sm:text-xs font-bold bg-slate-800 text-slate-300 hover:text-white transition flex items-center justify-center space-x-1">
-            <i class="fa-solid fa-tags"></i><span>Produk</span>
+            <i class="fa-solid fa-tags"></i><span>PRODUK</span>
           </button>
           <button onclick="navigatePage('TRANSAKSI')" id="navTransaksi" class="px-2 py-1.5 rounded-xl text-[10px] sm:text-xs font-bold bg-slate-800 text-slate-300 hover:text-white transition flex items-center justify-center space-x-1">
-            <i class="fa-solid fa-truck-ramp-box"></i><span>Mutasi</span>
+            <i class="fa-solid fa-truck-ramp-box"></i><span>MUTASI</span>
           </button>
           <button onclick="navigatePage('STOK')" id="navStok" class="px-2 py-1.5 rounded-xl text-[10px] sm:text-xs font-bold bg-slate-800 text-slate-300 hover:text-white transition flex items-center justify-center space-x-1">
-            <i class="fa-solid fa-boxes-stacked"></i><span>Stok</span>
+            <i class="fa-solid fa-boxes-stacked"></i><span>STOK</span>
           </button>
           <button onclick="navigatePage('RIWAYAT')" id="navRiwayat" class="px-2 py-1.5 rounded-xl text-[10px] sm:text-xs font-bold bg-slate-800 text-slate-300 hover:text-white transition flex items-center justify-center space-x-1">
-            <i class="fa-solid fa-calendar-days"></i><span>Riwayat</span>
+            <i class="fa-solid fa-calendar-days"></i><span>RIWAYAT</span>
           </button>
         </nav>
       </div>
@@ -300,7 +300,7 @@
   </header>
 
   <div id="viewerNotice" class="hidden bg-amber-500/15 border-b border-amber-500/30 text-amber-700 px-4 py-1.5 text-center text-xs font-semibold">
-    <i class="fa-solid fa-eye mr-1"></i> Mode <b>Lihat Saja (Viewer)</b>
+    <i class="fa-solid fa-eye mr-1"></i> MODE <b>LIHAT</b>
   </div>
 
   <main class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-5 flex-grow w-full space-y-4">
@@ -310,17 +310,17 @@
         <div class="space-y-1">
           <div class="inline-flex items-center space-x-1.5 bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 px-2.5 py-0.5 rounded-full text-[10px] font-bold">
             <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-            <span>Database Aktif & Produk Terintegrasi</span>
+            <span>DATABASE AKTIF</span>
           </div>
-          <h2 class="text-lg sm:text-xl font-extrabold">Halo, <span id="welcomeAdminName" class="text-amber-400 underline">ADMIN</span>!</h2>
+          <h2 class="text-lg sm:text-xl font-extrabold">HALO, <span id="welcomeAdminName" class="text-amber-400 underline">ADMIN</span>!</h2>
           <p class="text-xs text-slate-300">SISAPI — CV YUDISTIRA CATTLE AND FARM</p>
         </div>
 
         <div class="flex flex-col space-y-2 sm:min-w-[220px]">
           <div class="bg-slate-950/60 border border-slate-700 rounded-xl p-3 flex flex-col justify-between">
             <div class="flex items-center justify-between text-[11px] text-slate-400 mb-1">
-              <span>Admin Shift:</span>
-              <button onclick="openModal('modalAbsensi')" class="text-amber-400 hover:underline font-bold">Absensi</button>
+              <span>ADMIN:</span>
+              <button onclick="openModal('modalAbsensi')" class="text-amber-400 hover:underline font-bold">ABSENSI</button>
             </div>
             <div class="text-sm font-extrabold text-white flex items-center space-x-2">
               <i class="fa-solid fa-user-shield text-emerald-400"></i>
@@ -332,7 +332,7 @@
           <a href="https://adminsisapi.github.io/simkeu/" target="_blank" class="w-full bg-slate-950/80 hover:bg-emerald-600 border border-emerald-500/40 text-emerald-300 hover:text-white py-2 px-3 rounded-xl text-xs font-extrabold transition flex items-center justify-between shadow-sm">
             <span class="flex items-center space-x-2">
               <i class="fa-solid fa-wallet text-emerald-400"></i>
-              <span>Buka Simkeu (Kas)</span>
+              <span>SISTEM KEUANGAN</span>
             </span>
             <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-80"></i>
           </a>
@@ -340,7 +340,7 @@
           <a href="https://adminsisapi.github.io/bongkar.html" target="_blank" class="w-full bg-slate-950/80 hover:bg-emerald-600 border border-emerald-500/40 text-emerald-300 hover:text-white py-2 px-3 rounded-xl text-xs font-extrabold transition flex items-center justify-between shadow-sm">
             <span class="flex items-center space-x-2">
               <i class="fa-solid fa-truck-ramp-box text-emerald-400"></i>
-              <span>Buka Bongkar Muat</span>
+              <span>SISTEM BONGKAR - MUAT</span>
             </span>
             <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-80"></i>
           </a>
