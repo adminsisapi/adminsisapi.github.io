@@ -2360,7 +2360,7 @@
             <tr>
               <td style="padding: 4px 0; color: #475569; width: 25%;"><b>Tanggal / Waktu</b></td>
               <td style="padding: 4px 0; font-weight: 700;">: ${g.tanggal} ${g.waktu ? '• ' + g.waktu : ''}</td>
-              <td style="padding: 4px 0; color: #475569; width: 22%;"><b>Admin Pembayar</b></td>
+              <td style="padding: 4px 0; color: #475569; width: 22%;"><b>Admin</b></td>
               <td style="padding: 4px 0; font-weight: 700;">: ${g.admin || 'ADMIN'}</td>
             </tr>
             <tr>
@@ -2393,18 +2393,18 @@
             </tfoot>
           </table>
 
-          <div style="font-size: 10.5px; color: #334155; margin-bottom: 14px;"><b>Catatan:</b> ${g.catatan || 'Gaji borongan kuli bongkar muat (Naik Rp 25.000/Ton & Bongkar Rp 20.000/Ton).'}</div>
+          <div style="font-size: 10.5px; color: #334155; margin-bottom: 14px;"><b>Catatan:</b> ${g.catatan || '.....................................................'}</div>
 
           <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 10px; page-break-inside: avoid;">
             <svg id="barcodeCetakTarget"></svg>
             <div style="display: flex; gap: 24px; text-align: center; font-size: 10px;">
               <div style="min-width: 110px;">
-                <div>Penerima (Kuli),</div>
+                <div>Penerima,</div>
                 <div style="height: 38px;"></div>
                 <div style="font-weight: 800; border-top: 1px solid #0f172a; padding-top: 2px;">( ${g.penerimaKuli.split(',')[0] || 'KULI'} )</div>
               </div>
               <div style="min-width: 110px;">
-                <div>Admin Pembayar,</div>
+                <div>Admin,</div>
                 <div style="height: 38px;"></div>
                 <div style="font-weight: 800; border-top: 1px solid #0f172a; padding-top: 2px;">( ${g.admin || 'ADMIN'} )</div>
               </div>
