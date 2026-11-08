@@ -2313,7 +2313,7 @@
       document.getElementById('inputNopol').value = '';
       document.getElementById('inputJumlah').value = '';
       document.getElementById('inputKeterangan').value = '';
-      showToast(`Transaksi ${jenis} Berhasil Disimpan ke Google Sheets!`);
+      showToast(`Transaksi ${jenis} Tersimpan ke Database!`);
       if (isAutoPrint && logTransaksi.length > 0) {
         bukaModalCetakSJ(logTransaksi[0].id || 0);
       }
@@ -2692,11 +2692,11 @@
       const isMasuk = l.jenis === 'MASUK';
       const isKeluar = l.jenis === 'KELUAR';
       const warna = isMasuk ? '#059669' : '#e11d48';
-      const judul = isMasuk ? 'BUKTI BARANG MASUK (SURAT JALAN)' : (isKeluar ? 'SURAT JALAN BARANG KELUAR' : 'BERITA ACARA STOCK OPNAME');
+      const judul = isMasuk ? 'BUKTI BARANG MASUK' : (isKeluar ? 'SURAT JALAN' : 'BERITA ACARA STOCK OPNAME');
 
       const qrData = [
         "SISAPI - CV YUDISTIRA CATTLE AND FARM",
-        "No. SJ: " + noSJ,
+        "No.: " + noSJ,
         "Jenis: " + l.jenis,
         "Tanggal: " + normalizeDateStr(l.tanggal),
         "Barang: " + l.namaBarang + " (" + Math.abs(l.jumlah) + " " + l.satuan + ")",
@@ -2709,7 +2709,7 @@
       const blokTandaTangan = `
         <div style="display: flex; gap: 16px; text-align: center; font-size: 10px;">
           <div style="min-width: 105px;">
-            <div>Penerima Barang,</div>
+            <div>Penerima,</div>
             <div style="height: 38px;"></div>
             <div style="font-weight: 800; border-top: 1px solid #0f172a; padding-top: 2px;">( .................... )</div>
           </div>
@@ -2719,7 +2719,7 @@
             <div style="font-weight: 800; border-top: 1px solid #0f172a; padding-top: 2px;">( ${String(l.sopir || '').split('-')[0].trim() || '....................'} )</div>
           </div>
           <div style="min-width: 105px;">
-            <div>Admin Gudang,</div>
+            <div>Admin,</div>
             <div style="height: 38px;"></div>
             <div style="font-weight: 800; border-top: 1px solid #0f172a; padding-top: 2px;">( ${l.admin || 'ADMIN'} )</div>
           </div>
@@ -2753,7 +2753,7 @@
             <tr>
               <td style="padding: 4px 0; color: #475569;"><b>${isKeluar ? 'Sopir & Tujuan' : 'Sopir & Supplier'}</b></td>
               <td style="padding: 4px 0; font-weight: 700;">: ${l.sopir || '-'}</td>
-              <td style="padding: 4px 0; color: #475569;"><b>Admin Bertugas</b></td>
+              <td style="padding: 4px 0; color: #475569;"><b>Admin</b></td>
               <td style="padding: 4px 0; font-weight: 700;">: ${l.admin || 'ADMIN'}</td>
             </tr>
           </table>
@@ -2784,7 +2784,7 @@
               <img src="${qrUrl}" crossorigin="anonymous" alt="QR" style="width: 64px; height: 64px; border: 1px solid #cbd5e1; padding: 2px; border-radius: 4px;">
               <div>
                 <svg id="barcodeCetakTarget"></svg>
-                <div style="font-size: 8px; color: #64748b;">Verifikasi Surat Jalan SISAPI</div>
+                <div style="font-size: 8px; color: #64748b;">Verifikasi Surat Jalan</div>
               </div>
             </div>
             ${blokTandaTangan}
@@ -2812,7 +2812,7 @@
       const warna = isLunas ? '#059669' : '#d97706';
 
       const qrData = [
-        "INVOICE PENJUALAN SISAPI",
+        "INVOICE PENJUALAN",
         "CV YUDISTIRA CATTLE AND FARM",
         "No: " + inv.noInvoice,
         "Pembeli: " + inv.namaPembeli,
@@ -2886,7 +2886,7 @@
               <img src="${qrUrl}" crossorigin="anonymous" alt="QR" style="width: 64px; height: 64px; border: 1px solid #cbd5e1; padding: 2px; border-radius: 4px;">
               <div>
                 <svg id="barcodeCetakTarget"></svg>
-                <div style="font-size: 8px; color: #64748b;">Bukti Invoice Resmi SISAPI</div>
+                <div style="font-size: 8px; color: #64748b;">Bukti Invoice Resmi</div>
               </div>
             </div>
             <div style="display: flex; gap: 20px; text-align: center; font-size: 10px;">
@@ -3015,7 +3015,7 @@
             <div style="display: flex; align-items: center; gap: 12px;">
               <img src="sj.png" alt="Logo" style="width: 52px; height: 52px; object-fit: contain;" onerror="this.src='icon.png'; this.onerror=function(){this.style.display='none'};">
               <div>
-                <div style="font-size: 16px; font-weight: 800; color: #0f172a; letter-spacing: 0.4px;">SISAPI — LAPORAN MUTASI KELUAR MASUK BARANG GUDANG</div>
+                <div style="font-size: 16px; font-weight: 800; color: #0f172a; letter-spacing: 0.4px;">LAPORAN MUTASI KELUAR MASUK BARANG GUDANG</div>
                 <div style="font-size: 12px; font-weight: 800; color: #059669;">CV YUDISTIRA CATTLE AND FARM — SENTRAL SINGOSARI K-07</div>
                 <div style="font-size: 10px; color: #64748b;">Waktu Cetak: ${new Date().toLocaleString('id-ID')} WIB</div>
               </div>
@@ -3078,7 +3078,7 @@
               <img src="${qrUrl}" crossorigin="anonymous" alt="QR" style="width: 68px; height: 68px; border: 1px solid #cbd5e1; padding: 2px; border-radius: 4px;">
               <div>
                 <svg id="barcodeCetakTarget"></svg>
-                <div style="font-size: 8.5px; color: #64748b; margin-top: 2px;">Dokumen Sah Laporan Pergudangan SISAPI — CV YUDISTIRA CATTLE AND FARM</div>
+                <div style="font-size: 8.5px; color: #64748b; margin-top: 2px;">Laporan Pergudangan — CV YUDISTIRA CATTLE AND FARM</div>
               </div>
             </div>
             <div style="display: flex; gap: 32px; text-align: center; font-size: 10px;">
@@ -3088,7 +3088,7 @@
                 <div style="font-weight: 800; border-top: 1px solid #0f172a; padding-top: 2px;">( MANAGER OPERASIONAL )</div>
               </div>
               <div style="min-width: 130px;">
-                <div>Admin Gudang SISAPI,</div>
+                <div>Admin,</div>
                 <div style="height: 38px;"></div>
                 <div style="font-weight: 800; border-top: 1px solid #0f172a; padding-top: 2px;">( ${activeShift ? activeShift.namaAdmin : 'ADMIN'} )</div>
               </div>
@@ -3297,7 +3297,7 @@
         <!DOCTYPE html>
         <html>
         <head>
-          <title>Cetak Dokumen SISAPI - CV YUDISTIRA CATTLE AND FARM</title>
+          <title>Cetak - CV YUDISTIRA CATTLE AND FARM</title>
           <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
           <style>
             @page { size: ${isLandscape ? 'landscape' : 'auto'}; margin: 8mm; }
@@ -3350,7 +3350,7 @@
       }
 
       let csvRows = [
-        `"LAPORAN MUTASI GUDANG SISAPI"`,
+        `"LAPORAN MUTASI GUDANG"`,
         `"CV YUDISTIRA CATTLE AND FARM"`,
         `"Periode Laporan:","${ketPeriode}"`,
         `"Waktu Unduh:","${new Date().toLocaleString('id-ID')}"`,
