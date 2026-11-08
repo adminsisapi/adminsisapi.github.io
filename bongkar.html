@@ -94,7 +94,7 @@
           </div>
           <div class="min-w-0">
             <div class="flex items-center space-x-1.5">
-              <h1 class="text-xs sm:text-base font-extrabold tracking-wide text-white truncate">Bongkar Muat & Penggajian Kuli</h1>
+              <h1 class="text-xs sm:text-base font-extrabold tracking-wide text-white truncate">BONGKAR MUAT KULI</h1>
               <span class="hidden sm:inline-block bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[9px] px-2 py-0.5 rounded-full font-extrabold uppercase shrink-0">CLOUD AKTIF</span>
             </div>
             <p class="text-[10px] sm:text-xs text-amber-400 font-bold tracking-wider uppercase truncate">CV. YUDISTIRA CATTLE AND FARM</p>
@@ -2347,7 +2347,7 @@
         <div id="dokumenCetakTarget" style="width: 100%; max-width: 760px; margin: 0 auto; background: #ffffff; color: #0f172a; padding: 22px; font-family: 'Inter', Arial, sans-serif; box-sizing: border-box; border: 2px solid #0f172a; border-radius: 10px;">
           <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 3px double #0f172a; padding-bottom: 12px; margin-bottom: 14px;">
             <div>
-              <div style="font-size: 15px; font-weight: 800; color: #0f172a;">SLIP PEMBAYARAN GAJI KULI BONGKAR MUAT</div>
+              <div style="font-size: 15px; font-weight: 800; color: #0f172a;">SLIP GAJI KULI</div>
               <div style="font-size: 11px; font-weight: 800; color: #059669;">CV. YUDISTIRA CATTLE AND FARM</div>
             </div>
             <div style="text-align: right;">
@@ -2358,13 +2358,13 @@
 
           <table style="width: 100%; font-size: 11px; border-collapse: collapse; margin-bottom: 14px;">
             <tr>
-              <td style="padding: 4px 0; color: #475569; width: 25%;"><b>Tanggal / Waktu</b></td>
+              <td style="padding: 4px 0; color: #475569; width: 25%;"><b>WAKTU</b></td>
               <td style="padding: 4px 0; font-weight: 700;">: ${g.tanggal} ${g.waktu ? '• ' + g.waktu : ''}</td>
               <td style="padding: 4px 0; color: #475569; width: 22%;"><b>ADMIN</b></td>
               <td style="padding: 4px 0; font-weight: 700;"> ${g.admin || 'ADMIN'}</td>
             </tr>
             <tr>
-              <td style="padding: 4px 0; color: #475569;"><b>Penerima (Tim Kuli)</b></td>
+              <td style="padding: 4px 0; color: #475569;"><b>PENERIMA</b></td>
               <td style="padding: 4px 0; font-weight: 800; color: #059669;" colspan="3">: ${g.penerimaKuli}</td>
             </tr>
           </table>
@@ -2373,10 +2373,10 @@
             <thead>
               <tr style="background: #0f172a; color: #ffffff; text-transform: uppercase; font-size: 9.5px;">
                 <th style="padding: 6px; text-align: center; width: 6%;">No</th>
-                <th style="padding: 6px; text-align: left; width: 22%;">Armada / Tim</th>
+                <th style="padding: 6px; text-align: left; width: 22%;">Armada</th>
                 <th style="padding: 6px; text-align: left; width: 20%;">Nama Barang</th>
-                <th style="padding: 6px; text-align: right; width: 12%;">Bongkar (20rb)</th>
-                <th style="padding: 6px; text-align: right; width: 12%;">Naik (25rb)</th>
+                <th style="padding: 6px; text-align: right; width: 12%;">Bongkar</th>
+                <th style="padding: 6px; text-align: right; width: 12%;">Naik</th>
                 <th style="padding: 6px; text-align: right; width: 14%;">Tarif/Ton</th>
                 <th style="padding: 6px; text-align: right; width: 14%;">Jumlah</th>
               </tr>
@@ -2384,7 +2384,7 @@
             <tbody>${trRincian}</tbody>
             <tfoot>
               <tr style="background: #f8fafc; font-weight: 800;">
-                <td colspan="3" style="border: 1px solid #cbd5e1; padding: 7px; text-align: right;">TOTAL KESELURUHAN (${formatTon(g.totalTon)} Ton) :</td>
+                <td colspan="3" style="border: 1px solid #cbd5e1; padding: 7px; text-align: right;">TOTAL (${formatTon(g.totalTon)} Ton) :</td>
                 <td style="border: 1px solid #cbd5e1; padding: 7px; text-align: right; font-family: monospace;">${formatTon(sumTurunSlip)} T</td>
                 <td style="border: 1px solid #cbd5e1; padding: 7px; text-align: right; font-family: monospace;">${formatTon(sumNaikSlip)} T</td>
                 <td style="border: 1px solid #cbd5e1; padding: 7px;"></td>
@@ -2399,12 +2399,12 @@
             <svg id="barcodeCetakTarget"></svg>
             <div style="display: flex; gap: 24px; text-align: center; font-size: 10px;">
               <div style="min-width: 110px;">
-                <div>Penerima,</div>
+                <div>PENERIMA,</div>
                 <div style="height: 38px;"></div>
                 <div style="font-weight: 800; border-top: 1px solid #0f172a; padding-top: 2px;">( ${g.penerimaKuli.split(',')[0] || 'KULI'} )</div>
               </div>
               <div style="min-width: 110px;">
-                <div>Admin,</div>
+                <div>ADMIN,</div>
                 <div style="height: 38px;"></div>
                 <div style="font-weight: 800; border-top: 1px solid #0f172a; padding-top: 2px;">( ${g.admin || 'ADMIN'} )</div>
               </div>
