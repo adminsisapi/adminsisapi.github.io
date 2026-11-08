@@ -150,7 +150,7 @@
       <!-- Kotak 2: Total Turun / Bongkar -->
       <div class="bg-white p-3.5 sm:p-4 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
         <div class="flex items-center justify-between">
-          <span class="text-[10px] sm:text-[11px] font-extrabold text-blue-500 uppercase">TURUN / BONGKAR</span>
+          <span class="text-[10px] sm:text-[11px] font-extrabold text-blue-500 uppercase">TURUN / BONGKAR (20RB/T)</span>
           <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-blue-500/15 text-blue-500 flex items-center justify-center text-xs"><i class="fa-solid fa-arrow-down-long"></i></span>
         </div>
         <div class="mt-2">
@@ -162,7 +162,7 @@
       <!-- Kotak 3: Total Naik / Muat -->
       <div class="bg-white p-3.5 sm:p-4 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
         <div class="flex items-center justify-between">
-          <span class="text-[10px] sm:text-[11px] font-extrabold text-emerald-500 uppercase">NAIK / MUAT</span>
+          <span class="text-[10px] sm:text-[11px] font-extrabold text-emerald-500 uppercase">NAIK / MUAT (25RB/T)</span>
           <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-emerald-500/15 text-emerald-500 flex items-center justify-center text-xs"><i class="fa-solid fa-arrow-up-long"></i></span>
         </div>
         <div class="mt-2">
@@ -171,10 +171,10 @@
         </div>
       </div>
 
-      <!-- Kotak 4: Estimasi / Total Gaji Kuli (Rp 25.000/Ton) -->
+      <!-- Kotak 4: Estimasi / Total Gaji Kuli (Naik 25rb/T & Bongkar 20rb/T) -->
       <div class="bg-white p-3.5 sm:p-4 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
         <div class="flex items-center justify-between">
-          <span class="text-[10px] sm:text-[11px] font-extrabold text-amber-500 uppercase">NILAI GAJI (25RB/T)</span>
+          <span class="text-[10px] sm:text-[11px] font-extrabold text-amber-500 uppercase">NILAI GAJI (N:25RB • B:20RB)</span>
           <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-amber-500/15 text-amber-500 flex items-center justify-center text-xs"><i class="fa-solid fa-money-bill-wave"></i></span>
         </div>
         <div class="mt-2">
@@ -194,7 +194,7 @@
           <div class="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-sm shadow group-hover:scale-105 transition">
             <i class="fa-solid fa-truck-loading"></i>
           </div>
-          <span class="text-[9px] font-extrabold bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full">+ NAIK</span>
+          <span class="text-[9px] font-extrabold bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full">25RB / TON</span>
         </div>
         <div class="mt-2.5">
           <h4 class="text-xs sm:text-sm font-extrabold text-slate-800">Input Naik / Muat</h4>
@@ -208,7 +208,7 @@
           <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center text-sm shadow group-hover:scale-105 transition">
             <i class="fa-solid fa-dolly"></i>
           </div>
-          <span class="text-[9px] font-extrabold bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded-full">+ TURUN</span>
+          <span class="text-[9px] font-extrabold bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded-full">20RB / TON</span>
         </div>
         <div class="mt-2.5">
           <h4 class="text-xs sm:text-sm font-extrabold text-slate-800">Input Turun / Bongkar</h4>
@@ -216,13 +216,13 @@
         </div>
       </button>
 
-      <!-- Menu 3: Buat Invoice Gaji Kuli (BARU) -->
+      <!-- Menu 3: Buat Invoice Gaji Kuli -->
       <button type="button" onclick="bukaModalBuatGaji()" class="bg-white hover:border-amber-500 border-2 border-slate-200 rounded-2xl p-3.5 shadow-sm transition flex flex-col justify-between text-left group active:scale-95">
         <div class="flex items-center justify-between w-full">
           <div class="w-9 h-9 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center text-sm shadow group-hover:scale-105 transition">
             <i class="fa-solid fa-file-invoice-dollar"></i>
           </div>
-          <span class="text-[9px] font-extrabold bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded-full">RP 25RB/T</span>
+          <span class="text-[9px] font-extrabold bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded-full">25RB & 20RB</span>
         </div>
         <div class="mt-2.5">
           <h4 class="text-xs sm:text-sm font-extrabold text-slate-800">Gaji & Invoice Kuli</h4>
@@ -372,7 +372,7 @@
       <div id="barisAksiCepatGaji" class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-2.5 flex flex-wrap items-center justify-between gap-2">
         <div class="flex items-center space-x-2 text-xs">
           <i class="fa-solid fa-hand-pointer text-amber-400"></i>
-          <span id="teksInfoPilihanGaji" class="font-bold text-slate-700">Centang kotak di tabel untuk menggaji beberapa muatan sekaligus (Rp 25.000/Ton).</span>
+          <span id="teksInfoPilihanGaji" class="font-bold text-slate-700">Centang kotak di tabel untuk menggaji beberapa muatan sekaligus (Naik Rp 25.000/T • Bongkar Rp 20.000/T).</span>
         </div>
         <div class="flex items-center space-x-1.5">
           <button type="button" onclick="pilihSemuaBelumDibayar()" class="bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 px-2.5 py-1 rounded-lg text-[11px] font-bold transition">
@@ -449,7 +449,7 @@
 
 
     <!-- ========================================================= -->
-    <!-- BARIS 4: SISTEM PENGGAJIAN & RIWAYAT INVOICE KULI (BARU)  -->
+    <!-- BARIS 4: SISTEM PENGGAJIAN & RIWAYAT INVOICE KULI         -->
     <!-- ========================================================= -->
     <section id="sectionPenggajian" class="bg-white rounded-2xl shadow-sm border-2 border-amber-500/40 overflow-hidden p-4 sm:p-5 space-y-4">
       
@@ -460,11 +460,12 @@
             <i class="fa-solid fa-hand-holding-dollar"></i>
           </div>
           <div>
-            <div class="flex items-center space-x-2">
+            <div class="flex flex-wrap items-center gap-2">
               <h2 class="text-sm sm:text-base font-extrabold text-slate-800">Sistem Penggajian & Invoice Kuli Bongkar Muat</h2>
-              <span class="bg-amber-500/20 text-amber-400 border border-amber-500/30 text-[10px] px-2 py-0.5 rounded-full font-extrabold">Rp 25.000 / Ton</span>
+              <span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] px-2 py-0.5 rounded-full font-extrabold">Naik: Rp 25.000/T</span>
+              <span class="bg-blue-500/20 text-blue-400 border border-blue-500/30 text-[10px] px-2 py-0.5 rounded-full font-extrabold">Bongkar: Rp 20.000/T</span>
             </div>
-            <p class="text-[11px] text-slate-500">Pilih satu atau lebih data bongkar muat di atas untuk membuat Invoice Gaji Kuli otomatis.</p>
+            <p class="text-[11px] text-slate-500">Pilih satu atau lebih data bongkar muat di atas untuk membuat Invoice Gaji Kuli otomatis (Naik 25rb/Ton • Bongkar 20rb/Ton).</p>
           </div>
         </div>
 
@@ -491,7 +492,7 @@
           <div>
             <span class="text-[10px] font-extrabold text-blue-500 uppercase">Total Tonase Digaji</span>
             <h4 id="sumGajiTotalTon" class="text-base sm:text-lg font-extrabold font-mono-code text-blue-500 mt-0.5">0,0 TON</h4>
-            <p class="text-[10px] text-slate-500">Tarif Dasar: Rp 25.000 / Ton</p>
+            <p class="text-[10px] text-slate-500">Tarif: Naik 25rb/T • Bongkar 20rb/T</p>
           </div>
           <span class="w-9 h-9 rounded-xl bg-blue-500/15 text-blue-400 flex items-center justify-center"><i class="fa-solid fa-scale-balanced"></i></span>
         </div>
@@ -557,6 +558,7 @@
   <footer class="max-w-7xl mx-auto px-4 py-4 text-center text-[11px] text-slate-500 w-full">
     <b>CV. YUDISTIRA CATTLE AND FARM</b>
   </footer>
+
   <!-- ========================================================= -->
   <!-- MODAL 1: INPUT BONGKAR MUAT & NAIK KULI (SUPER MUDAH)     -->
   <!-- ========================================================= -->
@@ -687,11 +689,11 @@
 
           <div class="grid grid-cols-3 gap-2.5">
             <div>
-              <label class="block text-[10px] font-extrabold text-blue-500 uppercase mb-1">Turun (Ton)</label>
+              <label class="block text-[10px] font-extrabold text-blue-500 uppercase mb-1">Turun (20rb/T)</label>
               <input type="number" id="inputTurunBM" step="0.1" min="0" value="0" oninput="hitungTotalTonModal()" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm font-extrabold font-mono-code text-blue-500">
             </div>
             <div>
-              <label class="block text-[10px] font-extrabold text-emerald-500 uppercase mb-1">Naik (Ton)</label>
+              <label class="block text-[10px] font-extrabold text-emerald-500 uppercase mb-1">Naik (25rb/T)</label>
               <input type="number" id="inputNaikBM" step="0.1" min="0" value="15" oninput="hitungTotalTonModal()" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm font-extrabold font-mono-code text-emerald-500">
             </div>
             <div>
@@ -738,7 +740,7 @@
 
 
   <!-- ========================================================= -->
-  <!-- MODAL 2: BUAT INVOICE PENGGAJIAN KULI OTOMATIS (BARU)     -->
+  <!-- MODAL 2: BUAT INVOICE PENGGAJIAN KULI OTOMATIS            -->
   <!-- ========================================================= -->
   <div id="modalBuatGaji" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-white rounded-2xl max-w-xl w-full shadow-2xl border border-slate-200 overflow-hidden my-auto max-h-[92vh] flex flex-col">
@@ -753,8 +755,8 @@
 
       <form onsubmit="submitBuatInvoiceGaji(event)" class="p-4 sm:p-5 space-y-4 overflow-y-auto custom-scrollbar text-xs">
         <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 space-y-1">
-          <div class="font-extrabold text-amber-900 text-xs">Tarif Gaji Borongan: Rp 25.000 / Ton</div>
-          <p class="text-[11px] text-amber-800">Muatan yang Anda centang di bawah ini akan dihitung total tonasenya dan otomatis dibuatkan slip/invoice gaji kuli resmi.</p>
+          <div class="font-extrabold text-amber-900 text-xs">Tarif Gaji Borongan: Naik Rp 25.000/Ton • Bongkar (Turun) Rp 20.000/Ton</div>
+          <p class="text-[11px] text-amber-800">Muatan yang Anda centang di bawah ini dihitung otomatis sesuai rincian tonase Naik (Rp 25.000/T) dan Turun/Bongkar (Rp 20.000/T).</p>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -780,8 +782,8 @@
 
         <div class="bg-slate-900 text-white p-3.5 rounded-xl flex items-center justify-between">
           <div>
-            <span class="text-[10px] text-slate-400 uppercase font-bold block">Total Tonase & Gaji Borongan</span>
-            <span id="gajiTotalTonText" class="font-mono-code font-bold text-amber-400 text-sm">0,0 Ton</span>
+            <span class="text-[10px] text-slate-400 uppercase font-bold block">Total Tonase (Naik & Bongkar)</span>
+            <span id="gajiTotalTonText" class="font-mono-code font-bold text-amber-400 text-xs sm:text-sm">0,0 Ton</span>
           </div>
           <div class="text-right">
             <span class="text-[10px] text-slate-400 uppercase font-bold block">Total Pembayaran</span>
@@ -1031,19 +1033,17 @@
         <button type="button" onclick="cIn('-')" class="bg-slate-800 text-emerald-400 py-2 rounded-lg">-</button>
         <button type="button" onclick="cIn('4')" class="bg-slate-800 py-2 rounded-lg">4</button>
         <button type="button" onclick="cIn('5')" class="bg-slate-800 py-2 rounded-lg">5</button>
-        <button type="button" onclick="cIn('6')" class="bg-slate-800 py-2 rounded-lg">6</button>
+        <button type="button" onclick="cIn('6')" class="bg-slate-800 text-emerald-400 py-2 rounded-lg">6</button>
         <button type="button" onclick="cIn('+')" class="bg-slate-800 text-emerald-400 py-2 rounded-lg">+</button>
         <button type="button" onclick="cIn('1')" class="bg-slate-800 py-2 rounded-lg">1</button>
         <button type="button" onclick="cIn('2')" class="bg-slate-800 py-2 rounded-lg">2</button>
-        <button type="button" onclick="cIn('3')" class="bg-slate-800 py-2 rounded-lg">3</button>
+        <button type="button" onclick="cIn('3')" class="bg-slate-800 text-emerald-400 py-2 rounded-lg">3</button>
         <button type="button" onclick="cEq()" class="row-span-2 bg-emerald-600 text-white py-2 rounded-lg">=</button>
         <button type="button" onclick="cIn('0')" class="col-span-2 bg-slate-800 py-2 rounded-lg">0</button>
         <button type="button" onclick="cIn('.')" class="bg-slate-800 text-amber-300 py-2 rounded-lg">.</button>
       </div>
     </div>
   </div>
-
-
   <!-- ========================================================= -->
   <!-- SCRIPT JAVASCRIPT LENGKAP & OTOMATIS                      -->
   <!-- ========================================================= -->
@@ -1055,6 +1055,10 @@
     const STORAGE_KEY_PASANGAN    = 'YCF_BM_PASANGAN_ADMIN_V1';
 
     const DEFAULT_GAS_URL = "https://script.google.com/macros/s/AKfycbwTbcaJXYrevZlIf7yBehwmQUKLkcpIK3E3N8qgs5fArMwYKZBScOaK1NwD3J2FGltovQ/exec";
+
+    // KONSTANTA TARIF PER TON (NAIK 25.000 & BONGKAR/TURUN 20.000)
+    const TARIF_NAIK_PER_TON  = 25000;
+    const TARIF_TURUN_PER_TON = 20000;
 
     const DEFAULT_TIM_KULI = [
       { namaTim: "TIM 1", anggota: "Juni, Asep, Askur, Hiro" },
@@ -1076,6 +1080,22 @@
     let modePeriodeGajiAktif = 'HARIAN';
     let periodeCetakAktif = 'HARIAN';
     let jenisDokumenCetakAktif = 'REKAP_BM'; // 'REKAP_BM' | 'INVOICE_GAJI' | 'REKAP_GAJI'
+
+    // Helper Rumus Gaji: Naik x 25.000 + Turun (Bongkar) x 20.000
+    function hitungNominalGajiBM(turunTon, naikTon) {
+      const trn = Number(turunTon) || 0;
+      const nk  = Number(naikTon) || 0;
+      return (nk * TARIF_NAIK_PER_TON) + (trn * TARIF_TURUN_PER_TON);
+    }
+
+    function getLabelTarifBM(turunTon, naikTon) {
+      const trn = Number(turunTon) || 0;
+      const nk  = Number(naikTon) || 0;
+      if (nk > 0 && trn > 0) return "N: 25rb • B: 20rb";
+      if (nk > 0) return "Rp 25.000 (Naik)";
+      if (trn > 0) return "Rp 20.000 (Bongkar)";
+      return "N: 25rb • B: 20rb";
+    }
 
     window.addEventListener('DOMContentLoaded', () => {
       initTheme();
@@ -1390,11 +1410,11 @@
       if (modeFokus === 'TURUN') {
         setTonaseCepat(15, 0);
         document.getElementById('headerModalBM').className = "bg-blue-700 text-white px-4 py-3.5 flex items-center justify-between shrink-0";
-        document.getElementById('judulModalBM').innerText = "Input Bongkar / Turun Barang";
+        document.getElementById('judulModalBM').innerText = "Input Bongkar / Turun Barang (Rp 20.000/Ton)";
       } else {
         setTonaseCepat(0, 15);
         document.getElementById('headerModalBM').className = "bg-emerald-700 text-white px-4 py-3.5 flex items-center justify-between shrink-0";
-        document.getElementById('judulModalBM').innerText = "Input Muat / Naik Kuli";
+        document.getElementById('judulModalBM').innerText = "Input Muat / Naik Kuli (Rp 25.000/Ton)";
       }
 
       openModal('modalInputBM');
@@ -1538,8 +1558,8 @@
 
       if (btnText) btnText.innerText = `Buat Invoice Gaji (${count} Dipilih)`;
       if (infoText) {
-        if (count > 0) infoText.innerHTML = `<b>${count} muatan</b> dipilih untuk digaji (Rp 25.000/Ton).`;
-        else infoText.innerText = `Centang kotak di tabel untuk menggaji beberapa muatan sekaligus (Rp 25.000/Ton).`;
+        if (count > 0) infoText.innerHTML = `<b>${count} muatan</b> dipilih untuk digaji (Naik Rp 25.000/T • Bongkar Rp 20.000/T).`;
+        else infoText.innerText = `Centang kotak di tabel untuk menggaji beberapa muatan sekaligus (Naik Rp 25.000/T • Bongkar Rp 20.000/T).`;
       }
     }
 
@@ -1565,24 +1585,41 @@
       }
 
       let totalTonTerpilih = 0;
+      let totalNaikTerpilih = 0;
+      let totalTurunTerpilih = 0;
+      let totalGajiRp = 0;
       let htmlRingkasan = "";
       const setKuli = new Set();
-      const idsTerpilih = [];
 
       checkedBoxes.forEach(cb => {
         const id = cb.value;
         const item = listTransaksiBM.find(x => x.id === id);
         if (item) {
-          idsTerpilih.push(id);
-          const tot = Number(item.total) || 0;
+          const trn = Number(item.turun) || 0;
+          const nk = Number(item.naik) || 0;
+          const tot = trn + nk;
+          const nominalGajiItem = hitungNominalGajiBM(trn, nk);
+
+          totalTurunTerpilih += trn;
+          totalNaikTerpilih += nk;
           totalTonTerpilih += tot;
+          totalGajiRp += nominalGajiItem;
+
           if (item.kuli) {
             item.kuli.split(',').forEach(k => setKuli.add(k.trim()));
           }
+
+          let infoJenisTon = [];
+          if (nk > 0) infoJenisTon.push(`Naik ${formatTon(nk)}T × 25rb`);
+          if (trn > 0) infoJenisTon.push(`Bongkar ${formatTon(trn)}T × 20rb`);
+
           htmlRingkasan += `
             <div class="flex justify-between items-center bg-white p-2 rounded-lg border border-slate-200">
-              <div><b>${item.armada}</b> • ${item.barang} (${formatTon(tot)} Ton)</div>
-              <div class="font-mono-code text-emerald-600 font-bold">${formatRp(tot * 25000)}</div>
+              <div>
+                <div><b>${item.armada}</b> • ${item.barang}</div>
+                <div class="text-[10px] text-slate-500">${infoJenisTon.join(' + ') || '0 Ton'}</div>
+              </div>
+              <div class="font-mono-code text-emerald-600 font-bold">${formatRp(nominalGajiItem)}</div>
             </div>`;
         }
       });
@@ -1592,8 +1629,7 @@
       document.getElementById('gajiCountTerpilih').innerText = checkedBoxes.length;
       document.getElementById('gajiDaftarRingkasanMuatan').innerHTML = htmlRingkasan;
 
-      const totalGajiRp = totalTonTerpilih * 25000;
-      document.getElementById('gajiTotalTonText').innerText = `${formatTon(totalTonTerpilih)} Ton`;
+      document.getElementById('gajiTotalTonText').innerText = `${formatTon(totalTonTerpilih)} Ton (Naik: ${formatTon(totalNaikTerpilih)}T • Bongkar: ${formatTon(totalTurunTerpilih)}T)`;
       document.getElementById('gajiTotalRpText').innerText = formatRp(totalGajiRp);
 
       openModal('modalBuatGaji');
@@ -1610,6 +1646,9 @@
       const autoCetak = document.getElementById('gajiAutoCetak').checked;
 
       let totalTon = 0;
+      let totalTurun = 0;
+      let totalNaik = 0;
+      let totalGaji = 0;
       let rincianItems = [];
       let daftarIdBM = [];
 
@@ -1618,27 +1657,37 @@
         const item = listTransaksiBM.find(x => x.id === id);
         if (item) {
           daftarIdBM.push(id);
-          const tot = Number(item.total) || 0;
+          const trn = Number(item.turun) || 0;
+          const nk = Number(item.naik) || 0;
+          const tot = trn + nk;
+          const gajiBaris = hitungNominalGajiBM(trn, nk);
+
+          totalTurun += trn;
+          totalNaik += nk;
           totalTon += tot;
+          totalGaji += gajiBaris;
+
           rincianItems.push({
             id: item.id,
             tanggal: normalizeDateStr(item.tanggal),
             armada: item.armada,
             barang: item.barang,
-            turun: item.turun,
-            naik: item.naik,
+            turun: trn,
+            naik: nk,
             total: tot,
+            gajiBaris: gajiBaris,
             driver: item.driver,
             kuli: item.kuli
           });
         }
       });
 
-      const totalGaji = totalTon * 25000;
       const now = new Date();
       const todayIso = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
       const noInvoice = `INV-GAJI-${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}-${String(listPenggajian.length + 1).padStart(3, '0')}`;
       const waktuLive = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')} WIB`;
+
+      const infoTarif = getLabelTarifBM(totalTurun, totalNaik);
 
       const recordGaji = {
         noInvoice,
@@ -1650,8 +1699,10 @@
         penerimaKuli,
         daftarIdBM,
         rincianItems,
+        totalTurun,
+        totalNaik,
         totalTon,
-        tarifPerTon: 25000,
+        tarifPerTon: infoTarif,
         totalGaji,
         statusBayar: "LUNAS",
         catatan
@@ -1780,9 +1831,19 @@
       });
     }
 
+    // Hitung ulang total gaji suatu invoice berdasarkan rincian (Naik 25rb & Bongkar 20rb)
+    function getNominalInvoiceGaji(g) {
+      if (Array.isArray(g.rincianItems) && g.rincianItems.length > 0) {
+        return g.rincianItems.reduce((acc, r) => acc + hitungNominalGajiBM(r.turun, r.naik), 0);
+      }
+      if (g.totalTurun !== undefined || g.totalNaik !== undefined) {
+        return hitungNominalGajiBM(g.totalTurun, g.totalNaik);
+      }
+      return Number(g.totalGaji) || 0;
+    }
+
     function renderTabelGaji() {
       const filtered = filterDataGaji(modePeriodeGajiAktif);
-      const allFilteredForKPI = filterDataGaji('SEMUA'); // Untuk statistik kartu atas
 
       let sumGajiAll = 0;
       let sumTonAll = 0;
@@ -1790,17 +1851,20 @@
       let sumBelumBayarTon = 0;
       let countBelumBayar = 0;
 
+      // Hitung muatan yang belum digaji dengan rumus Naik 25.000 & Bongkar 20.000
       listTransaksiBM.forEach(bm => {
-        const tot = Number(bm.total) || 0;
+        const trn = Number(bm.turun) || 0;
+        const nk  = Number(bm.naik) || 0;
+        const tot = trn + nk;
         if (bm.statusGaji !== 'SUDAH DIBAYAR') {
-          sumBelumBayarRp += tot * 25000;
+          sumBelumBayarRp += hitungNominalGajiBM(trn, nk);
           sumBelumBayarTon += tot;
           countBelumBayar++;
         }
       });
 
       filtered.forEach(g => {
-        sumGajiAll += Number(g.totalGaji) || 0;
+        sumGajiAll += getNominalInvoiceGaji(g);
         sumTonAll += Number(g.totalTon) || 0;
       });
 
@@ -1810,9 +1874,20 @@
       document.getElementById('sumBelumDigajiRp').innerText = formatRp(sumBelumBayarRp);
       document.getElementById('sumBelumDigajiTon').innerText = `${countBelumBayar} Muatan (${formatTon(sumBelumBayarTon)} Ton)`;
 
-      // Kartu KPI Atas Gaji
-      document.getElementById('kpiEstimasiGaji').innerText = formatRp(sumGajiAll + sumBelumBayarRp);
-      document.getElementById('kpiStatusGajiInfo').innerText = `Belum Dibayar: ${formatRp(sumBelumBayarRp)}`;
+      // Kartu KPI Atas Gaji (Estimasi Gaji dari periode BM yang sedang aktif)
+      const filteredBM = filterDataBM(modePeriodeAktif);
+      let kpiTotalGajiPeriode = 0;
+      let kpiBelumBayarPeriode = 0;
+      filteredBM.forEach(bm => {
+        const gajiBaris = hitungNominalGajiBM(bm.turun, bm.naik);
+        kpiTotalGajiPeriode += gajiBaris;
+        if (bm.statusGaji !== 'SUDAH DIBAYAR') {
+          kpiBelumBayarPeriode += gajiBaris;
+        }
+      });
+
+      document.getElementById('kpiEstimasiGaji').innerText = formatRp(kpiTotalGajiPeriode);
+      document.getElementById('kpiStatusGajiInfo').innerText = `Belum Dibayar: ${formatRp(kpiBelumBayarPeriode)}`;
 
       const tbody = document.getElementById('tbodyGaji');
       const tfoot = document.getElementById('tfootGaji');
@@ -1832,11 +1907,24 @@
 
       filtered.forEach(g => {
         let rincianStr = "";
+        let trnInv = 0;
+        let nkInv = 0;
+
         if (Array.isArray(g.rincianItems) && g.rincianItems.length > 0) {
-          rincianStr = g.rincianItems.map(r => `${r.armada} (${r.barang} - ${formatTon(r.total)}T)`).join(', ');
+          rincianStr = g.rincianItems.map(r => {
+            const trn = Number(r.turun) || 0;
+            const nk  = Number(r.naik) || 0;
+            trnInv += trn;
+            nkInv += nk;
+            const ket = nk > 0 && trn > 0 ? `N:${formatTon(nk)}T/B:${formatTon(trn)}T` : (nk > 0 ? `Naik ${formatTon(nk)}T` : `Bongkar ${formatTon(trn)}T`);
+            return `${r.armada} (${r.barang} - ${ket})`;
+          }).join(', ');
         } else {
           rincianStr = `${g.totalTon} Ton muatan gabungan`;
         }
+
+        const labelTarif = (trnInv > 0 || nkInv > 0) ? getLabelTarifBM(trnInv, nkInv) : (typeof g.tarifPerTon === 'string' ? g.tarifPerTon : 'N: 25rb • B: 20rb');
+        const totalGajiFix = getNominalInvoiceGaji(g);
 
         tbody.innerHTML += `
           <tr class="hover:bg-slate-50 transition">
@@ -1850,8 +1938,8 @@
             <td class="py-2.5 px-3 font-extrabold text-slate-800">${g.penerimaKuli || 'TIM KULI'}</td>
             <td class="py-2.5 px-3 font-semibold text-slate-600 max-w-[240px] leading-snug">${rincianStr}</td>
             <td class="py-2.5 px-3 text-right font-mono-code font-extrabold text-sky-400 whitespace-nowrap">${formatTon(g.totalTon)} T</td>
-            <td class="py-2.5 px-3 text-right font-mono-code text-amber-400 whitespace-nowrap">Rp 25.000</td>
-            <td class="py-2.5 px-3 text-right font-mono-code font-extrabold text-emerald-400 text-sm whitespace-nowrap">${formatRp(g.totalGaji)}</td>
+            <td class="py-2.5 px-3 text-right font-mono-code text-amber-400 whitespace-nowrap text-[11px] font-bold">${labelTarif}</td>
+            <td class="py-2.5 px-3 text-right font-mono-code font-extrabold text-emerald-400 text-sm whitespace-nowrap">${formatRp(totalGajiFix)}</td>
             <td class="py-2.5 px-3 text-center whitespace-nowrap">
               <div class="inline-flex items-center space-x-1">
                 <button onclick="bukaModalCetakInvoiceGaji('${g.noInvoice}')" class="bg-amber-500 hover:bg-amber-400 text-slate-950 px-2.5 py-1.5 rounded-xl text-[11px] font-extrabold shadow transition inline-flex items-center space-x-1" title="Cetak Slip Gaji">
@@ -1988,9 +2076,9 @@
       document.getElementById('kpiTotalTon').innerText = `${formatTon(sumTotal)} TON`;
       document.getElementById('kpiSubTotal').innerText = `Pagi: ${formatTon(sumPagi)} T • Malam: ${formatTon(sumMalam)} T`;
       document.getElementById('kpiTotalTurun').innerText = `${formatTon(sumTurun)} TON`;
-      document.getElementById('kpiCountTurun').innerText = `${countTurun} Bongkar`;
+      document.getElementById('kpiCountTurun').innerText = `${countTurun} Bongkar (${formatRp(sumTurun * TARIF_TURUN_PER_TON)})`;
       document.getElementById('kpiTotalNaik').innerText = `${formatTon(sumNaik)} TON`;
-      document.getElementById('kpiCountNaik').innerText = `${countNaik} Muat`;
+      document.getElementById('kpiCountNaik').innerText = `${countNaik} Muat (${formatRp(sumNaik * TARIF_NAIK_PER_TON)})`;
 
       const tglAktif = document.getElementById('filterTanggalHarian').value || getTodayISO();
       const tglSlash = formatTglSlash(tglAktif);
@@ -2021,6 +2109,7 @@
         const trn = Number(item.turun) || 0;
         const nk = Number(item.naik) || 0;
         const tot = trn + nk;
+        const nominalGajiBaris = hitungNominalGajiBM(trn, nk);
         const isMalam = String(item.shift).toUpperCase() === 'MALAM';
         const isSudahBayar = item.statusGaji === 'SUDAH DIBAYAR';
 
@@ -2029,8 +2118,8 @@
           : `<span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded text-[10px] font-extrabold">PAGI • ${item.admin || 'SUFYAN'}</span>`;
 
         const badgeGaji = isSudahBayar
-          ? `<span class="bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded text-[10px] font-extrabold">LUNAS GANTI</span>`
-          : `<span class="bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded text-[10px] font-extrabold">BELUM DIGAJI</span>`;
+          ? `<div class="flex flex-col items-center"><span class="bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded text-[10px] font-extrabold">LUNAS</span><span class="text-[10px] font-mono-code text-emerald-500 font-bold mt-0.5">${formatRp(nominalGajiBaris)}</span></div>`
+          : `<div class="flex flex-col items-center"><span class="bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded text-[10px] font-extrabold">BELUM DIGAJI</span><span class="text-[10px] font-mono-code text-slate-400 font-bold mt-0.5">${formatRp(nominalGajiBaris)}</span></div>`;
 
         tbody.innerHTML += `
           <tr class="hover:bg-slate-50 transition">
@@ -2069,13 +2158,17 @@
         ? `TOTAL (${modePeriodeAktif})`
         : `TOTAL SHIFT ${document.getElementById('filterShift').value}`;
 
+      const sumGajiTabelBM = hitungNominalGajiBM(sumTurun, sumNaik);
+
       tfoot.innerHTML = `
         <tr>
           <td colspan="5" class="py-3 px-3 text-left font-extrabold uppercase text-slate-800 border-r border-slate-300">${shiftLabel}</td>
           <td class="py-3 px-3 text-right font-mono-code text-blue-500 text-sm border-r border-slate-300">${formatTon(sumTurun)}</td>
           <td class="py-3 px-3 text-right font-mono-code text-emerald-500 text-sm border-r border-slate-300">${formatTon(sumNaik)}</td>
           <td class="py-3 px-3 text-right font-mono-code text-amber-400 text-sm border-r border-slate-300">${formatTon(sumTotal)}</td>
-          <td colspan="4"></td>
+          <td colspan="2" class="py-3 px-3 text-right text-[11px] uppercase text-slate-500 border-r border-slate-300">Nilai Gaji:</td>
+          <td class="py-3 px-3 text-center font-mono-code text-emerald-500 text-xs border-r border-slate-300">${formatRp(sumGajiTabelBM)}</td>
+          <td></td>
         </tr>`;
 
       renderTabelGaji();
@@ -2221,19 +2314,32 @@
       document.getElementById('labelToggleKontainer').classList.add('hidden');
 
       let trRincian = "";
+      let sumTurunSlip = 0;
+      let sumNaikSlip = 0;
+
       if (Array.isArray(g.rincianItems)) {
         g.rincianItems.forEach((r, idx) => {
+          const trn = Number(r.turun) || 0;
+          const nk  = Number(r.naik) || 0;
+          sumTurunSlip += trn;
+          sumNaikSlip += nk;
+          const subGaji = hitungNominalGajiBM(trn, nk);
+          const labelTarifBaris = getLabelTarifBM(trn, nk);
+
           trRincian += `
             <tr>
               <td style="border: 1px solid #cbd5e1; padding: 6px; text-align: center;">${idx + 1}</td>
               <td style="border: 1px solid #cbd5e1; padding: 6px; font-weight: 700;">${r.armada}</td>
               <td style="border: 1px solid #cbd5e1; padding: 6px;">${r.barang}</td>
-              <td style="border: 1px solid #cbd5e1; padding: 6px; text-align: right; font-family: monospace;">${formatTon(r.total)} T</td>
-              <td style="border: 1px solid #cbd5e1; padding: 6px; text-align: right; font-family: monospace;">Rp 25.000</td>
-              <td style="border: 1px solid #cbd5e1; padding: 6px; text-align: right; font-family: monospace; font-weight: 800; color: #059669;">${formatRp(r.total * 25000)}</td>
+              <td style="border: 1px solid #cbd5e1; padding: 6px; text-align: right; font-family: monospace;">${formatTon(trn)} T</td>
+              <td style="border: 1px solid #cbd5e1; padding: 6px; text-align: right; font-family: monospace;">${formatTon(nk)} T</td>
+              <td style="border: 1px solid #cbd5e1; padding: 6px; text-align: right; font-family: monospace; font-size: 10px;">${labelTarifBaris}</td>
+              <td style="border: 1px solid #cbd5e1; padding: 6px; text-align: right; font-family: monospace; font-weight: 800; color: #059669;">${formatRp(subGaji)}</td>
             </tr>`;
         });
       }
+
+      const totalGajiSlip = getNominalInvoiceGaji(g);
 
       document.getElementById('judulModalCetak').innerText = `Slip & Invoice Gaji Kuli — ${g.noInvoice}`;
       document.getElementById('areaCetakTarget').innerHTML = `
@@ -2244,7 +2350,7 @@
               <div style="font-size: 11px; font-weight: 800; color: #059669;">CV. YUDISTIRA CATTLE AND FARM</div>
             </div>
             <div style="text-align: right;">
-              <div style="background: #d97706; color: #ffffff; font-weight: 800; font-size: 10px; padding: 4px 8px; border-radius: 4px; display: inline-block;">LUNAS (25RB/TON)</div>
+              <div style="background: #d97706; color: #ffffff; font-weight: 800; font-size: 10px; padding: 4px 8px; border-radius: 4px; display: inline-block;">LUNAS (NAIK 25RB • BONGKAR 20RB)</div>
               <div style="font-size: 11px; font-weight: 800; font-family: monospace; margin-top: 4px;">${g.noInvoice}</div>
             </div>
           </div>
@@ -2265,10 +2371,11 @@
           <table style="width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 14px;">
             <thead>
               <tr style="background: #0f172a; color: #ffffff; text-transform: uppercase; font-size: 9.5px;">
-                <th style="padding: 6px; text-align: center; width: 8%;">No</th>
-                <th style="padding: 6px; text-align: left; width: 25%;">Armada / Tim</th>
-                <th style="padding: 6px; text-align: left; width: 25%;">Nama Barang</th>
-                <th style="padding: 6px; text-align: right; width: 14%;">Tonase</th>
+                <th style="padding: 6px; text-align: center; width: 6%;">No</th>
+                <th style="padding: 6px; text-align: left; width: 22%;">Armada / Tim</th>
+                <th style="padding: 6px; text-align: left; width: 20%;">Nama Barang</th>
+                <th style="padding: 6px; text-align: right; width: 12%;">Bongkar (20rb)</th>
+                <th style="padding: 6px; text-align: right; width: 12%;">Naik (25rb)</th>
                 <th style="padding: 6px; text-align: right; width: 14%;">Tarif/Ton</th>
                 <th style="padding: 6px; text-align: right; width: 14%;">Jumlah</th>
               </tr>
@@ -2276,15 +2383,16 @@
             <tbody>${trRincian}</tbody>
             <tfoot>
               <tr style="background: #f8fafc; font-weight: 800;">
-                <td colspan="3" style="border: 1px solid #cbd5e1; padding: 7px; text-align: right;">TOTAL KESELURUHAN :</td>
-                <td style="border: 1px solid #cbd5e1; padding: 7px; text-align: right; font-family: monospace;">${formatTon(g.totalTon)} Ton</td>
+                <td colspan="3" style="border: 1px solid #cbd5e1; padding: 7px; text-align: right;">TOTAL KESELURUHAN (${formatTon(g.totalTon)} Ton) :</td>
+                <td style="border: 1px solid #cbd5e1; padding: 7px; text-align: right; font-family: monospace;">${formatTon(sumTurunSlip)} T</td>
+                <td style="border: 1px solid #cbd5e1; padding: 7px; text-align: right; font-family: monospace;">${formatTon(sumNaikSlip)} T</td>
                 <td style="border: 1px solid #cbd5e1; padding: 7px;"></td>
-                <td style="border: 1px solid #cbd5e1; padding: 7px; text-align: right; font-family: monospace; color: #059669; font-size: 13px;">${formatRp(g.totalGaji)}</td>
+                <td style="border: 1px solid #cbd5e1; padding: 7px; text-align: right; font-family: monospace; color: #059669; font-size: 13px;">${formatRp(totalGajiSlip)}</td>
               </tr>
             </tfoot>
           </table>
 
-          <div style="font-size: 10.5px; color: #334155; margin-bottom: 14px;"><b>Catatan:</b> ${g.catatan || 'Gaji borongan kuli bongkar muat sesuai tonase.'}</div>
+          <div style="font-size: 10.5px; color: #334155; margin-bottom: 14px;"><b>Catatan:</b> ${g.catatan || 'Gaji borongan kuli bongkar muat (Naik Rp 25.000/Ton & Bongkar Rp 20.000/Ton).'}</div>
 
           <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 10px; page-break-inside: avoid;">
             <svg id="barcodeCetakTarget"></svg>
@@ -2311,6 +2419,70 @@
           }
         } catch (e) {}
       }, 50);
+    }
+
+    function bukaModalCetakRekapGaji(periodePilihan) {
+      const targetMode = periodePilihan || modePeriodeGajiAktif;
+      const filtered = filterDataGaji(targetMode);
+      jenisDokumenCetakAktif = 'REKAP_GAJI';
+      document.getElementById('labelToggleKontainer').classList.add('hidden');
+      document.getElementById('btnModalCetakCsv').onclick = () => exportGajiCSV(targetMode);
+
+      let trHtml = '';
+      let sumTon = 0;
+      let sumGaji = 0;
+
+      if (filtered.length === 0) {
+        trHtml = `<tr><td colspan="7" style="border: 1px solid #cbd5e1; padding: 12px; text-align: center; color: #64748b;">Belum ada data penggajian pada periode ${targetMode}</td></tr>`;
+      } else {
+        filtered.forEach((g, idx) => {
+          const nomGaji = getNominalInvoiceGaji(g);
+          sumTon += Number(g.totalTon) || 0;
+          sumGaji += nomGaji;
+          trHtml += `
+            <tr>
+              <td style="border: 1px solid #cbd5e1; padding: 6px; text-align: center;">${idx + 1}</td>
+              <td style="border: 1px solid #cbd5e1; padding: 6px; font-family: monospace; font-weight: 700;">${g.noInvoice}</td>
+              <td style="border: 1px solid #cbd5e1; padding: 6px; text-align: center;">${g.tanggal}</td>
+              <td style="border: 1px solid #cbd5e1; padding: 6px; font-weight: 700;">${g.penerimaKuli}</td>
+              <td style="border: 1px solid #cbd5e1; padding: 6px; text-align: center;">${g.admin || '-'}</td>
+              <td style="border: 1px solid #cbd5e1; padding: 6px; text-align: right; font-family: monospace;">${formatTon(g.totalTon)} T</td>
+              <td style="border: 1px solid #cbd5e1; padding: 6px; text-align: right; font-family: monospace; font-weight: 800; color: #059669;">${formatRp(nomGaji)}</td>
+            </tr>`;
+        });
+      }
+
+      document.getElementById('judulModalCetak').innerText = `Rekap Penggajian Kuli — ${targetMode}`;
+      document.getElementById('areaCetakTarget').innerHTML = `
+        <div id="dokumenCetakTarget" style="width: 100%; max-width: 800px; margin: 0 auto; background: #ffffff; color: #0f172a; padding: 20px; font-family: 'Inter', Arial, sans-serif; box-sizing: border-box;">
+          <div style="text-align: center; border-bottom: 2px solid #0f172a; padding-bottom: 10px; margin-bottom: 14px;">
+            <div style="font-size: 15px; font-weight: 800;">REKAPITULASI PENGGAJIAN KULI BONGKAR MUAT (${targetMode})</div>
+            <div style="font-size: 11px; font-weight: 700; color: #059669;">CV. YUDISTIRA CATTLE AND FARM • TARIF NAIK RP 25.000/T & BONGKAR RP 20.000/T</div>
+          </div>
+          <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
+            <thead>
+              <tr style="background: #0f172a; color: #ffffff; text-transform: uppercase;">
+                <th style="border: 1px solid #0f172a; padding: 6px; width: 6%;">No</th>
+                <th style="border: 1px solid #0f172a; padding: 6px; width: 20%;">No. Invoice</th>
+                <th style="border: 1px solid #0f172a; padding: 6px; width: 13%;">Tanggal</th>
+                <th style="border: 1px solid #0f172a; padding: 6px; width: 25%;">Tim / Kuli Penerima</th>
+                <th style="border: 1px solid #0f172a; padding: 6px; width: 10%;">Admin</th>
+                <th style="border: 1px solid #0f172a; padding: 6px; width: 11%; text-align: right;">Total Ton</th>
+                <th style="border: 1px solid #0f172a; padding: 6px; width: 15%; text-align: right;">Total Gaji</th>
+              </tr>
+            </thead>
+            <tbody>${trHtml}</tbody>
+            <tfoot>
+              <tr style="background: #f8fafc; font-weight: 800; font-size: 12px;">
+                <td colspan="5" style="border: 1px solid #cbd5e1; padding: 7px; text-align: right;">TOTAL KESELURUHAN :</td>
+                <td style="border: 1px solid #cbd5e1; padding: 7px; text-align: right; font-family: monospace;">${formatTon(sumTon)} T</td>
+                <td style="border: 1px solid #cbd5e1; padding: 7px; text-align: right; font-family: monospace; color: #059669;">${formatRp(sumGaji)}</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>`;
+
+      openModal('modalCetakRekap');
     }
 
     async function unduhRekapPNG() {
@@ -2402,15 +2574,17 @@
         `"REKAP BONGKAR MUAT KONTAINER & TRUCK"`,
         `"CV. YUDISTIRA CATTLE AND FARM"`,
         `"Periode:","${targetMode}"`,
+        `"Tarif Gaji:","Naik Rp 25.000/Ton | Bongkar Rp 20.000/Ton"`,
         `""`,
-        `"NO","TANGGAL","SHIFT","ADMIN","ARMADA","BARANG","WAKTU","TURUN","NAIK","TOTAL (TON)","DRIVER","KULI","STATUS GAJI"`
+        `"NO","TANGGAL","SHIFT","ADMIN","ARMADA","BARANG","WAKTU","TURUN (TON)","NAIK (TON)","TOTAL (TON)","NILAI GAJI (RP)","DRIVER","KULI","STATUS GAJI"`
       ];
 
       filtered.forEach((item, idx) => {
         const trn = Number(item.turun) || 0;
         const nk = Number(item.naik) || 0;
         const tot = trn + nk;
-        csvRows.push(`"${idx + 1}","${normalizeDateStr(item.tanggal)}","${item.shift}","${item.admin}","${item.armada}","${item.barang}","${item.waktu}",${trn},${nk},${tot},"${item.driver}","${String(item.kuli || '').replace(/"/g, '""')}","${item.statusGaji || 'BELUM DIBAYAR'}"`);
+        const nominalGaji = hitungNominalGajiBM(trn, nk);
+        csvRows.push(`"${idx + 1}","${normalizeDateStr(item.tanggal)}","${item.shift}","${item.admin}","${item.armada}","${item.barang}","${item.waktu}",${trn},${nk},${tot},${nominalGaji},"${item.driver}","${String(item.kuli || '').replace(/"/g, '""')}","${item.statusGaji || 'BELUM DIBAYAR'}"`);
       });
 
       const blob = new Blob(["\uFEFF" + csvRows.join("\n")], { type: 'text/csv;charset=utf-8;' });
@@ -2426,12 +2600,14 @@
       let csvRows = [
         `"RIWAYAT PENGGAJIAN KULI BONGKAR MUAT"`,
         `"CV. YUDISTIRA CATTLE AND FARM"`,
+        `"Tarif:","Naik Rp 25.000/Ton | Bongkar Rp 20.000/Ton"`,
         `""`,
         `"NO","NO. INVOICE","TANGGAL","ADMIN","PENERIMA KULI","TOTAL TON","TARIF/TON","TOTAL GAJI (RP)","STATUS"`
       ];
 
       filtered.forEach((g, idx) => {
-        csvRows.push(`"${idx + 1}","${g.noInvoice}","${g.tanggal}","${g.admin}","${g.penerimaKuli}",${g.totalTon},${g.tarifPerTon || 25000},${g.totalGaji},"${g.statusBayar}"`);
+        const nominalGajiFix = getNominalInvoiceGaji(g);
+        csvRows.push(`"${idx + 1}","${g.noInvoice}","${g.tanggal}","${g.admin}","${g.penerimaKuli}",${g.totalTon},"${g.tarifPerTon || 'Naik 25rb / Bongkar 20rb'}",${nominalGajiFix},"${g.statusBayar}"`);
       });
 
       const blob = new Blob(["\uFEFF" + csvRows.join("\n")], { type: 'text/csv;charset=utf-8;' });
@@ -2526,4 +2702,3 @@
   </script>
 </body>
 </html>
-
