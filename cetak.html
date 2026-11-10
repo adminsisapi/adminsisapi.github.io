@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistem Cetak OTG - Gambar & PDF</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Pustaka PDF.js untuk merender PDF menjadi halaman siap cetak di Android -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  
+  <style>
+    /* Pengaturan Kertas di Layar */
+    .lembar-kertas {
+      background: white;
+      width: 100%;
+      max-width: 210mm;
+      min-height: 297mm;
+      margin: 0 auto 20px auto;
+      padding: 15mm;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      border: 1px solid #e5e7eb;
+    }
+
+    /* Pengaturan Khusus Saat Tombol Print Ditekan */
+    @media print {
+      body {
+        background: white !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .lembar-kertas {
+        box-shadow: none !important;
+        border: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-height: auto !important;
+      }
+      /* Memastikan setiap halaman PDF/Gambar tidak terpotong di tengah kertas */
+      .page-break {
+        page-break-after: always;
+        break-after: page;
+      }
+      @page {
+        size: A4 portrait;
+        margin: 10mm;
+      }
+    }
+  </style>
+</head>
+<body class="bg-slate-100 min-h-screen p-3 md:p-6">
+
+  <!-- PANEL KONTROL ATAS (Tidak ikut tercetak) -->
+  <div class="no-print max-w-4xl mx-auto mb-6 bg-white p-4 rounded-xl shadow-md border border-slate-200">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b pb-4 mb-4">
+      <div>
+        <h1 class="font-bold text-xl text-slate-800">🖨️ Panel Cetak OTG Pintar</h1>
+        <p class="text-xs text-slate-500">Mendukung ketik teks, upload foto/gambar, dan dokumen PDF multi-halaman</p>
+      </div>
+      <div class="flex gap-2 w-full md:w-auto">
+        <button onclick="bersihkanSemua()" class="bg-red-50 hover:bg-red-100 text-red-600 font-medium px-4 py-2.5 rounded-lg text-sm transition flex-1 md:flex-none">
+          🗑️ Reset
+        </button>
+        <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2.5 rounded-lg shadow transition flex-1 md:flex-none">
+          🖨️ Cetak Sekarang
+        </button>
+      </div>
+    </div>
+
+    <!-- Tombol Upload & Pengaturan -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      <!-- Upload Gambar -->
+      <label class="flex items-center justify-center gap-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 font-medium p-3 rounded-lg cursor-pointer transition text-sm text-center">
+        <span>🖼️ Tambah Gambar/Foto</span>
+        <input type="file" id="inputGambar" accept="image/*" multiple class="hidden" onchange="handleGambar(event)">
+      </label>
+
+      <!-- Upload PDF -->
+      <label class="flex items-center justify-center gap-2 bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 font-medium p-3 rounded-lg cursor-pointer transition text-sm text-center">
+        <span>📄 Buka File PDF</span>
+        <input type="file" id="inputPDF" accept="application/pdf" class="hidden" onchange="handlePDF(event)">
+      </label>
+
+      <!-- Pengaturan Ukuran Gambar -->
+      <div class="flex items-center justify-between bg-slate-50 px-3 py-2 rounded-lg border border-slate-200 text-sm">
+        <span class="text-slate-600 font-medium">Ukuran Gambar:</span>
+        <select id="ukuranGambar" onchange="ubahUkuranGambar(this.value)" class="bg-white border rounded px-2 py-1 text-slate-700 outline-none">
+          <option value="100%">Penuh (100%)</option>
+          <option value="75%">Sedang (75%)</option>
+          <option value="50%">Setengah (50%)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Status Loading PDF -->
+    <div id="statusLoading" class="hidden mt-3 p-3 bg-blue-50 text-blue-700 text-sm rounded-lg font-medium text-center animate-pulse">
+      Sedang memproses halaman PDF agar siap cetak... Mohon tunggu.
+    </div>
+  </div>
+
+  <!-- AREA KERJA / KERTAS CETAK -->
+  <div id="areaCetak">
+    <!-- Lembar Ketik Manual (Bisa dihapus atau langsung diketik) -->
+    <div id="lembarTeks" class="lembar-kertas" contenteditable="true">
+      <p class="text-slate-400 italic">Klik di sini untuk mengetik teks tambahan, atau langsung gunakan tombol di atas untuk memasukkan Gambar / File PDF...</p>
+    </div>
+
+    <!-- Wadah untuk hasil render Gambar dan PDF -->
+    <div id="wadahMedia" class="max-w-[210mm] mx-auto"></div>
+  </div>
+
+  <script>
+    // Konfigurasi Worker PDF.js
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+    const lembarTeks = document.getElementById('lembarTeks');
+    const wadahMedia = document.getElementById('wadahMedia');
+    const statusLoading = document.getElementById('statusLoading');
+
+    // Hilangkan teks placeholder saat mulai diketik
+    lembarTeks.addEventListener('focus', function() {
+      if (this.innerText.includes('Klik di sini untuk mengetik')) {
+        this.innerHTML = '<p><br></p>';
+      }
+    }, { once: true });
+
+    // 1. FUNGSI HANDLE UPLOAD GAMBAR
+    function handleGambar(event) {
+      const files = event.target.files;
+      if (!files.length) return;
+
+      // Sembunyikan lembar teks kosong jika user hanya ingin print gambar
+      sembunyikanTeksKosong();
+
+      const ukuran = document.getElementById('ukuranGambar').value;
+
+      Array.from(files).forEach((file) => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const bungkus = document.createElement('div');
+          bungkus.className = 'lembar-kertas page-break flex flex-col items-center justify-center relative group';
+          
+          bungkus.innerHTML = `
+            <button onclick="this.parentElement.remove()" class="no-print absolute top-3 right-3 bg-red-500 text-white text-xs px-2.5 py-1 rounded shadow opacity-80 hover:opacity-100">
+              Hapus Halaman Ini
+            </button>
+            <img src="${e.target.result}" style="width: ${ukuran};" class="img-cetak max-h-[270mm] object-contain mx-auto" />
+          `;
+          wadahMedia.appendChild(bungkus);
+        };
+        reader.readAsDataURL(file);
+      });
+
+      event.target.value = ''; // Reset input
+    }
+
+    // 2. FUNGSI HANDLE UPLOAD PDF (Render per Halaman ke Canvas)
+    async function handlePDF(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      sembunyikanTeksKosong();
+      statusLoading.classList.remove('hidden');
+
+      try {
+        const arrayBuffer = await file.arrayBuffer();
+        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+        
+        // Loop setiap halaman PDF
+        for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+          statusLoading.innerText = `Memproses halaman PDF (${pageNum} dari ${pdf.numPages})...`;
+          
+          const page = await pdf.getPage(pageNum);
+          // Gunakan scale 2.0 agar hasil cetakan tajam dan tidak pecah di printer Epson
+          const viewport = page.getViewport({ scale: 2.0 });
+
+          const bungkus = document.createElement('div');
+          bungkus.className = 'lembar-kertas page-break flex flex-col items-center justify-center relative';
+          
+          const tombolHapus = document.createElement('button');
+          tombolHapus.className = 'no-print absolute top-3 right-3 bg-red-500 text-white text-xs px-2.5 py-1 rounded shadow';
+          tombolHapus.innerText = `Hapus Hal ${pageNum}`;
+          tombolHapus.onclick = () => bungkus.remove();
+
+          const canvas = document.createElement('canvas');
+          const context = canvas.getContext('2d');
+          canvas.height = viewport.height;
+          canvas.width = viewport.width;
+          canvas.className = 'w-full h-auto max-h-[275mm] object-contain';
+
+          bungkus.appendChild(tombolHapus);
+          bungkus.appendChild(canvas);
+          wadahMedia.appendChild(bungkus);
+
+          await page.render({
+            canvasContext: context,
+            viewport: viewport
+          }).promise;
+        }
+      } catch (error) {
+        alert('Gagal membaca file PDF: ' + error.message);
+      } finally {
+        statusLoading.classList.add('hidden');
+        event.target.value = '';
+      }
+    }
+
+    // Fungsi pengatur ukuran gambar secara real-time
+    function ubahUkuranGambar(ukuran) {
+      document.querySelectorAll('.img-cetak').forEach(img => {
+        img.style.width = ukuran;
+      });
+    }
+
+    // Sembunyikan kotak ketik manual jika tidak dipakai agar tidak menyisakan 1 kertas kosong
+    function sembunyikanTeksKosong() {
+      if (lembarTeks.innerText.includes('Klik di sini untuk mengetik') || lembarTeks.innerText.trim() === '') {
+        lembarTeks.classList.add('hidden');
+      }
+    }
+
+    // Reset semua halaman kembali ke awal
+    function bersihkanSemua() {
+      wadahMedia.innerHTML = '';
+      lembarTeks.classList.remove('hidden');
+      lembarTeks.innerHTML = '<p class="text-slate-400 italic">Klik di sini untuk mengetik teks tambahan, atau langsung gunakan tombol di atas untuk memasukkan Gambar / File PDF...</p>';
+    }
+  </script>
+</body>
+</html>
