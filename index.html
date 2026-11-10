@@ -646,9 +646,10 @@
             <div>
               <label class="block text-xs font-bold text-slate-700 mb-1">Jumlah *</label>
               <div class="relative">
-                <input type="number" id="inputJumlah" min="0.01" step="any" placeholder="0" required class="w-full rounded-xl border border-slate-300 pl-3 pr-14 py-2 text-sm font-extrabold text-slate-900">
+                <input type="number" id="inputJumlah" min="0.01" step="any" oninput="updateKonversiInputMutasi()" placeholder="0" required class="w-full rounded-xl border border-slate-300 pl-3 pr-14 py-2 text-sm font-extrabold text-slate-900">
                 <span id="badgeSatuanInput" class="absolute right-2.5 top-2 bg-slate-200 text-slate-700 px-2 py-0.5 rounded-lg text-xs font-extrabold">Kg</span>
               </div>
+              <p id="infoTonaseInput" class="text-[11px] text-emerald-500 mt-1 font-bold"></p>
             </div>
           </div>
 
@@ -737,7 +738,7 @@
       <div class="flex flex-wrap items-center justify-between gap-2">
         <div>
           <h2 class="text-base sm:text-lg font-extrabold text-slate-800">Riwayat & Laporan Mutasi Gudang</h2>
-          <p class="text-xs text-slate-500">Pilih periode, filter komoditas, atau centang baris transaksi tertentu yang ingin dicetak.</p>
+          <p class="text-xs text-slate-500">Pilih periode, filter komoditas, edit/hapus SJ, atau centang baris transaksi yang ingin dicetak.</p>
         </div>
         <div class="flex flex-wrap items-center gap-1.5">
           <button onclick="syncData()" class="bg-slate-800 hover:bg-slate-700 text-white px-3 py-1.5 rounded-xl text-xs font-bold shadow transition flex items-center space-x-1">
@@ -884,7 +885,7 @@
                 <th class="py-2.5 px-3 text-right">Mutasi</th>
                 <th class="py-2.5 px-3 text-right">Stok</th>
                 <th class="py-2.5 px-3 text-center">Admin</th>
-                <th class="py-2.5 px-3 text-center">Cetak</th>
+                <th class="py-2.5 px-3 text-center">Aksi / Cetak</th>
               </tr>
             </thead>
             <tbody id="tbodyLog" class="divide-y divide-slate-200 text-xs"></tbody>
@@ -1218,6 +1219,81 @@
     </div>
   </div>
 
+  <div id="modalEditSJ" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden my-auto">
+      <div class="bg-slate-900 text-white px-4 py-3.5 flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+          <i class="fa-solid fa-pen-to-square text-amber-400"></i>
+          <h3 class="font-bold text-xs sm:text-sm">Edit Surat Jalan / Mutasi</h3>
+        </div>
+        <button type="button" onclick="closeModal('modalEditSJ')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <form onsubmit="submitEditSJ(event)" class="p-4 space-y-3.5">
+        <input type="hidden" id="editLogId">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Tanggal *</label>
+            <input type="date" id="editTanggal" required class="w-full rounded-xl border border-slate-300 px-3 py-2 text-xs font-semibold">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">No. Surat Jalan *</label>
+            <input type="text" id="editSuratJalan" required class="w-full rounded-xl border border-slate-300 px-3 py-2 text-xs font-bold uppercase">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Jenis *</label>
+            <select id="editJenis" required class="w-full rounded-xl border border-slate-300 px-2 py-2 text-xs font-bold bg-white">
+              <option value="MASUK">MASUK</option>
+              <option value="KELUAR">KELUAR</option>
+              <option value="MANUAL_ADJUST">OPNAME</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Armada *</label>
+            <select id="editArmada" required class="w-full rounded-xl border border-slate-300 px-2 py-2 text-xs font-semibold bg-white">
+              <option value="Truk CDD">Truk CDD</option>
+              <option value="Tronton">Tronton</option>
+              <option value="Kontainer">Kontainer</option>
+              <option value="Wingbox">Wingbox</option>
+              <option value="Fuso">Fuso</option>
+              <option value="Pick Up / L300">Pick Up / L300</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Nopol *</label>
+            <input type="text" id="editNopol" required class="w-full rounded-xl border border-slate-300 px-2 py-2 text-xs font-bold uppercase">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Sopir & Relasi *</label>
+          <input type="text" id="editSopir" required class="w-full rounded-xl border border-slate-300 px-3 py-2 text-xs">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Barang *</label>
+            <select id="editKodeBarang" required class="w-full rounded-xl border border-slate-300 px-3 py-2 text-xs font-bold bg-white"></select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Jumlah Mutasi *</label>
+            <input type="number" id="editJumlah" min="0.01" step="any" required class="w-full rounded-xl border border-slate-300 px-3 py-2 text-xs font-extrabold">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Catatan</label>
+          <input type="text" id="editKeterangan" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-xs">
+        </div>
+
+        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-2.5 rounded-xl text-xs shadow transition">Simpan Perubahan SJ</button>
+      </form>
+    </div>
+  </div>
+
   <div id="floatingCalcContainer" class="fixed bottom-5 right-5 z-40 hidden">
     <button type="button" onclick="toggleCalc()" class="w-12 h-12 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white shadow-2xl flex items-center justify-center text-lg transition transform hover:scale-105 border-2 border-white/20" title="Kalkulator Gudang">
       <i class="fa-solid fa-calculator"></i>
@@ -1257,7 +1333,6 @@
       </div>
     </div>
   </div>
-
   <script>
     const DEFAULT_GAS_URL = "https://script.google.com/macros/s/AKfycbzE4U0G1IX9a3ovI36jKzIjlbYmepEDINKm1Rp1CWxQZkkTCZS0fXlMPn0fMfQ71rGN/exec";
     const SCRIPT_URL = DEFAULT_GAS_URL;
@@ -1305,6 +1380,58 @@
     let liveTimeString = "";
     let deferredPrompt = null;
     let selectedLogKeys = new Set();
+
+    // =========================================================================
+    // HELPER KONVERSI TONASE OTOMATIS (1 SAK = 50 KG = 0.05 TON)
+    // =========================================================================
+    function isWeightUnit(satuan) {
+      const s = String(satuan || '').trim().toLowerCase();
+      return s === 'sak' || s === 'kg' || s === 'ton';
+    }
+
+    function hitungNilaiTon(jumlah, satuan) {
+      const val = Number(jumlah || 0);
+      const s = String(satuan || '').trim().toLowerCase();
+      if (s === 'sak') return (val * 50) / 1000;
+      if (s === 'kg') return val / 1000;
+      if (s === 'ton') return val;
+      return null;
+    }
+
+    function formatAngkaTon(num) {
+      return Number(num || 0).toLocaleString('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 3 });
+    }
+
+    function getBadgeTonase(jumlah, satuan, extraClass = "text-amber-400") {
+      const ton = hitungNilaiTon(jumlah, satuan);
+      if (ton === null || String(satuan || '').trim().toLowerCase() === 'ton') return '';
+      return ` <span class="text-[11px] font-extrabold ${extraClass}">(${formatAngkaTon(ton)} Ton)</span>`;
+    }
+
+    function getInlineTonText(jumlah, satuan) {
+      const ton = hitungNilaiTon(jumlah, satuan);
+      if (ton === null || String(satuan || '').trim().toLowerCase() === 'ton') return '';
+      return ` (${formatAngkaTon(ton)} Ton)`;
+    }
+
+    function updateKonversiInputMutasi() {
+      const kode = document.getElementById('inputBarang')?.value;
+      const jml = Number(document.getElementById('inputJumlah')?.value || 0);
+      const infoEl = document.getElementById('infoTonaseInput');
+      if (!infoEl) return;
+      const item = masterStok.find(b => b.kode === kode);
+      if (!item || jml <= 0) {
+        infoEl.innerText = '';
+        return;
+      }
+      const ton = hitungNilaiTon(jml, item.satuan);
+      if (ton !== null) {
+        const kgVal = String(item.satuan).toLowerCase() === 'sak' ? jml * 50 : (String(item.satuan).toLowerCase() === 'ton' ? jml * 1000 : jml);
+        infoEl.innerText = `≈ ${formatAngkaTon(ton)} Ton (${formatAngka(kgVal)} Kg)`;
+      } else {
+        infoEl.innerText = '';
+      }
+    }
 
     window.addEventListener('DOMContentLoaded', () => {
       initDarkMode();
@@ -1887,7 +2014,7 @@
                 <div class="text-base sm:text-lg font-extrabold text-emerald-600 font-mono-code pt-1">${formatRp(p.harga)} <span class="text-xs font-normal text-slate-500">/ ${satuan}</span></div>
                 <div class="text-xs text-slate-500 flex items-center justify-between pt-1 border-t border-slate-100">
                   <span>Stok Gudang:</span>
-                  <b class="${sisaStok > 0 ? 'text-blue-600' : 'text-rose-600'}">${formatAngka(sisaStok)} ${satuan}</b>
+                  <b class="${sisaStok > 0 ? 'text-blue-600' : 'text-rose-600'}">${formatAngka(sisaStok)} ${satuan}${getBadgeTonase(sisaStok, satuan, 'text-amber-500')}</b>
                 </div>
               </div>
             </div>
@@ -1900,7 +2027,7 @@
       const select = document.getElementById('prodKodeBarang');
       select.innerHTML = '';
       masterStok.forEach(s => {
-        select.innerHTML += `<option value="${s.kode}">[${s.kode}] ${s.nama} (${formatAngka(s.stok)} ${s.satuan})</option>`;
+        select.innerHTML += `<option value="${s.kode}">[${s.kode}] ${s.nama} (${formatAngka(s.stok)} ${s.satuan}${getInlineTonText(s.stok, s.satuan)})</option>`;
       });
       autoFillNamaProduk();
       openModal('modalFormProduk');
@@ -2000,7 +2127,7 @@
       document.getElementById('invSatuan').value = satuan;
       document.getElementById('invLabelProduk').innerText = `${prod.nama} (${prod.kualitas})`;
       document.getElementById('invLabelHarga').innerText = `${formatRp(prod.harga)} / ${satuan}`;
-      document.getElementById('invLabelStok').innerText = `${formatAngka(sisaStok)} ${satuan}`;
+      document.getElementById('invLabelStok').innerText = `${formatAngka(sisaStok)} ${satuan}${getInlineTonText(sisaStok, satuan)}`;
       document.getElementById('invNamaPembeli').value = '';
       document.getElementById('invKontak').value = '';
       document.getElementById('invJumlah').value = '';
@@ -2156,7 +2283,7 @@
             </td>
             <td class="py-2.5 px-3">
               <div class="font-bold text-slate-800">${inv.namaProduk || '-'}</div>
-              <div class="text-[10px] text-emerald-600 font-bold">${formatAngka(inv.jumlah)} ${inv.satuan || 'Sak'} @ ${formatRp(inv.harga)}</div>
+              <div class="text-[10px] text-emerald-600 font-bold">${formatAngka(inv.jumlah)} ${inv.satuan || 'Sak'}${getInlineTonText(inv.jumlah, inv.satuan || 'Sak')} @ ${formatRp(inv.harga)}</div>
             </td>
             <td class="py-2.5 px-3 text-right font-mono-code font-extrabold text-slate-900 whitespace-nowrap">${formatRp(inv.total)}</td>
             <td class="py-2.5 px-3 text-center whitespace-nowrap">${badge}</td>
@@ -2211,9 +2338,10 @@
         showToast("Tidak ada data invoice untuk diunduh!");
         return;
       }
-      let csv = "\uFEFFNo Invoice,Tanggal,Pembeli,Kontak,Produk,Kualitas,Harga Satuan,Jumlah,Satuan,Total Tagihan,Status,Admin\n";
+      let csv = "\uFEFFNo Invoice,Tanggal,Pembeli,Kontak,Produk,Kualitas,Harga Satuan,Jumlah,Satuan,Tonase (Ton),Total Tagihan,Status,Admin\n";
       filtered.forEach(i => {
-        csv += `"${i.noInvoice}","${normalizeDateStr(i.tanggal)}","${(i.namaPembeli || '').replace(/"/g, '""')}","${i.kontakPembeli || ''}","${(i.namaProduk || '').replace(/"/g, '""')}","${i.kualitas || ''}",${i.harga || 0},${i.jumlah || 0},"${i.satuan || ''}",${i.total || 0},"${i.statusBayar || ''}","${i.admin || ''}"\n`;
+        const ton = hitungNilaiTon(i.jumlah, i.satuan || 'Sak');
+        csv += `"${i.noInvoice}","${normalizeDateStr(i.tanggal)}","${(i.namaPembeli || '').replace(/"/g, '""')}","${i.kontakPembeli || ''}","${(i.namaProduk || '').replace(/"/g, '""')}","${i.kualitas || ''}",${i.harga || 0},${i.jumlah || 0},"${i.satuan || ''}","${ton !== null ? ton : '-'}",${i.total || 0},"${i.statusBayar || ''}","${i.admin || ''}"\n`;
       });
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       const link = document.createElement("a");
@@ -2276,12 +2404,13 @@
       const sel2 = document.getElementById('manualPilihBarang');
       const selFilterLog = document.getElementById('filterBarangLog');
       const selModalBarang = document.getElementById('modalFilterBarang');
+      const selEditBarang = document.getElementById('editKodeBarang');
 
       if (sel1) {
         const prev = sel1.value;
         sel1.innerHTML = '';
         masterStok.forEach(b => {
-          sel1.innerHTML += `<option value="${b.kode}">[${b.kode}] ${b.nama} (${formatAngka(b.stok)} ${b.satuan})</option>`;
+          sel1.innerHTML += `<option value="${b.kode}">[${b.kode}] ${b.nama} (${formatAngka(b.stok)} ${b.satuan}${getInlineTonText(b.stok, b.satuan)})</option>`;
         });
         if (prev && masterStok.some(s => s.kode === prev)) sel1.value = prev;
       }
@@ -2292,6 +2421,14 @@
           sel2.innerHTML += `<option value="${b.kode}">[${b.kode}] ${b.nama}</option>`;
         });
         if (prev2 && masterStok.some(s => s.kode === prev2)) sel2.value = prev2;
+      }
+      if (selEditBarang) {
+        const prevE = selEditBarang.value;
+        selEditBarang.innerHTML = '';
+        masterStok.forEach(b => {
+          selEditBarang.innerHTML += `<option value="${b.kode}">[${b.kode}] ${b.nama} (${b.satuan})</option>`;
+        });
+        if (prevE && masterStok.some(s => s.kode === prevE)) selEditBarang.value = prevE;
       }
       if (selFilterLog) {
         const prevF = selFilterLog.value || 'SEMUA';
@@ -2317,16 +2454,17 @@
       const kode = document.getElementById('inputBarang')?.value;
       const item = masterStok.find(b => b.kode === kode);
       if (item) {
-        document.getElementById('infoStokPilihan').innerHTML = `Tersedia: <b class="text-emerald-600">${formatAngka(item.stok)} ${item.satuan}</b>`;
+        document.getElementById('infoStokPilihan').innerHTML = `Tersedia: <b class="text-emerald-600">${formatAngka(item.stok)} ${item.satuan}${getInlineTonText(item.stok, item.satuan)}</b>`;
         document.getElementById('badgeSatuanInput').innerText = item.satuan;
       }
+      updateKonversiInputMutasi();
     }
 
     function updateInfoStokManual() {
       const kode = document.getElementById('manualPilihBarang')?.value;
       const item = masterStok.find(b => b.kode === kode);
       if (item) {
-        document.getElementById('infoStokManual').innerHTML = `Stok Sistem: <b>${formatAngka(item.stok)} ${item.satuan}</b>`;
+        document.getElementById('infoStokManual').innerHTML = `Stok Sistem: <b>${formatAngka(item.stok)} ${item.satuan}${getInlineTonText(item.stok, item.satuan)}</b>`;
         document.getElementById('manualStokBaru').value = item.stok;
       }
     }
@@ -2348,7 +2486,7 @@
       const barang = masterStok.find(b => b.kode === kodeBarang);
       if (!barang) return;
       if (jenis === 'KELUAR' && barang.stok < jumlah) {
-        alert(`Stok tidak cukup! Sisa: ${formatAngka(barang.stok)} ${barang.satuan}`);
+        alert(`Stok tidak cukup! Sisa: ${formatAngka(barang.stok)} ${barang.satuan}${getInlineTonText(barang.stok, barang.satuan)}`);
         return;
       }
 
@@ -2404,6 +2542,7 @@
       document.getElementById('inputNopol').value = '';
       document.getElementById('inputJumlah').value = '';
       document.getElementById('inputKeterangan').value = '';
+      updateKonversiInputMutasi();
       showToast(`Transaksi ${jenis} Tersimpan ke Database!`);
       if (isAutoPrint && logTransaksi.length > 0) {
         bukaModalCetakSJ(logTransaksi[0].id || 0);
@@ -2490,6 +2629,10 @@
       e.target.reset();
       showToast(`Barang Baru [${kode}] ${nama} Berhasil Ditambahkan!`);
     }
+
+    // =========================================================================
+    // TABEL STOK REAL-TIME (DENGAN SATUAN TON OTOMATIS DI SEBELAH SAK/KG)
+    // =========================================================================
     function renderTabelStok() {
       const tbody = document.getElementById('tbodyStok');
       if (!tbody) return;
@@ -2524,7 +2667,9 @@
             <td class="py-3 px-3 font-mono-code font-bold text-slate-800 whitespace-nowrap">${item.kode}</td>
             <td class="py-3 px-3 font-bold text-slate-900">${item.nama}</td>
             <td class="py-3 px-3 text-xs text-slate-500 font-semibold">${item.kategori}</td>
-            <td class="py-3 px-3 text-right font-mono-code font-extrabold text-slate-900 whitespace-nowrap">${formatAngka(item.stok)} <span class="text-xs font-normal text-slate-500">${item.satuan}</span></td>
+            <td class="py-3 px-3 text-right font-mono-code font-extrabold text-slate-900 whitespace-nowrap">
+              ${formatAngka(item.stok)} <span class="text-xs font-normal text-slate-500">${item.satuan}</span>${getBadgeTonase(item.stok, item.satuan, 'text-emerald-400')}
+            </td>
             <td class="py-3 px-3 text-center whitespace-nowrap">${badgeStatus}</td>
             ${colAksi}
           </tr>`;
@@ -2569,6 +2714,204 @@
     function getLogKey(l) {
       if (l.id) return String(l.id);
       return `${normalizeDateStr(l.tanggal)}_${getNoSJ(l)}_${l.kodeBarang || l.kode || ''}_${l.jumlah}_${getWaktu(l)}`;
+    }
+
+    function findLogIndexByRef(idOrIndex) {
+      if (typeof idOrIndex === 'number') return idOrIndex;
+      const str = String(idOrIndex);
+      if (str.startsWith('INDEX_')) return Number(str.replace('INDEX_', ''));
+      return logTransaksi.findIndex(x => String(x.id) === str || getLogKey(x) === str);
+    }
+
+    // =========================================================================
+    // REKALKULASI STOK AKHIR LOG RIWAYAT SETELAH EDIT / HAPUS SJ
+    // =========================================================================
+    function rekalkulasiRiwayatBarang(kodeBarang) {
+      const barang = masterStok.find(b => b.kode === kodeBarang);
+      if (!barang) return;
+      let runningStok = Number(barang.stok || 0);
+
+      for (let i = 0; i < logTransaksi.length; i++) {
+        const l = logTransaksi[i];
+        const kodeLog = l.kodeBarang || l.kode || '';
+        if (kodeLog === kodeBarang) {
+          l.stokAkhir = runningStok;
+          const jml = Math.abs(Number(l.jumlah || 0));
+          if (l.jenis === 'MASUK') {
+            runningStok -= jml;
+          } else if (l.jenis === 'KELUAR') {
+            runningStok += jml;
+          }
+        }
+      }
+    }
+
+    // =========================================================================
+    // FITUR EDIT & HAPUS SURAT JALAN (OTOMATIS REVERT / SESUAIKAN STOK)
+    // =========================================================================
+    function bukaModalEditSJ(idOrIndex) {
+      if (currentSession && currentSession.role === 'VIEWER') {
+        showToast("Mode Lihat Saja!");
+        return;
+      }
+      const idx = findLogIndexByRef(idOrIndex);
+      const l = logTransaksi[idx];
+      if (!l) return;
+
+      populateDropdownBarang();
+      document.getElementById('editLogId').value = l.id ? String(l.id) : `INDEX_${idx}`;
+      document.getElementById('editTanggal').value = normalizeDateStr(l.tanggal) || new Date().toISOString().split('T')[0];
+      document.getElementById('editSuratJalan').value = getNoSJ(l);
+      document.getElementById('editJenis').value = l.jenis || 'MASUK';
+      document.getElementById('editArmada').value = l.armada || 'Truk CDD';
+      document.getElementById('editNopol').value = l.nopol || '-';
+      document.getElementById('editSopir').value = l.sopir || '-';
+      document.getElementById('editKodeBarang').value = l.kodeBarang || l.kode || '';
+      document.getElementById('editJumlah').value = Math.abs(Number(l.jumlah || 0));
+      document.getElementById('editKeterangan').value = l.keterangan || l.ket || '';
+
+      openModal('modalEditSJ');
+    }
+
+    async function submitEditSJ(e) {
+      e.preventDefault();
+      const refId = document.getElementById('editLogId').value;
+      const idx = findLogIndexByRef(refId);
+      const oldLog = logTransaksi[idx];
+      if (!oldLog) return;
+
+      const newTanggal = document.getElementById('editTanggal').value;
+      const newSJ = document.getElementById('editSuratJalan').value.trim().toUpperCase();
+      const newJenis = document.getElementById('editJenis').value;
+      const newArmada = document.getElementById('editArmada').value;
+      const newNopol = document.getElementById('editNopol').value.trim().toUpperCase();
+      const newSopir = document.getElementById('editSopir').value.trim();
+      const newKode = document.getElementById('editKodeBarang').value;
+      const newJumlah = Math.abs(Number(document.getElementById('editJumlah').value));
+      const newKet = document.getElementById('editKeterangan').value.trim();
+
+      const oldKode = oldLog.kodeBarang || oldLog.kode;
+      const oldJumlah = Math.abs(Number(oldLog.jumlah || 0));
+      const oldJenis = oldLog.jenis;
+
+      const oldBarang = masterStok.find(b => b.kode === oldKode);
+      const newBarang = masterStok.find(b => b.kode === newKode);
+      if (!newBarang) return;
+
+      // Simulasi revert stok lama terlebih dahulu
+      let tempOldStok = oldBarang ? Number(oldBarang.stok) : 0;
+      if (oldBarang) {
+        if (oldJenis === 'MASUK') tempOldStok -= oldJumlah;
+        else if (oldJenis === 'KELUAR') tempOldStok += oldJumlah;
+      }
+
+      let tempNewStok = (oldKode === newKode) ? tempOldStok : Number(newBarang.stok);
+      if (newJenis === 'KELUAR' && tempNewStok < newJumlah) {
+        alert(`Stok tidak mencukupi untuk perubahan ini! Sisa tersedia: ${formatAngka(tempNewStok)} ${newBarang.satuan}`);
+        return;
+      }
+
+      showCenterLoading("Menyimpan Perubahan SJ...");
+
+      const applyLocalEdit = () => {
+        if (oldBarang) {
+          if (oldJenis === 'MASUK') oldBarang.stok = Number(oldBarang.stok) - oldJumlah;
+          else if (oldJenis === 'KELUAR') oldBarang.stok = Number(oldBarang.stok) + oldJumlah;
+        }
+        if (newJenis === 'MASUK') newBarang.stok = Number(newBarang.stok) + newJumlah;
+        else if (newJenis === 'KELUAR') newBarang.stok = Number(newBarang.stok) - newJumlah;
+        else if (newJenis === 'MANUAL_ADJUST') newBarang.stok = newJumlah;
+
+        oldLog.tanggal = newTanggal;
+        oldLog.suratJalan = newSJ;
+        oldLog.noSJ = newSJ;
+        oldLog.jenis = newJenis;
+        oldLog.armada = newArmada;
+        oldLog.nopol = newNopol;
+        oldLog.sopir = newSopir;
+        oldLog.kodeBarang = newBarang.kode;
+        oldLog.kode = newBarang.kode;
+        oldLog.namaBarang = newBarang.nama;
+        oldLog.satuan = newBarang.satuan;
+        oldLog.jumlah = newJumlah;
+        oldLog.keterangan = newKet;
+        oldLog.ket = newKet;
+
+        rekalkulasiRiwayatBarang(oldKode);
+        if (newKode !== oldKode) rekalkulasiRiwayatBarang(newKode);
+      };
+
+      await eksekusiPerubahanData({
+        action: "EDIT_TRANSAKSI",
+        id: oldLog.id || refId,
+        oldSuratJalan: getNoSJ(oldLog),
+        tanggal: newTanggal,
+        suratJalan: newSJ,
+        jenis: newJenis,
+        armada: newArmada,
+        nopol: newNopol,
+        sopir: newSopir,
+        kodeBarang: newKode,
+        jumlah: newJumlah,
+        keterangan: newKet,
+        admin: activeShift ? activeShift.namaAdmin : "ADMIN"
+      }, applyLocalEdit);
+
+      hideCenterLoading();
+      closeModal('modalEditSJ');
+      showToast(`Surat Jalan ${newSJ} berhasil diperbarui & stok disesuaikan!`);
+    }
+
+    async function hapusTransaksiSJ(idOrIndex) {
+      if (currentSession && currentSession.role === 'VIEWER') {
+        showToast("Mode Lihat Saja!");
+        return;
+      }
+      const idx = findLogIndexByRef(idOrIndex);
+      const l = logTransaksi[idx];
+      if (!l) return;
+
+      const noSJ = getNoSJ(l);
+      const jml = Math.abs(Number(l.jumlah || 0));
+      const satuan = l.satuan || 'Sak';
+      const ketRevert = l.jenis === 'KELUAR'
+        ? `Stok otomatis KEMBALI (+${formatAngka(jml)} ${satuan}${getInlineTonText(jml, satuan)})`
+        : (l.jenis === 'MASUK'
+            ? `Stok otomatis BERKURANG (-${formatAngka(jml)} ${satuan}${getInlineTonText(jml, satuan)})`
+            : `Transaksi Opname dihapus`);
+
+      if (!confirm(`Hapus transaksi SJ "${noSJ}" (${l.namaBarang})?\n\n${ketRevert}`)) return;
+
+      const kodeBrg = l.kodeBarang || l.kode;
+      const barang = masterStok.find(b => b.kode === kodeBrg);
+
+      showCenterLoading("Menghapus SJ & Menyesuaikan Stok...");
+
+      const applyLocalDelete = () => {
+        if (barang) {
+          if (l.jenis === 'KELUAR') {
+            barang.stok = Number(barang.stok) + jml;
+          } else if (l.jenis === 'MASUK') {
+            barang.stok = Math.max(0, Number(barang.stok) - jml);
+          }
+        }
+        const keyToDelete = getLogKey(l);
+        selectedLogKeys.delete(keyToDelete);
+        logTransaksi.splice(idx, 1);
+        rekalkulasiRiwayatBarang(kodeBrg);
+      };
+
+      await eksekusiPerubahanData({
+        action: "HAPUS_TRANSAKSI",
+        id: l.id || '',
+        suratJalan: noSJ,
+        jenis: l.jenis,
+        kodeBarang: kodeBrg,
+        jumlah: jml
+      }, applyLocalDelete);
+
+      hideCenterLoading();
+      showToast(`SJ ${noSJ} dihapus! ${ketRevert}`);
     }
 
     function syncFilterDariModal() {
@@ -2719,6 +3062,9 @@
       return getFilteredLogs(targetModeOverride);
     }
 
+    // =========================================================================
+    // TABEL RIWAYAT (DENGAN SATUAN TON DI SEBELAH SAK + ICON EDIT & HAPUS SJ)
+    // =========================================================================
     function renderTabelLog() {
       const tbody = document.getElementById('tbodyLog');
       const tfoot = document.getElementById('tfootLog');
@@ -2742,12 +3088,24 @@
 
       let totalMasuk = 0;
       let totalKeluar = 0;
+      let totalMasukTon = 0;
+      let totalKeluarTon = 0;
+      const isViewer = currentSession && currentSession.role === 'VIEWER';
 
       filtered.forEach((l) => {
         const isMasuk = l.jenis === 'MASUK';
         const isKeluar = l.jenis === 'KELUAR';
-        if (isMasuk) totalMasuk += Math.abs(Number(l.jumlah || 0));
-        if (isKeluar) totalKeluar += Math.abs(Number(l.jumlah || 0));
+        const absJml = Math.abs(Number(l.jumlah || 0));
+        const tonVal = hitungNilaiTon(absJml, l.satuan) || 0;
+
+        if (isMasuk) {
+          totalMasuk += absJml;
+          totalMasukTon += tonVal;
+        }
+        if (isKeluar) {
+          totalKeluar += absJml;
+          totalKeluarTon += tonVal;
+        }
 
         const key = getLogKey(l);
         const isChecked = selectedLogKeys.has(key);
@@ -2759,13 +3117,23 @@
               : `<span class="bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded text-[10px] font-extrabold">OPNAME</span>`);
 
         const mutasiText = isMasuk
-          ? `<span class="text-emerald-600 font-extrabold">+${formatAngka(Math.abs(l.jumlah))} ${l.satuan || ''}</span>`
+          ? `<span class="text-emerald-600 font-extrabold">+${formatAngka(absJml)} ${l.satuan || ''}${getBadgeTonase(absJml, l.satuan, 'text-emerald-400')}</span>`
           : (isKeluar
-              ? `<span class="text-rose-600 font-extrabold">-${formatAngka(Math.abs(l.jumlah))} ${l.satuan || ''}</span>`
-              : `<span class="text-amber-600 font-extrabold">±${formatAngka(Math.abs(l.jumlah))} ${l.satuan || ''}</span>`);
+              ? `<span class="text-rose-600 font-extrabold">-${formatAngka(absJml)} ${l.satuan || ''}${getBadgeTonase(absJml, l.satuan, 'text-rose-400')}</span>`
+              : `<span class="text-amber-600 font-extrabold">±${formatAngka(absJml)} ${l.satuan || ''}${getBadgeTonase(absJml, l.satuan, 'text-amber-400')}</span>`);
 
+        const stokAkhirVal = getStokAkhir(l);
         const refParam = l.id ? `'${l.id}'` : `'INDEX_${logTransaksi.indexOf(l)}'`;
         const safeKey = key.replace(/'/g, "\\'");
+
+        const editDeleteBtns = isViewer ? '' : `
+          <button onclick="bukaModalEditSJ(${refParam})" class="bg-amber-500 hover:bg-amber-400 text-slate-950 px-2 py-1.5 rounded-xl text-[11px] font-extrabold shadow-sm transition inline-flex items-center justify-center" title="Edit SJ">
+            <i class="fa-solid fa-pen-to-square"></i>
+          </button>
+          <button onclick="hapusTransaksiSJ(${refParam})" class="bg-rose-600 hover:bg-rose-500 text-white px-2 py-1.5 rounded-xl text-[11px] font-extrabold shadow-sm transition inline-flex items-center justify-center" title="Hapus SJ & Kembalikan Stok">
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        `;
 
         tbody.innerHTML += `
           <tr class="hover:bg-slate-50 transition ${isChecked ? 'bg-emerald-500/10' : ''}">
@@ -2789,14 +3157,17 @@
               <div class="text-[10px] text-slate-400 font-mono-code">${l.kodeBarang || l.kode || ''}</div>
             </td>
             <td class="py-2.5 px-3 text-right font-mono-code whitespace-nowrap">${mutasiText}</td>
-            <td class="py-2.5 px-3 text-right font-mono-code font-bold text-slate-800 whitespace-nowrap">${formatAngka(getStokAkhir(l))} ${l.satuan || ''}</td>
+            <td class="py-2.5 px-3 text-right font-mono-code font-bold text-slate-800 whitespace-nowrap">${formatAngka(stokAkhirVal)} ${l.satuan || ''}${getBadgeTonase(stokAkhirVal, l.satuan, 'text-emerald-400')}</td>
             <td class="py-2.5 px-3 text-center whitespace-nowrap">
               <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-500/15 text-emerald-500 border border-emerald-500/30">${l.admin || 'ADMIN'}</span>
             </td>
             <td class="py-2.5 px-3 text-center whitespace-nowrap">
-              <button onclick="bukaModalCetakSJ(${refParam})" class="bg-emerald-600 hover:bg-emerald-500 text-white px-2.5 py-1.5 rounded-xl text-[11px] font-extrabold shadow-sm transition inline-flex items-center space-x-1">
-                <i class="fa-solid fa-receipt"></i><span>SJ</span>
-              </button>
+              <div class="inline-flex items-center space-x-1">
+                <button onclick="bukaModalCetakSJ(${refParam})" class="bg-emerald-600 hover:bg-emerald-500 text-white px-2.5 py-1.5 rounded-xl text-[11px] font-extrabold shadow-sm transition inline-flex items-center space-x-1" title="Cetak Surat Jalan">
+                  <i class="fa-solid fa-receipt"></i><span>SJ</span>
+                </button>
+                ${editDeleteBtns}
+              </div>
             </td>
           </tr>`;
       });
@@ -2806,7 +3177,7 @@
           <tr>
             <td colspan="5" class="py-3 px-3 text-right uppercase text-[11px] text-slate-500">Total Keseluruhan (${modeLaporanAktif}) :</td>
             <td class="py-3 px-3 text-right font-mono-code whitespace-nowrap">
-              <span class="text-emerald-600">+${formatAngka(totalMasuk)}</span> / <span class="text-rose-600">-${formatAngka(totalKeluar)}</span>
+              <span class="text-emerald-600">+${formatAngka(totalMasuk)} (${formatAngkaTon(totalMasukTon)} Ton)</span> / <span class="text-rose-600">-${formatAngka(totalKeluar)} (${formatAngkaTon(totalKeluarTon)} Ton)</span>
             </td>
             <td colspan="3" class="py-3 px-3 text-right text-[11px] text-slate-500">${filtered.length} Transaksi Tercatat</td>
           </tr>`;
@@ -2818,16 +3189,19 @@
       const keluarAll = logTransaksi.filter(l => String(l.jenis || '').toUpperCase() === 'KELUAR');
 
       const volMasuk = masukAll.reduce((a, b) => a + Math.abs(Number(b.jumlah || 0)), 0);
+      const volMasukTon = masukAll.reduce((a, b) => a + (hitungNilaiTon(Math.abs(Number(b.jumlah || 0)), b.satuan) || 0), 0);
       const volKeluar = keluarAll.reduce((a, b) => a + Math.abs(Number(b.jumlah || 0)), 0);
+      const volKeluarTon = keluarAll.reduce((a, b) => a + (hitungNilaiTon(Math.abs(Number(b.jumlah || 0)), b.satuan) || 0), 0);
+
       const stokRendah = masterStok.filter(item =>
         (item.satuan === 'Kg' && item.stok < 2000) || (item.satuan !== 'Kg' && item.stok < 100)
       ).length;
 
       if (document.getElementById('kpiTotalItem')) document.getElementById('kpiTotalItem').innerText = `${masterStok.length} Item`;
       if (document.getElementById('kpiMasukHariIni')) document.getElementById('kpiMasukHariIni').innerText = `${masukAll.length} SJ`;
-      if (document.getElementById('kpiVolumeMasuk')) document.getElementById('kpiVolumeMasuk').innerText = `+${formatAngka(volMasuk)} Unit`;
+      if (document.getElementById('kpiVolumeMasuk')) document.getElementById('kpiVolumeMasuk').innerText = `+${formatAngka(volMasuk)} Unit (${formatAngkaTon(volMasukTon)} Ton)`;
       if (document.getElementById('kpiKeluarHariIni')) document.getElementById('kpiKeluarHariIni').innerText = `${keluarAll.length} SJ`;
-      if (document.getElementById('kpiVolumeKeluar')) document.getElementById('kpiVolumeKeluar').innerText = `-${formatAngka(volKeluar)} Unit`;
+      if (document.getElementById('kpiVolumeKeluar')) document.getElementById('kpiVolumeKeluar').innerText = `-${formatAngka(volKeluar)} Unit (${formatAngkaTon(volKeluarTon)} Ton)`;
       if (document.getElementById('kpiStokRendah')) document.getElementById('kpiStokRendah').innerText = `${stokRendah} Item`;
     }
 
@@ -2841,21 +3215,18 @@
       renderTabelAbsensi();
     }
 
+    // =========================================================================
+    // CETAK SURAT JALAN (TABEL TETAP SAMA, KETERANGAN TON OTOMATIS DI ATAS CATATAN)
+    // =========================================================================
     function bukaModalCetakSJ(idOrIndex) {
-      let l = null;
-      if (typeof idOrIndex === 'number') {
-        l = logTransaksi[idOrIndex];
-      } else if (String(idOrIndex).startsWith('INDEX_')) {
-        const idx = Number(String(idOrIndex).replace('INDEX_', ''));
-        l = logTransaksi[idx];
-      } else {
-        l = logTransaksi.find(x => x.id === idOrIndex) || logTransaksi[0];
-      }
+      const idx = findLogIndexByRef(idOrIndex);
+      const l = logTransaksi[idx] || logTransaksi[0];
       if (!l) return;
 
       const noSJ = getNoSJ(l);
       const stokAwalVal = getStokAwal(l);
       const stokAkhirVal = getStokAkhir(l);
+      const absJumlah = Math.abs(Number(l.jumlah || 0));
 
       dataCetakAktif = { kodeRef: noSJ };
       tipeDokumenCetak = 'SURAT_JALAN';
@@ -2868,13 +3239,28 @@
       const warna = isMasuk ? '#059669' : '#e11d48';
       const judul = isMasuk ? 'BUKTI BARANG MASUK' : (isKeluar ? 'SURAT JALAN' : 'BERITA ACARA STOCK OPNAME');
 
+      // Hitung Tonase Otomatis untuk Keterangan di Atas Catatan
+      const tonAwal = hitungNilaiTon(stokAwalVal, l.satuan);
+      const tonMutasi = hitungNilaiTon(absJumlah, l.satuan);
+      const tonAkhir = hitungNilaiTon(stokAkhirVal, l.satuan);
+      const kgMutasi = String(l.satuan || '').toLowerCase() === 'sak' ? absJumlah * 50 : (String(l.satuan || '').toLowerCase() === 'ton' ? absJumlah * 1000 : absJumlah);
+
+      const blokKeteranganTonase = (tonMutasi !== null) ? `
+        <div style="font-size: 10.5px; color: #0f172a; background: #f8fafc; border: 1px dashed #94a3b8; padding: 7px 10px; border-radius: 6px; margin-bottom: 8px;">
+          <b>Keterangan Tonase (1 Sak = 50 Kg):</b>
+          Stok Awal: <b>${formatAngkaTon(tonAwal)} Ton</b> &nbsp;|&nbsp;
+          Volume (${l.jenis}): <b style="color: ${warna};">${isMasuk ? '+' : '-'}${formatAngkaTon(tonMutasi)} Ton (${formatAngka(kgMutasi)} Kg)</b> &nbsp;|&nbsp;
+          Stok Akhir: <b>${formatAngkaTon(tonAkhir)} Ton</b>
+        </div>
+      ` : '';
+
       const qrData = [
         "SISAPI - CV YUDISTIRA CATTLE AND FARM",
         "No.: " + noSJ,
         "Jenis: " + l.jenis,
         "Tanggal: " + normalizeDateStr(l.tanggal),
-        "Barang: " + l.namaBarang + " (" + Math.abs(l.jumlah) + " " + l.satuan + ")",
-        "Stok Akhir: " + stokAkhirVal + " " + l.satuan,
+        "Barang: " + l.namaBarang + " (" + absJumlah + " " + l.satuan + (tonMutasi !== null ? " / " + formatAngkaTon(tonMutasi) + " Ton" : "") + ")",
+        "Stok Akhir: " + stokAkhirVal + " " + l.satuan + (tonAkhir !== null ? " (" + formatAngkaTon(tonAkhir) + " Ton)" : ""),
         "Admin: " + (l.admin || "ADMIN")
       ].join("\n");
       const qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=110x110&margin=2&data=" + encodeURIComponent(qrData);
@@ -2931,7 +3317,7 @@
             </tr>
           </table>
 
-          <table style="width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 14px;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 12px;">
             <thead>
               <tr style="background: #0f172a; color: #ffffff; text-transform: uppercase; font-size: 10px;">
                 <th style="padding: 8px; text-align: left;">Kode & Nama Barang</th>
@@ -2944,12 +3330,13 @@
               <tr style="border-bottom: 2px solid #cbd5e1;">
                 <td style="padding: 10px 8px; font-weight: 800;">[${l.kodeBarang || l.kode || '-'}] ${l.namaBarang}</td>
                 <td style="padding: 10px 8px; text-align: right; font-family: monospace;">${formatAngka(stokAwalVal)} ${l.satuan}</td>
-                <td style="padding: 10px 8px; text-align: right; font-family: monospace; font-weight: 800; color: ${warna};">${isMasuk ? '+' : '-'}${formatAngka(Math.abs(l.jumlah))} ${l.satuan}</td>
+                <td style="padding: 10px 8px; text-align: right; font-family: monospace; font-weight: 800; color: ${warna};">${isMasuk ? '+' : '-'}${formatAngka(absJumlah)} ${l.satuan}</td>
                 <td style="padding: 10px 8px; text-align: right; font-family: monospace; font-weight: 800;">${formatAngka(stokAkhirVal)} ${l.satuan}</td>
               </tr>
             </tbody>
           </table>
 
+          ${blokKeteranganTonase}
           <div style="font-size: 10.5px; color: #334155; margin-bottom: 14px;"><b>Catatan:</b> ${l.keterangan || l.ket || '-'}</div>
 
           <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 10px;">
@@ -3040,7 +3427,7 @@
                 <td style="padding: 10px 8px; font-weight: 800;">${inv.namaProduk}</td>
                 <td style="padding: 10px 8px;">${inv.kualitas || '-'}</td>
                 <td style="padding: 10px 8px; text-align: right; font-family: monospace;">${formatRp(inv.harga)}</td>
-                <td style="padding: 10px 8px; text-align: right; font-family: monospace; font-weight: 700;">${formatAngka(inv.jumlah)} ${inv.satuan}</td>
+                <td style="padding: 10px 8px; text-align: right; font-family: monospace; font-weight: 700;">${formatAngka(inv.jumlah)} ${inv.satuan}${getInlineTonText(inv.jumlah, inv.satuan)}</td>
                 <td style="padding: 10px 8px; text-align: right; font-family: monospace; font-weight: 800; color: #059669;">${formatRp(inv.total)}</td>
               </tr>
             </tbody>
@@ -3095,8 +3482,11 @@
       const kronologis = [...filtered].reverse();
 
       const totalMasuk = kronologis.filter(l => l.jenis === 'MASUK').reduce((a, b) => a + Math.abs(Number(b.jumlah || 0)), 0);
+      const totalMasukTon = kronologis.filter(l => l.jenis === 'MASUK').reduce((a, b) => a + (hitungNilaiTon(Math.abs(Number(b.jumlah || 0)), b.satuan) || 0), 0);
       const totalKeluar = kronologis.filter(l => l.jenis === 'KELUAR').reduce((a, b) => a + Math.abs(Number(b.jumlah || 0)), 0);
+      const totalKeluarTon = kronologis.filter(l => l.jenis === 'KELUAR').reduce((a, b) => a + (hitungNilaiTon(Math.abs(Number(b.jumlah || 0)), b.satuan) || 0), 0);
       const totalStokAktif = masterStok.reduce((a, b) => a + Number(b.stok || 0), 0);
+      const totalStokAktifTon = masterStok.reduce((a, b) => a + (hitungNilaiTon(Number(b.stok || 0), b.satuan) || 0), 0);
 
       let ketPeriode = "SEMUA RIWAYAT MUTASI GUDANG";
       if (menggunakanPilihanCentang) {
@@ -3132,9 +3522,9 @@
         "CV YUDISTIRA CATTLE AND FARM",
         "Periode: " + ketPeriode,
         "Total Transaksi: " + kronologis.length + " SJ",
-        "Total Masuk: +" + formatAngka(totalMasuk) + " Unit",
-        "Total Keluar: -" + formatAngka(totalKeluar) + " Unit",
-        "Total Stok Gudang: " + formatAngka(totalStokAktif) + " Unit"
+        "Total Masuk: +" + formatAngka(totalMasuk) + " Unit (" + formatAngkaTon(totalMasukTon) + " Ton)",
+        "Total Keluar: -" + formatAngka(totalKeluar) + " Unit (" + formatAngkaTon(totalKeluarTon) + " Ton)",
+        "Total Stok Gudang: " + formatAngka(totalStokAktif) + " Unit (" + formatAngkaTon(totalStokAktifTon) + " Ton)"
       ].join("\n");
       const qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=110x110&margin=2&data=" + encodeURIComponent(qrData);
 
@@ -3153,6 +3543,7 @@
           const noSJ = getNoSJ(item);
           const stokAwalVal = getStokAwal(item);
           const stokAkhirVal = getStokAkhir(item);
+          const absJml = Math.abs(Number(item.jumlah || 0));
 
           rowsHtml += `
             <tr style="border-bottom: 1px solid #e2e8f0; page-break-inside: avoid;">
@@ -3174,16 +3565,16 @@
                 <div style="font-size: 9px; color: #64748b; font-family: monospace;">[${item.kodeBarang || item.kode || '-'}]</div>
               </td>
               <td style="padding: 7px 6px; text-align: right; font-family: monospace; color: #475569; white-space: nowrap;">
-                ${formatAngka(stokAwalVal)} ${item.satuan}
+                ${formatAngka(stokAwalVal)} ${item.satuan}${getInlineTonText(stokAwalVal, item.satuan)}
               </td>
               <td style="padding: 7px 6px; text-align: right; font-family: monospace; font-weight: 800; color: #059669; white-space: nowrap;">
-                ${isMasuk ? '+' + formatAngka(Math.abs(item.jumlah)) + ' ' + item.satuan : '-'}
+                ${isMasuk ? '+' + formatAngka(absJml) + ' ' + item.satuan + getInlineTonText(absJml, item.satuan) : '-'}
               </td>
               <td style="padding: 7px 6px; text-align: right; font-family: monospace; font-weight: 800; color: #e11d48; white-space: nowrap;">
-                ${isKeluar ? '-' + formatAngka(Math.abs(item.jumlah)) + ' ' + item.satuan : '-'}
+                ${isKeluar ? '-' + formatAngka(absJml) + ' ' + item.satuan + getInlineTonText(absJml, item.satuan) : '-'}
               </td>
               <td style="padding: 7px 6px; text-align: right; font-family: monospace; font-weight: 800; color: #0f172a; white-space: nowrap;">
-                ${formatAngka(stokAkhirVal)} ${item.satuan}
+                ${formatAngka(stokAkhirVal)} ${item.satuan}${getInlineTonText(stokAkhirVal, item.satuan)}
               </td>
               <td style="padding: 7px 6px; text-align: center; font-weight: 700; font-size: 9.5px;">
                 ${item.admin || 'ADMIN'}
@@ -3194,8 +3585,8 @@
         rowsHtml += `
           <tr style="background: #f1f5f9; border-top: 2.5px solid #0f172a; border-bottom: 2.5px solid #0f172a; font-weight: 800; page-break-inside: avoid;">
             <td colspan="6" style="padding: 10px 6px; text-align: right; text-transform: uppercase; font-size: 11px;">TOTAL KESELURUHAN (${menggunakanPilihanCentang ? 'DATA PILIHAN' : targetMode}) :</td>
-            <td style="padding: 10px 6px; text-align: right; font-family: monospace; color: #059669; font-size: 11.5px; white-space: nowrap;">+${formatAngka(totalMasuk)} Unit</td>
-            <td style="padding: 10px 6px; text-align: right; font-family: monospace; color: #e11d48; font-size: 11.5px; white-space: nowrap;">-${formatAngka(totalKeluar)} Unit</td>
+            <td style="padding: 10px 6px; text-align: right; font-family: monospace; color: #059669; font-size: 11px; white-space: nowrap;">+${formatAngka(totalMasuk)} (${formatAngkaTon(totalMasukTon)} Ton)</td>
+            <td style="padding: 10px 6px; text-align: right; font-family: monospace; color: #e11d48; font-size: 11px; white-space: nowrap;">-${formatAngka(totalKeluar)} (${formatAngkaTon(totalKeluarTon)} Ton)</td>
             <td colspan="2" style="padding: 10px 6px; text-align: right; font-family: monospace; color: #0f172a; font-size: 11px; white-space: nowrap;">${kronologis.length} Transaksi (SJ)</td>
           </tr>`;
       }
@@ -3223,15 +3614,15 @@
             <thead>
               <tr style="background: #0f172a; color: #ffffff; text-transform: uppercase; font-size: 9.5px;">
                 <th style="padding: 7px 6px; text-align: center; width: 4%;">No</th>
-                <th style="padding: 7px 6px; text-align: left; width: 11%;">Tanggal</th>
-                <th style="padding: 7px 6px; text-align: left; width: 14%;">No. SJ / Ref</th>
-                <th style="padding: 7px 6px; text-align: left; width: 17%;">Armada & Relasi</th>
-                <th style="padding: 7px 6px; text-align: left; width: 18%;">Nama Barang</th>
-                <th style="padding: 7px 6px; text-align: right; width: 9%;">Stok Awal</th>
-                <th style="padding: 7px 6px; text-align: right; width: 9%;">Masuk (+)</th>
-                <th style="padding: 7px 6px; text-align: right; width: 9%;">Keluar (-)</th>
-                <th style="padding: 7px 6px; text-align: right; width: 9%;">Stok Akhir</th>
-                <th style="padding: 7px 6px; text-align: center; width: 6%;">Admin</th>
+                <th style="padding: 7px 6px; text-align: left; width: 10%;">Tanggal</th>
+                <th style="padding: 7px 6px; text-align: left; width: 13%;">No. SJ / Ref</th>
+                <th style="padding: 7px 6px; text-align: left; width: 16%;">Armada & Relasi</th>
+                <th style="padding: 7px 6px; text-align: left; width: 16%;">Nama Barang</th>
+                <th style="padding: 7px 6px; text-align: right; width: 10%;">Stok Awal</th>
+                <th style="padding: 7px 6px; text-align: right; width: 10%;">Masuk (+)</th>
+                <th style="padding: 7px 6px; text-align: right; width: 10%;">Keluar (-)</th>
+                <th style="padding: 7px 6px; text-align: right; width: 10%;">Stok Akhir</th>
+                <th style="padding: 7px 6px; text-align: center; width: 5%;">Admin</th>
               </tr>
             </thead>
             <tbody>
@@ -3246,15 +3637,15 @@
             </div>
             <div>
               <div style="font-size: 9px; font-weight: 700; color: #64748b; text-transform: uppercase;">Total Keseluruhan Masuk (+)</div>
-              <div style="font-weight: 800; font-family: monospace; color: #059669; margin-top: 2px; font-size: 13px;">+${formatAngka(totalMasuk)} Unit</div>
+              <div style="font-weight: 800; font-family: monospace; color: #059669; margin-top: 2px; font-size: 12.5px;">+${formatAngka(totalMasuk)} (${formatAngkaTon(totalMasukTon)} Ton)</div>
             </div>
             <div>
               <div style="font-size: 9px; font-weight: 700; color: #64748b; text-transform: uppercase;">Total Keseluruhan Keluar (-)</div>
-              <div style="font-weight: 800; font-family: monospace; color: #e11d48; margin-top: 2px; font-size: 13px;">-${formatAngka(totalKeluar)} Unit</div>
+              <div style="font-weight: 800; font-family: monospace; color: #e11d48; margin-top: 2px; font-size: 12.5px;">-${formatAngka(totalKeluar)} (${formatAngkaTon(totalKeluarTon)} Ton)</div>
             </div>
             <div style="background: #0f172a; color: #ffffff; padding: 5px 10px; border-radius: 6px;">
               <div style="font-size: 9px; font-weight: 700; color: #cbd5e1; text-transform: uppercase;">Total Stok Gudang Saat Ini</div>
-              <div style="font-weight: 800; font-family: monospace; color: #fbbf24; margin-top: 2px; font-size: 13px;">${formatAngka(totalStokAktif)} Unit (${masterStok.length} Item)</div>
+              <div style="font-weight: 800; font-family: monospace; color: #fbbf24; margin-top: 2px; font-size: 12.5px;">${formatAngka(totalStokAktif)} Unit (${formatAngkaTon(totalStokAktifTon)} Ton)</div>
             </div>
           </div>
 
@@ -3270,10 +3661,10 @@
               <div style="min-width: 130px;">
                 <div>Mengetahui / Manager,</div>
                 <div style="height: 38px;"></div>
-                <div style="font-weight: 800; border-top: 1px solid #0f172a; padding-top: 2px;">( MANAGER OPERASIONAL )</div>
+                <div style="font-weight: 800; border-top: 1px solid #0f172a; padding-top: 2px;">( .................... )</div>
               </div>
               <div style="min-width: 130px;">
-                <div>Admin,</div>
+                <div>Admin Gudang,</div>
                 <div style="height: 38px;"></div>
                 <div style="font-weight: 800; border-top: 1px solid #0f172a; padding-top: 2px;">( ${activeShift ? activeShift.namaAdmin : 'ADMIN'} )</div>
               </div>
@@ -3286,8 +3677,96 @@
       renderBarcodeKeDokumen(kodeLap);
 
       if (autoTriggerPrint) {
-        setTimeout(() => eksekusiPrintWindow(), 220);
+        setTimeout(() => { eksekusiPrintBrowser(); }, 350);
       }
+    }
+
+    // =========================================================================
+    // CETAK NOTA REKAP ABSENSI SHIFT & NOTA REKAP INVOICE
+    // =========================================================================
+    function bukaModalCetakLaporanAbsensi(periodePilihan) {
+      const targetMode = periodePilihan || modeAbsensiAktif;
+      setModeAbsensi(targetMode);
+      const filtered = getFilteredAbsensi();
+      tipeDokumenCetak = 'LAPORAN_PORTRAIT';
+
+      const btnCsvModal = document.getElementById('btnModalExportCsv');
+      btnCsvModal.onclick = () => exportAbsensiCSV();
+      btnCsvModal.classList.remove('hidden');
+      btnCsvModal.classList.add('flex');
+
+      const kodeLap = `ABS-SISAPI-${targetMode}-${new Date().toISOString().split('T')[0].replace(/-/g, '')}`;
+      dataCetakAktif = { kodeRef: kodeLap };
+
+      let rowsHtml = '';
+      if (filtered.length === 0) {
+        rowsHtml = `<tr><td colspan="6" style="padding: 16px; text-align: center; color: #64748b;">Belum ada data absensi pada periode ${targetMode}.</td></tr>`;
+      } else {
+        filtered.forEach((a, idx) => {
+          const isPulang = (a.status && a.status.toUpperCase().includes('PULANG')) || (a.shift && a.shift.toUpperCase().includes('PULANG'));
+          const labelStatus = isPulang ? 'PULANG' : 'MASUK';
+          const warnaStatus = isPulang ? '#e11d48' : '#059669';
+
+          rowsHtml += `
+            <tr style="border-bottom: 1px solid #e2e8f0;">
+              <td style="padding: 7px 6px; text-align: center; font-weight: 700; color: #64748b;">${idx + 1}</td>
+              <td style="padding: 7px 6px; font-family: monospace; font-size: 10px;">${a.waktu || '-'}</td>
+              <td style="padding: 7px 6px; font-weight: 800; color: #0f172a;">${a.namaAdmin || 'ADMIN'}</td>
+              <td style="padding: 7px 6px;">${a.shift || '-'}</td>
+              <td style="padding: 7px 6px; font-family: monospace;">${a.akun || 'admin'}</td>
+              <td style="padding: 7px 6px; text-align: center; font-weight: 800; color: ${warnaStatus};">${labelStatus}</td>
+            </tr>`;
+        });
+      }
+
+      document.getElementById('judulModalCetak').innerText = `Nota Rekap Absensi (${targetMode})`;
+      document.getElementById('areaDokumenCetak').innerHTML = `
+        <div id="kartuDokumenTarget" style="width: 100%; max-width: 780px; margin: 0 auto; font-family: 'Inter', Arial, sans-serif; color: #0f172a; background: #ffffff; border: 2px solid #0f172a; padding: 22px; border-radius: 10px; box-sizing: border-box;">
+          <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 3px double #0f172a; padding-bottom: 12px; margin-bottom: 14px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <img src="sj.png" alt="Logo" style="width: 48px; height: 48px; object-fit: contain;" onerror="this.src='icon.png'; this.onerror=function(){this.style.display='none'};">
+              <div>
+                <div style="font-size: 15px; font-weight: 800; color: #0f172a;">REKAPITULASI ABSENSI SHIFT ADMIN GUDANG</div>
+                <div style="font-size: 11px; font-weight: 800; color: #059669;">CV YUDISTIRA CATTLE AND FARM — SENTRAL SINGOSARI K-07</div>
+                <div style="font-size: 9.5px; color: #64748b;">Waktu Cetak: ${new Date().toLocaleString('id-ID')} WIB</div>
+              </div>
+            </div>
+            <div style="text-align: right;">
+              <div style="background: #0f172a; color: #ffffff; font-weight: 800; font-size: 10px; padding: 4px 9px; border-radius: 4px; display: inline-block;">PERIODE: ${targetMode}</div>
+              <div style="font-size: 11px; font-weight: 800; font-family: monospace; margin-top: 4px;">${kodeLap}</div>
+            </div>
+          </div>
+
+          <table style="width: 100%; border-collapse: collapse; font-size: 10.5px; margin-bottom: 14px;">
+            <thead>
+              <tr style="background: #0f172a; color: #ffffff; text-transform: uppercase; font-size: 9.5px;">
+                <th style="padding: 7px 6px; text-align: center; width: 6%;">No</th>
+                <th style="padding: 7px 6px; text-align: left; width: 28%;">Waktu Live</th>
+                <th style="padding: 7px 6px; text-align: left; width: 18%;">Admin</th>
+                <th style="padding: 7px 6px; text-align: left; width: 24%;">Shift</th>
+                <th style="padding: 7px 6px; text-align: left; width: 12%;">Akun</th>
+                <th style="padding: 7px 6px; text-align: center; width: 12%;">Status</th>
+              </tr>
+            </thead>
+            <tbody>${rowsHtml}</tbody>
+          </table>
+
+          <div style="display: flex; align-items: flex-end; justify-content: space-between; margin-top: 12px;">
+            <div>
+              <svg id="barcodeCetakTarget"></svg>
+              <div style="font-size: 8px; color: #64748b;">Total Kehadiran Tercatat: ${filtered.length} Log</div>
+            </div>
+            <div style="text-align: center; font-size: 10px; min-width: 130px;">
+              <div>Mengetahui / HRD,</div>
+              <div style="height: 36px;"></div>
+              <div style="font-weight: 800; border-top: 1px solid #0f172a; padding-top: 2px;">( ${activeShift ? activeShift.namaAdmin : 'ADMIN'} )</div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      openModal('modalPreviewCetak');
+      renderBarcodeKeDokumen(kodeLap);
     }
 
     function bukaModalCetakLaporanInvoice() {
@@ -3299,400 +3778,283 @@
       btnCsvModal.classList.remove('hidden');
       btnCsvModal.classList.add('flex');
 
-      const totalLunas = filtered.filter(i => i.statusBayar === 'LUNAS').reduce((a, b) => a + Number(b.total || 0), 0);
-      const totalTagihan = filtered.filter(i => i.statusBayar !== 'LUNAS').reduce((a, b) => a + Number(b.total || 0), 0);
-      const totalSemua = totalLunas + totalTagihan;
       const kodeLap = `REKAP-INV-${new Date().toISOString().split('T')[0].replace(/-/g, '')}`;
       dataCetakAktif = { kodeRef: kodeLap };
 
-      let rowsHtml = '';
-      filtered.forEach((inv, idx) => {
-        const isLunas = inv.statusBayar === 'LUNAS';
-        rowsHtml += `
-          <tr style="border-bottom: 1px solid #e2e8f0; page-break-inside: avoid;">
-            <td style="padding: 7px 6px; text-align: center; font-weight: 700;">${idx + 1}</td>
-            <td style="padding: 7px 6px; font-family: monospace; font-weight: 800;">${inv.noInvoice}</td>
-            <td style="padding: 7px 6px;">${normalizeDateStr(inv.tanggal)}</td>
-            <td style="padding: 7px 6px; font-weight: 700;">${inv.namaPembeli} (${inv.kontakPembeli || '-'})</td>
-            <td style="padding: 7px 6px; font-weight: 700;">${inv.namaProduk} <span style="font-size:9px;color:#64748b;">(${inv.kualitas || ''})</span></td>
-            <td style="padding: 7px 6px; text-align: center; font-weight: 700;">${formatAngka(inv.jumlah)} ${inv.satuan}</td>
-            <td style="padding: 7px 6px; text-align: right; font-family: monospace;">${formatRp(inv.harga)}</td>
-            <td style="padding: 7px 6px; text-align: right; font-family: monospace; font-weight: 800; color: #0f172a;">${formatRp(inv.total)}</td>
-            <td style="padding: 7px 6px; text-align: center; font-weight: 800; color: ${isLunas ? '#059669' : '#d97706'};">${inv.statusBayar}</td>
-          </tr>`;
-      });
+      const totalLunas = filtered.filter(i => String(i.statusBayar || '').toUpperCase() === 'LUNAS').reduce((a, b) => a + Number(b.total || 0), 0);
+      const totalPiutang = filtered.filter(i => String(i.statusBayar || '').toUpperCase() !== 'LUNAS').reduce((a, b) => a + Number(b.total || 0), 0);
+      const grandTotal = totalLunas + totalPiutang;
 
-      if (filtered.length > 0) {
-        rowsHtml += `
-          <tr style="background: #f1f5f9; border-top: 2.5px solid #0f172a; border-bottom: 2.5px solid #0f172a; font-weight: 800; page-break-inside: avoid;">
-            <td colspan="7" style="padding: 10px 6px; text-align: right; text-transform: uppercase;">TOTAL KESELURUHAN INVOICE :</td>
-            <td style="padding: 10px 6px; text-align: right; font-family: monospace; color: #0f172a;">${formatRp(totalSemua)}</td>
-            <td style="padding: 10px 6px; text-align: center;">${filtered.length} Nota</td>
-          </tr>`;
+      let rowsHtml = '';
+      if (filtered.length === 0) {
+        rowsHtml = `<tr><td colspan="8" style="padding: 16px; text-align: center; color: #64748b;">Tidak ada data invoice penjualan.</td></tr>`;
+      } else {
+        filtered.forEach((inv, idx) => {
+          const isLunas = String(inv.statusBayar || '').toUpperCase() === 'LUNAS';
+          rowsHtml += `
+            <tr style="border-bottom: 1px solid #e2e8f0;">
+              <td style="padding: 7px 6px; text-align: center; font-weight: 700; color: #64748b;">${idx + 1}</td>
+              <td style="padding: 7px 6px; font-family: monospace; font-weight: 800;">${inv.noInvoice}</td>
+              <td style="padding: 7px 6px;">${normalizeDateStr(inv.tanggal)}</td>
+              <td style="padding: 7px 6px; font-weight: 700;">${inv.namaPembeli || '-'}</td>
+              <td style="padding: 7px 6px;">${inv.namaProduk || '-'}</td>
+              <td style="padding: 7px 6px; text-align: right; font-family: monospace;">${formatAngka(inv.jumlah)} ${inv.satuan || 'Sak'}${getInlineTonText(inv.jumlah, inv.satuan || 'Sak')}</td>
+              <td style="padding: 7px 6px; text-align: right; font-family: monospace; font-weight: 800;">${formatRp(inv.total)}</td>
+              <td style="padding: 7px 6px; text-align: center; font-weight: 800; color: ${isLunas ? '#059669' : '#d97706'};">${inv.statusBayar}</td>
+            </tr>`;
+        });
       }
 
-      document.getElementById('judulModalCetak').innerText = `Nota Rekapitulasi Invoice Penjualan`;
+      document.getElementById('judulModalCetak').innerText = `Nota Rekap Invoice Penjualan`;
       document.getElementById('areaDokumenCetak').innerHTML = `
-        <div id="kartuDokumenTarget" style="width: 100%; max-width: 1000px; margin: 0 auto; font-family: 'Inter', Arial, sans-serif; color: #0f172a; background: #ffffff; border: 2px solid #0f172a; padding: 22px; border-radius: 10px; box-sizing: border-box;">
+        <div id="kartuDokumenTarget" style="width: 100%; max-width: 1020px; margin: 0 auto; font-family: 'Inter', Arial, sans-serif; color: #0f172a; background: #ffffff; border: 2px solid #0f172a; padding: 22px; border-radius: 10px; box-sizing: border-box;">
           <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 3px double #0f172a; padding-bottom: 12px; margin-bottom: 14px;">
             <div style="display: flex; align-items: center; gap: 12px;">
-              <img src="sj.png" alt="Logo" style="width: 48px; height: 48px; object-fit: contain;" onerror="this.src='icon.png'">
+              <img src="sj.png" alt="Logo" style="width: 48px; height: 48px; object-fit: contain;" onerror="this.src='icon.png'; this.onerror=function(){this.style.display='none'};">
               <div>
-                <div style="font-size: 16px; font-weight: 800; color: #0f172a;">REKAPITULASI INVOICE & PIUTANG PENJUALAN</div>
-                <div style="font-size: 12px; font-weight: 800; color: #059669;">CV YUDISTIRA CATTLE AND FARM</div>
+                <div style="font-size: 15px; font-weight: 800; color: #0f172a;">REKAPITULASI INVOICE & PENJUALAN PAKAN</div>
+                <div style="font-size: 11px; font-weight: 800; color: #059669;">CV YUDISTIRA CATTLE AND FARM — SENTRAL SINGOSARI K-07</div>
+                <div style="font-size: 9.5px; color: #64748b;">Waktu Cetak: ${new Date().toLocaleString('id-ID')} WIB</div>
               </div>
             </div>
-            <div style="text-align: right; font-family: monospace; font-weight: 800; font-size: 12px;">${kodeLap}</div>
+            <div style="text-align: right;">
+              <div style="background: #059669; color: #ffffff; font-weight: 800; font-size: 10px; padding: 4px 9px; border-radius: 4px; display: inline-block;">TOTAL: ${filtered.length} INVOICE</div>
+              <div style="font-size: 11px; font-weight: 800; font-family: monospace; margin-top: 4px;">${kodeLap}</div>
+            </div>
           </div>
 
-          <table style="width: 100%; border-collapse: collapse; font-size: 10.5px; margin-bottom: 16px;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 10.5px; margin-bottom: 14px;">
             <thead>
               <tr style="background: #0f172a; color: #ffffff; text-transform: uppercase; font-size: 9.5px;">
-                <th style="padding: 7px 6px;">No</th>
+                <th style="padding: 7px 6px; text-align: center;">No</th>
                 <th style="padding: 7px 6px; text-align: left;">No. Invoice</th>
                 <th style="padding: 7px 6px; text-align: left;">Tanggal</th>
                 <th style="padding: 7px 6px; text-align: left;">Pembeli</th>
                 <th style="padding: 7px 6px; text-align: left;">Produk</th>
-                <th style="padding: 7px 6px; text-align: center;">Qty</th>
-                <th style="padding: 7px 6px; text-align: right;">Harga</th>
-                <th style="padding: 7px 6px; text-align: right;">Total</th>
+                <th style="padding: 7px 6px; text-align: right;">Qty / Tonase</th>
+                <th style="padding: 7px 6px; text-align: right;">Total Tagihan</th>
                 <th style="padding: 7px 6px; text-align: center;">Status</th>
               </tr>
             </thead>
             <tbody>${rowsHtml}</tbody>
           </table>
 
-          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; background: #f8fafc; border: 1.5px dashed #94a3b8; border-radius: 8px; padding: 10px; margin-bottom: 14px; font-size: 11px; page-break-inside: avoid;">
-            <div><div style="font-size:9px;color:#64748b;font-weight:700;">TOTAL INVOICE</div><div style="font-size:14px;font-weight:800;">${filtered.length} Nota</div></div>
-            <div><div style="font-size:9px;color:#64748b;font-weight:700;">SUDAH LUNAS</div><div style="font-size:14px;font-weight:800;color:#059669;">${formatRp(totalLunas)}</div></div>
-            <div><div style="font-size:9px;color:#64748b;font-weight:700;">TAGIHAN BELUM LUNAS</div><div style="font-size:14px;font-weight:800;color:#d97706;">${formatRp(totalTagihan)}</div></div>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; background: #f8fafc; border: 1.5px dashed #94a3b8; border-radius: 8px; padding: 10px 12px; margin-bottom: 14px; font-size: 11px;">
+            <div>
+              <div style="font-size: 9px; font-weight: 700; color: #64748b;">TOTAL LUNAS</div>
+              <div style="font-weight: 800; font-family: monospace; color: #059669; font-size: 13px;">${formatRp(totalLunas)}</div>
+            </div>
+            <div>
+              <div style="font-size: 9px; font-weight: 700; color: #64748b;">TOTAL BELUM LUNAS (PIUTANG)</div>
+              <div style="font-weight: 800; font-family: monospace; color: #d97706; font-size: 13px;">${formatRp(totalPiutang)}</div>
+            </div>
+            <div>
+              <div style="font-size: 9px; font-weight: 700; color: #64748b;">GRAND TOTAL OMZET</div>
+              <div style="font-weight: 800; font-family: monospace; color: #0f172a; font-size: 13px;">${formatRp(grandTotal)}</div>
+            </div>
           </div>
 
-          <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 12px; page-break-inside: avoid;">
-            <svg id="barcodeCetakTarget"></svg>
-            <div style="text-align: center; font-size: 10px; min-width: 140px;">
-              <div>Admin Keuangan / Gudang,</div>
+          <div style="display: flex; align-items: flex-end; justify-content: space-between;">
+            <div><svg id="barcodeCetakTarget"></svg></div>
+            <div style="text-align: center; font-size: 10px; min-width: 130px;">
+              <div>Admin Keuangan,</div>
               <div style="height: 36px;"></div>
               <div style="font-weight: 800; border-top: 1px solid #0f172a; padding-top: 2px;">( ${activeShift ? activeShift.namaAdmin : 'ADMIN'} )</div>
             </div>
           </div>
-        </div>`;
+        </div>
+      `;
 
       openModal('modalPreviewCetak');
       renderBarcodeKeDokumen(kodeLap);
     }
 
-    function bukaModalCetakLaporanAbsensi(modeAbsen) {
-      const filtered = getFilteredAbsensi();
-      tipeDokumenCetak = 'SURAT_JALAN';
-      const kodeLap = `ABSEN-${modeAbsen}-${new Date().toISOString().split('T')[0].replace(/-/g, '')}`;
-      dataCetakAktif = { kodeRef: kodeLap };
-
-      const btnCsvModal = document.getElementById('btnModalExportCsv');
-      btnCsvModal.onclick = () => exportAbsensiCSV();
-      btnCsvModal.classList.remove('hidden');
-      btnCsvModal.classList.add('flex');
-
-      let rowsHtml = '';
-      filtered.forEach((a, idx) => {
-        const isPulang = (a.status && a.status.toUpperCase().includes('PULANG')) || (a.shift && a.shift.toUpperCase().includes('PULANG'));
-        const labelStatus = isPulang ? 'PULANG' : 'MASUK';
-        rowsHtml += `
-          <tr style="border-bottom: 1px solid #e2e8f0; page-break-inside: avoid;">
-            <td style="padding: 7px 6px; text-align: center; font-weight: 700;">${idx + 1}</td>
-            <td style="padding: 7px 6px; font-family: monospace;">${a.waktu || '-'}</td>
-            <td style="padding: 7px 6px; font-weight: 800;">${a.namaAdmin || 'ADMIN'}</td>
-            <td style="padding: 7px 6px;">${a.shift || '-'}</td>
-            <td style="padding: 7px 6px; text-align: center; font-weight: 800; color: ${isPulang ? '#e11d48' : '#059669'};">${labelStatus}</td>
-          </tr>`;
-      });
-
-      rowsHtml += `
-        <tr style="background: #f1f5f9; border-top: 2px solid #0f172a; border-bottom: 2px solid #0f172a; font-weight: 800; page-break-inside: avoid;">
-          <td colspan="4" style="padding: 8px 6px; text-align: right;">TOTAL KESELURUHAN ABSENSI (${modeAbsen}) :</td>
-          <td style="padding: 8px 6px; text-align: center;">${filtered.length} Log</td>
-        </tr>`;
-
-      document.getElementById('judulModalCetak').innerText = `Nota Rekap Absensi Admin (${modeAbsen})`;
-      document.getElementById('areaDokumenCetak').innerHTML = `
-        <div id="kartuDokumenTarget" style="width: 100%; max-width: 720px; margin: 0 auto; font-family: 'Inter', Arial, sans-serif; color: #0f172a; background: #ffffff; border: 2px solid #0f172a; padding: 22px; border-radius: 10px; box-sizing: border-box;">
-          <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 3px double #0f172a; padding-bottom: 12px; margin-bottom: 14px;">
-            <div>
-              <div style="font-size: 15px; font-weight: 800; color: #0f172a;">LAPORAN ABSENSI SHIFT ADMIN GUDANG</div>
-              <div style="font-size: 12px; font-weight: 800; color: #059669;">CV YUDISTIRA CATTLE AND FARM</div>
-            </div>
-            <div style="text-align: right; font-family: monospace; font-weight: 800; font-size: 11px;">Periode: ${modeAbsen}</div>
-          </div>
-          <table style="width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 16px;">
-            <thead>
-              <tr style="background: #0f172a; color: #ffffff; text-transform: uppercase; font-size: 9.5px;">
-                <th style="padding: 7px 6px; width: 8%;">No</th>
-                <th style="padding: 7px 6px; text-align: left;">Waktu Live</th>
-                <th style="padding: 7px 6px; text-align: left;">Admin</th>
-                <th style="padding: 7px 6px; text-align: left;">Shift</th>
-                <th style="padding: 7px 6px; text-align: center;">Status</th>
-              </tr>
-            </thead>
-            <tbody>${rowsHtml}</tbody>
-          </table>
-          <div style="display: flex; justify-content: space-between; align-items: flex-end; page-break-inside: avoid;">
-            <svg id="barcodeCetakTarget"></svg>
-            <div style="text-align: center; font-size: 10px; min-width: 130px;">
-              <div>Mengetahui,</div>
-              <div style="height: 34px;"></div>
-              <div style="font-weight: 800; border-top: 1px solid #0f172a; padding-top: 2px;">( MANAGER )</div>
-            </div>
-          </div>
-        </div>`;
-
-      openModal('modalPreviewCetak');
-      renderBarcodeKeDokumen(kodeLap);
+    // =========================================================================
+    // MODAL PILIH LAPORAN, BARCODE, PRINT, DOWNLOAD GAMBAR & CSV
+    // =========================================================================
+    function bukaModalPilihLaporan() {
+      if (document.getElementById('modalFilterJenis')) document.getElementById('modalFilterJenis').value = document.getElementById('filterJenisLog')?.value || 'SEMUA';
+      if (document.getElementById('modalFilterBarang')) document.getElementById('modalFilterBarang').value = document.getElementById('filterBarangLog')?.value || 'SEMUA';
+      if (document.getElementById('modalFilterAdmin')) document.getElementById('modalFilterAdmin').value = document.getElementById('filterAdminLog')?.value || 'SEMUA';
+      updateSelectedLogUI();
+      openModal('modalPilihLaporan');
     }
 
-    function renderBarcodeKeDokumen(kodeText) {
+    function pilihDanBukaLaporan(mode, actionType, ignoreSelection = true) {
+      syncFilterDariModal();
+      if (mode === 'HARIAN') {
+        const tgl = document.getElementById('modalInputTanggal')?.value;
+        if (tgl && document.getElementById('filterTanggal')) document.getElementById('filterTanggal').value = tgl;
+      } else if (mode === 'MINGGUAN') {
+        const mgg = document.getElementById('modalInputMingguan')?.value;
+        if (mgg && document.getElementById('filterMingguan')) document.getElementById('filterMingguan').value = mgg;
+      } else if (mode === 'BULANAN') {
+        const bln = document.getElementById('modalInputBulan')?.value;
+        const thn = document.getElementById('modalInputTahun')?.value;
+        if (bln && document.getElementById('filterBulan')) document.getElementById('filterBulan').value = bln;
+        if (thn && document.getElementById('filterTahun')) document.getElementById('filterTahun').value = thn;
+      } else if (mode === 'RENTANG') {
+        const mulai = document.getElementById('modalTanggalMulai')?.value;
+        const akhir = document.getElementById('modalTanggalAkhir')?.value;
+        if (mulai && document.getElementById('filterTanggalMulai')) document.getElementById('filterTanggalMulai').value = mulai;
+        if (akhir && document.getElementById('filterTanggalAkhir')) document.getElementById('filterTanggalAkhir').value = akhir;
+      }
+
+      closeModal('modalPilihLaporan');
+
+      if (actionType === 'CSV') {
+        setModeLaporan(mode);
+        exportCSV(mode, ignoreSelection);
+      } else if (actionType === 'DIRECT_PRINT') {
+        bukaModalCetakLaporan(mode, true, ignoreSelection);
+      } else {
+        bukaModalCetakLaporan(mode, false, ignoreSelection);
+      }
+    }
+
+    function renderBarcodeKeDokumen(kode) {
       setTimeout(() => {
-        try {
-          if (window.JsBarcode) {
-            JsBarcode("#barcodeCetakTarget", String(kodeText || "SISAPI"), {
+        const el = document.getElementById('barcodeCetakTarget');
+        if (el && typeof JsBarcode !== 'undefined') {
+          try {
+            JsBarcode("#barcodeCetakTarget", String(kode || 'SISAPI-DOC').replace(/[^a-zA-Z0-9-\/]/g, ''), {
               format: "CODE128",
-              width: 1.15,
-              height: 28,
+              lineColor: "#0f172a",
+              width: 1.3,
+              height: 30,
               displayValue: true,
-              fontSize: 9,
+              fontSize: 10,
               margin: 0
             });
-          }
-        } catch (e) {}
-      }, 60);
+          } catch (e) {}
+        }
+      }, 80);
     }
 
-    async function unduhDokumenPNG() {
+    function eksekusiPrintBrowser() {
+      const content = document.getElementById('areaDokumenCetak')?.innerHTML;
+      if (!content) return;
+
+      const isLandscape = tipeDokumenCetak === 'LAPORAN_LANDSCAPE';
+      const printArea = document.getElementById('printArea');
+      if (printArea) {
+        printArea.innerHTML = `
+          <style>
+            @media print {
+              @page { size: ${isLandscape ? 'A4 landscape' : 'A4 portrait'}; margin: 8mm; }
+              body { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            }
+          </style>
+          ${content}
+        `;
+      }
+      window.print();
+    }
+
+    async function downloadDokumenGambar() {
       const target = document.getElementById('kartuDokumenTarget');
-      if (!target || !window.html2canvas) {
-        eksekusiPrintWindow();
+      if (!target || typeof html2canvas === 'undefined') {
+        showToast("Fitur unduh gambar belum siap.");
         return;
       }
-      showCenterLoading("Mengunduh Gambar Nota...");
+      showCenterLoading("Merender Gambar HD...");
       try {
-        const canvas = await html2canvas(target, { scale: 2, useCORS: true, backgroundColor: "#ffffff" });
+        const canvas = await html2canvas(target, {
+          scale: 2,
+          useCORS: true,
+          backgroundColor: "#ffffff"
+        });
         const link = document.createElement('a');
-        const kode = dataCetakAktif ? String(dataCetakAktif.kodeRef).replace(/[^a-zA-Z0-9_-]/g, '_') : 'SISAPI_DOKUMEN';
-        link.download = `${kode}.png`;
+        const refName = (dataCetakAktif && dataCetakAktif.kodeRef) ? String(dataCetakAktif.kodeRef).replace(/[^a-zA-Z0-9-_]/g, '_') : 'Dokumen_SISAPI';
+        link.download = `${refName}.png`;
         link.href = canvas.toDataURL('image/png');
         link.click();
-        showToast("Gambar Nota Berhasil Diunduh!");
+        showToast("Gambar berhasil diunduh!");
       } catch (err) {
-        eksekusiPrintWindow();
+        console.error(err);
+        showToast("Gagal mengunduh gambar.");
       }
       hideCenterLoading();
     }
 
-    function eksekusiPrintWindow() {
-      const content = document.getElementById('areaDokumenCetak').innerHTML;
-      const isLandscape = tipeDokumenCetak === 'LAPORAN_LANDSCAPE';
-      const printWin = window.open('', '_blank', 'width=1100,height=780');
-      printWin.document.write(`
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <title>LAPORAN TRANSAKSI GUDANG SS</title>
-          <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-          <style>
-            @page { size: ${isLandscape ? 'landscape' : 'auto'}; margin: 8mm; }
-            body {
-              margin: 0;
-              padding: 0;
-              font-family: 'Inter', Arial, sans-serif;
-              -webkit-print-color-adjust: exact !important;
-              print-color-adjust: exact !important;
-            }
-            #kartuDokumenTarget {
-              max-width: 100% !important;
-              width: 100% !important;
-              box-sizing: border-box;
-            }
-            thead { display: table-header-group; }
-            tfoot { display: table-row-group; }
-            tr { page-break-inside: avoid; }
-          </style>
-        </head>
-        <body>
-          ${content}
-          <script>
-            window.onload = function() {
-              setTimeout(function() { window.print(); window.close(); }, 450);
-            };
-          <\/script>
-        </body>
-        </html>
-      `);
-      printWin.document.close();
-    }
-
-    function exportCSV(periodePilihan, ignoreSelection = false) {
-      const targetMode = periodePilihan || modeLaporanAktif;
-      const menggunakanPilihanCentang = !ignoreSelection && selectedLogKeys.size > 0;
-      const filtered = getLogsForOutput(targetMode, ignoreSelection);
-      const kronologis = [...filtered].reverse();
-
-      const totalMasuk = kronologis.filter(l => l.jenis === 'MASUK').reduce((a, b) => a + Math.abs(Number(b.jumlah || 0)), 0);
-      const totalKeluar = kronologis.filter(l => l.jenis === 'KELUAR').reduce((a, b) => a + Math.abs(Number(b.jumlah || 0)), 0);
-
-      let ketPeriode = "SEMUA PERIODE";
-      if (menggunakanPilihanCentang) {
-        ketPeriode = `DATA PILIHAN (${kronologis.length} TRANSAKSI)`;
-      } else if (targetMode === 'HARIAN') {
-        ketPeriode = "HARIAN (" + (document.getElementById('filterTanggal')?.value || "Hari Ini") + ")";
-      } else if (targetMode === 'MINGGUAN') {
-        ketPeriode = "MINGGUAN";
-      } else if (targetMode === 'BULANAN') {
-        ketPeriode = "BULANAN (" + (document.getElementById('filterBulan')?.value || '') + "-" + (document.getElementById('filterTahun')?.value || '') + ")";
-      } else if (targetMode === 'RENTANG') {
-        ketPeriode = "RENTANG (" + (document.getElementById('filterTanggalMulai')?.value || '') + " s/d " + (document.getElementById('filterTanggalAkhir')?.value || '') + ")";
+    function exportCSV(targetModeOverride, ignoreSelection = false) {
+      const mode = targetModeOverride || modeLaporanAktif;
+      const dataToExport = getLogsForOutput(mode, ignoreSelection);
+      if (dataToExport.length === 0) {
+        showToast("Tidak ada data transaksi untuk diunduh!");
+        return;
       }
 
-      let csvRows = [
-        `"LAPORAN MUTASI GUDANG"`,
-        `"CV YUDISTIRA CATTLE AND FARM"`,
-        `"Periode Laporan:","${ketPeriode}"`,
-        `"Waktu Unduh:","${new Date().toLocaleString('id-ID')}"`,
-        `""`,
-        `"NO","TANGGAL","WAKTU","NO. SURAT JALAN","JENIS","ARMADA","NOPOL","SOPIR / RELASI","KODE BARANG","NAMA BARANG","KATEGORI","STOK AWAL","MASUK (+)","KELUAR (-)","STOK AKHIR","SATUAN","ADMIN","KETERANGAN"`
-      ];
+      let csv = "\uFEFFNo,Tanggal,Waktu,Jenis,No Surat Jalan,Armada,Nopol,Sopir / Relasi,Kode Barang,Nama Barang,Stok Awal,Jumlah Mutasi,Satuan,Tonase Mutasi (Ton),Stok Akhir,Tonase Akhir (Ton),Admin,Keterangan\n";
+      const kronologis = [...dataToExport].reverse();
 
       kronologis.forEach((l, idx) => {
-        const masukVal = l.jenis === 'MASUK' ? Math.abs(l.jumlah) : 0;
-        const keluarVal = l.jenis === 'KELUAR' ? Math.abs(l.jumlah) : 0;
-        csvRows.push(
-          `"${idx + 1}","${normalizeDateStr(l.tanggal)}","${getWaktu(l)}","${getNoSJ(l)}","${l.jenis}","${l.armada || '-'}","${l.nopol || '-'}","${String(l.sopir || '').replace(/"/g, '""')}","${l.kodeBarang || l.kode || ''}","${String(l.namaBarang || '').replace(/"/g, '""')}","${l.kategori || '-'}",${getStokAwal(l)},${masukVal},${keluarVal},${getStokAkhir(l)},"${l.satuan || ''}","${l.admin || 'ADMIN'}","${String(l.keterangan || l.ket || '').replace(/"/g, '""')}"`
-        );
+        const noSJ = getNoSJ(l);
+        const stokAwalVal = getStokAwal(l);
+        const stokAkhirVal = getStokAkhir(l);
+        const absJml = Math.abs(Number(l.jumlah || 0));
+        const tonMutasi = hitungNilaiTon(absJml, l.satuan);
+        const tonAkhir = hitungNilaiTon(stokAkhirVal, l.satuan);
+
+        csv += `${idx + 1},"${normalizeDateStr(l.tanggal)}","${getWaktu(l)}","${l.jenis}","${noSJ}","${l.armada || ''}","${l.nopol || ''}","${(l.sopir || '').replace(/"/g, '""')}","${l.kodeBarang || l.kode || ''}","${(l.namaBarang || '').replace(/"/g, '""')}",${stokAwalVal},${l.jenis === 'KELUAR' ? -absJml : absJml},"${l.satuan || ''}","${tonMutasi !== null ? tonMutasi : '-'}",${stokAkhirVal},"${tonAkhir !== null ? tonAkhir : '-'}","${l.admin || 'ADMIN'}","${(l.keterangan || l.ket || '').replace(/"/g, '""')}"\n`;
       });
 
-      csvRows.push(`"","","","","","","","","","","TOTAL KESELURUHAN :","",${totalMasuk},${totalKeluar},"","","","${kronologis.length} SJ"`);
-
-      const csvString = "\uFEFF" + csvRows.join("\n");
-      const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
-      link.download = `Laporan_SISAPI_${menggunakanPilihanCentang ? 'PILIHAN' : targetMode}_${new Date().toISOString().split('T')[0]}.csv`;
+      link.download = `Laporan_Gudang_SISAPI_${mode}_${new Date().toISOString().split('T')[0]}.csv`;
       link.click();
-
-      showToast(`CSV Laporan ${menggunakanPilihanCentang ? 'Pilihan' : targetMode} Berhasil Diunduh!`);
+      showToast(`CSV Laporan (${dataToExport.length} Data) Berhasil Diunduh!`);
     }
 
+    // =========================================================================
+    // SINKRONISASI DATA GOOGLE SHEETS & UTILITAS MODAL / TOAST
+    // =========================================================================
     async function syncData(silent = false) {
-      if (!SCRIPT_URL) return;
       const icon = document.getElementById('syncIcon');
-      if (icon) icon.classList.add('fa-spin');
-      if (!silent) showCenterLoading("Sinkronisasi Database...");
+      const dot = document.getElementById('statusDot');
+      const txt = document.getElementById('statusText');
 
-      try {
-        const res = await fetch(SCRIPT_URL);
-        const data = await res.json();
-        if (data && data.status === 'success') {
-          if (Array.isArray(data.stok) && data.stok.length > 0) {
-            masterStok = data.stok;
-            localStorage.setItem('FEEDMILL_STOK', JSON.stringify(masterStok));
-          }
-          if (Array.isArray(data.logs)) {
-            logTransaksi = data.logs;
-            localStorage.setItem('FEEDMILL_LOGS', JSON.stringify(logTransaksi));
-          }
-          if (Array.isArray(data.absensi)) {
-            logAbsensi = data.absensi;
-            localStorage.setItem('FEEDMILL_ABSENSI', JSON.stringify(logAbsensi));
-          }
-          if (Array.isArray(data.produk) && data.produk.length > 0) {
-            listProduk = data.produk;
-            localStorage.setItem('FEEDMILL_PRODUK', JSON.stringify(listProduk));
-          }
-          if (Array.isArray(data.invoices)) {
-            listInvoice = data.invoices;
-            localStorage.setItem('FEEDMILL_INVOICES', JSON.stringify(listInvoice));
-          }
-          renderSemuaUI();
-          if (!silent) showToast("Database Aktif!");
-        }
-      } catch (err) {
-        if (!silent) showToast("Mode Offline Lokal Aktif");
+      if (icon) icon.classList.add('fa-spin');
+      if (txt) txt.innerText = "Syncing...";
+
+      if (!SCRIPT_URL) {
+        if (icon) icon.classList.remove('fa-spin');
+        if (txt) txt.innerText = "Mode Lokal";
+        return;
       }
 
-      setTimeout(() => {
-        if (icon) icon.classList.remove('fa-spin');
-        if (!silent) hideCenterLoading();
-      }, 450);
-    }
+      try {
+        const res = await fetch(`${SCRIPT_URL}?action=GET_ALL&t=${Date.now()}`);
+        const data = await res.json();
+        if (data && data.status === 'success') {
+          if (Array.isArray(data.stok) && data.stok.length > 0) masterStok = data.stok;
+          if (Array.isArray(data.logs)) logTransaksi = data.logs;
+          if (Array.isArray(data.absensi)) logAbsensi = data.absensi;
+          if (Array.isArray(data.produk) && data.produk.length > 0) listProduk = data.produk;
+          if (Array.isArray(data.invoices)) listInvoice = data.invoices;
 
-    let cExp = "0";
-    function toggleCalc() {
-      const popup = document.getElementById('calcPopup');
-      if (popup) popup.classList.toggle('hidden');
-    }
-    function cUpd() {
-      const disp = document.getElementById('calcDisplay');
-      if (disp) disp.innerText = cExp;
-    }
-    function cClear() { cExp = "0"; cUpd(); }
-    function cBack() { cExp = cExp.length > 1 ? cExp.slice(0, -1) : "0"; cUpd(); }
-    function cIn(ch) {
-      cExp = (cExp === "0" && !['+','-','*','/','.'].includes(ch)) ? ch : cExp + ch;
-      cUpd();
-    }
-    function cEq() {
-      try {
-        const res = Function('"use strict"; return (' + cExp + ')')();
-        cExp = isFinite(res) ? String(Math.round(res * 100) / 100) : "Error";
-      } catch (e) { cExp = "Error"; }
-      cUpd();
-    }
-    function cKonversiSakKeKg() {
-      try {
-        const val = Number(Function('"use strict"; return (' + cExp + ')')() || 0);
-        cExp = String(Math.round(val * 50 * 100) / 100);
-        cUpd();
-        showToast(`Konversi: ${val} Sak = ${cExp} Kg`);
-      } catch (e) {}
-    }
-    function cKonversiKgKeSak() {
-      try {
-        const val = Number(Function('"use strict"; return (' + cExp + ')')() || 0);
-        cExp = String(Math.round((val / 50) * 100) / 100);
-        cUpd();
-        showToast(`Konversi: ${val} Kg = ${cExp} Sak`);
-      } catch (e) {}
+          localStorage.setItem('FEEDMILL_STOK', JSON.stringify(masterStok));
+          localStorage.setItem('FEEDMILL_LOGS', JSON.stringify(logTransaksi));
+          localStorage.setItem('FEEDMILL_ABSENSI', JSON.stringify(logAbsensi));
+          localStorage.setItem('FEEDMILL_PRODUK', JSON.stringify(listProduk));
+          localStorage.setItem('FEEDMILL_INVOICES', JSON.stringify(listInvoice));
+
+          renderSemuaUI();
+          if (dot) dot.className = "w-2 h-2 rounded-full bg-emerald-400 animate-pulse mr-1.5";
+          if (txt) txt.innerText = "Terhubung";
+          if (!silent) showToast("Data berhasil disinkronkan dari Server!");
+        }
+      } catch (err) {
+        if (dot) dot.className = "w-2 h-2 rounded-full bg-amber-400 mr-1.5";
+        if (txt) txt.innerText = "Offline / Lokal";
+        if (!silent) showToast("Menggunakan penyimpanan lokal.");
+      } finally {
+        if (icon) icon.classList.remove('fa-spin');
+      }
     }
 
     function openModal(id) {
-      if (id === 'modalPilihLaporan') {
-        if (document.getElementById('modalFilterJenis') && document.getElementById('filterJenisLog')) {
-          document.getElementById('modalFilterJenis').value = document.getElementById('filterJenisLog').value;
-        }
-        if (document.getElementById('modalFilterBarang') && document.getElementById('filterBarangLog')) {
-          document.getElementById('modalFilterBarang').value = document.getElementById('filterBarangLog').value;
-        }
-        if (document.getElementById('modalFilterAdmin') && document.getElementById('filterAdminLog')) {
-          document.getElementById('modalFilterAdmin').value = document.getElementById('filterAdminLog').value;
-        }
-        if (document.getElementById('modalInputTanggal') && document.getElementById('filterTanggal')) {
-          document.getElementById('modalInputTanggal').value = document.getElementById('filterTanggal').value;
-        }
-        if (document.getElementById('modalInputMingguan') && document.getElementById('filterMingguan')) {
-          document.getElementById('modalInputMingguan').value = document.getElementById('filterMingguan').value;
-        }
-        if (document.getElementById('modalInputBulan') && document.getElementById('filterBulan')) {
-          document.getElementById('modalInputBulan').value = document.getElementById('filterBulan').value;
-        }
-        if (document.getElementById('modalInputTahun') && document.getElementById('filterTahun')) {
-          document.getElementById('modalInputTahun').value = document.getElementById('filterTahun').value;
-        }
-        if (document.getElementById('modalTanggalMulai') && document.getElementById('filterTanggalMulai')) {
-          document.getElementById('modalTanggalMulai').value = document.getElementById('filterTanggalMulai').value;
-        }
-        if (document.getElementById('modalTanggalAkhir') && document.getElementById('filterTanggalAkhir')) {
-          document.getElementById('modalTanggalAkhir').value = document.getElementById('filterTanggalAkhir').value;
-        }
-        updateSelectedLogUI();
-      }
       const el = document.getElementById(id);
       if (el) { el.classList.remove('hidden'); el.classList.add('flex'); }
     }
@@ -3702,27 +4064,135 @@
       if (el) { el.classList.add('hidden'); el.classList.remove('flex'); }
     }
 
-    function formatRp(num) {
-      return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(num || 0);
+        function showToast(msg) {
+      const toast = document.getElementById('toast') || document.getElementById('toastNotif');
+      const txt = document.getElementById('toastMsg') || document.getElementById('toastText');
+      if (!toast || !txt) return;
+      txt.innerText = msg;
+      toast.classList.remove('hidden');
+      toast.classList.add('flex');
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => {
+        toast.classList.add('hidden');
+        toast.classList.remove('flex');
+      }, 3000);
     }
 
     function formatAngka(num) {
       return Number(num || 0).toLocaleString('id-ID');
     }
 
-    let toastTimer = null;
-    function showToast(msg) {
-      const t = document.getElementById('toast');
-      const m = document.getElementById('toastMsg');
-      if (!t || !m) return;
-      m.innerText = msg;
-      t.classList.remove('hidden');
-      t.classList.add('flex');
-      if (toastTimer) clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => {
-        t.classList.add('hidden');
-        t.classList.remove('flex');
-      }, 3000);
+    function formatRp(num) {
+      return "Rp " + Number(num || 0).toLocaleString('id-ID');
+    }
+
+    // =========================================================================
+    // ALIAS FUNGSI CETAK & UNDUH PNG (MENYESUAIKAN TOMBOL DI HTML)
+    // =========================================================================
+    function eksekusiPrintWindow() {
+      eksekusiPrintBrowser();
+    }
+
+    function unduhDokumenPNG() {
+      downloadDokumenGambar();
+    }
+
+    // Pastikan #printArea dan aturan CSS @media print tersedia otomatis
+    (function ensurePrintSetup() {
+      if (!document.getElementById('printArea')) {
+        const printDiv = document.createElement('div');
+        printDiv.id = 'printArea';
+        document.body.appendChild(printDiv);
+      }
+      if (!document.getElementById('printStyleFix')) {
+        const style = document.createElement('style');
+        style.id = 'printStyleFix';
+        style.innerHTML = `
+          #printArea { display: none; }
+          @media print {
+            body > *:not(#printArea) { display: none !important; }
+            #printArea { display: block !important; width: 100% !important; margin: 0 !important; padding: 0 !important; }
+          }
+        `;
+        document.head.appendChild(style);
+      }
+    })();
+
+    // =========================================================================
+    // WIDGET KALKULATOR GUDANG (SESUAI ID & TOMBOL DI HTML)
+    // =========================================================================
+    let calcExpr = "";
+
+    function toggleCalc() {
+      const panel = document.getElementById('calcPopup');
+      if (!panel) return;
+      panel.classList.toggle('hidden');
+    }
+
+    function updateCalcDisplay() {
+      const disp = document.getElementById('calcDisplay');
+      if (!disp) return;
+      disp.innerText = calcExpr ? calcExpr.replace(/\*/g, '×').replace(/\//g, '÷') : '0';
+    }
+
+    function cIn(char) {
+      calcExpr += String(char);
+      updateCalcDisplay();
+    }
+
+    function cClear() {
+      calcExpr = "";
+      updateCalcDisplay();
+    }
+
+    function cBack() {
+      calcExpr = calcExpr.slice(0, -1);
+      updateCalcDisplay();
+    }
+
+    function cEq() {
+      if (!calcExpr) return;
+      try {
+        const clean = calcExpr.replace(/[^0-9+\-*/.]/g, '');
+        const val = Function('"use strict";return (' + (clean || '0') + ')')();
+        if (isFinite(val)) {
+          calcExpr = String(Number(val.toFixed(4)));
+          const disp = document.getElementById('calcDisplay');
+          if (disp) disp.innerText = Number(calcExpr).toLocaleString('id-ID', { maximumFractionDigits: 4 });
+        }
+      } catch (e) {
+        showToast("Format hitungan tidak valid");
+      }
+    }
+
+    function cKonversiSakKeKg() {
+      if (!calcExpr) return;
+      try {
+        const clean = calcExpr.replace(/[^0-9+\-*/.]/g, '');
+        const val = Function('"use strict";return (' + (clean || '0') + ')')();
+        if (isFinite(val)) {
+          const hasilKg = val * 50;
+          calcExpr = String(Number(hasilKg.toFixed(4)));
+          const disp = document.getElementById('calcDisplay');
+          if (disp) disp.innerText = `${Number(calcExpr).toLocaleString('id-ID')} Kg`;
+          showToast(`${val} Sak = ${Number(calcExpr).toLocaleString('id-ID')} Kg`);
+        }
+      } catch (e) {}
+    }
+
+    function cKonversiKgKeSak() {
+      if (!calcExpr) return;
+      try {
+        const clean = calcExpr.replace(/[^0-9+\-*/.]/g, '');
+        const val = Function('"use strict";return (' + (clean || '0') + ')')();
+        if (isFinite(val)) {
+          const hasilSak = val / 50;
+          calcExpr = String(Number(hasilSak.toFixed(4)));
+          const disp = document.getElementById('calcDisplay');
+          if (disp) disp.innerText = `${Number(calcExpr).toLocaleString('id-ID')} Sak`;
+          showToast(`${val} Kg = ${Number(calcExpr).toLocaleString('id-ID')} Sak`);
+        }
+      } catch (e) {}
     }
   </script>
 </body>
