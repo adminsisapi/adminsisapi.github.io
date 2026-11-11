@@ -3912,7 +3912,7 @@
       }
     }
 
-    function renderBarcodeKeDokumen(kode) {
+        function renderBarcodeKeDokumen(kode) {
       setTimeout(() => {
         const el = document.getElementById('barcodeCetakTarget');
         if (el && typeof JsBarcode !== 'undefined') {
@@ -3936,19 +3936,70 @@
       if (!content) return;
 
       const isLandscape = tipeDokumenCetak === 'LAPORAN_LANDSCAPE';
-      const printArea = document.getElementById('printArea');
-      if (printArea) {
-        printArea.innerHTML = `
-          <style>
-            @media print {
-              @page { size: ${isLandscape ? 'A4 landscape' : 'A4 portrait'}; margin: 8mm; }
-              body { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-            }
-          </style>
-          ${content}
-        `;
+      let printArea = document.getElementById('printArea');
+      if (!printArea) {
+        printArea = document.createElement('div');
+        printArea.id = 'printArea';
+        document.body.appendChild(printArea);
       }
-      window.print();
+
+      printArea.innerHTML = `
+        <style>
+          @media print {
+            @page {
+              size: ${isLandscape ? 'A4 landscape' : 'A4 portrait'};
+              margin: 8mm;
+            }
+            html, body, body.dark-mode {
+              background-color: #ffffff !important;
+              background: #ffffff !important;
+              color: #0f172a !important;
+              min-height: 0 !important;
+              height: auto !important;
+              margin: 0 !important;
+              padding: 0 !important;
+              -webkit-print-color-adjust: exact !important;
+              print-color-adjust: exact !important;
+            }
+            body > *:not(#printArea) {
+              display: none !important;
+            }
+            #printArea {
+              display: block !important;
+              background-color: #ffffff !important;
+              background: #ffffff !important;
+              width: 100% !important;
+              margin: 0 !important;
+              padding: 0 !important;
+            }
+          }
+        </style>
+        <div style="background-color: #ffffff; width: 100%; margin: 0; padding: 0;">
+          ${content}
+        </div>
+      `;
+
+      // Lepas class dark-mode & min-h-screen sementara selama proses cetak PDF
+      const wasDark = document.body.classList.contains('dark-mode');
+      document.body.classList.remove('dark-mode', 'min-h-screen');
+      document.documentElement.style.backgroundColor = '#ffffff';
+      document.body.style.backgroundColor = '#ffffff';
+
+      const restoreTheme = () => {
+        if (wasDark) document.body.classList.add('dark-mode');
+        document.body.classList.add('min-h-screen');
+        document.documentElement.style.backgroundColor = '';
+        document.body.style.backgroundColor = '';
+        window.removeEventListener('afterprint', restoreTheme);
+      };
+
+      window.addEventListener('afterprint', restoreTheme);
+
+      setTimeout(() => {
+        window.print();
+        // Fallback untuk browser HP Android jika event afterprint selesai
+        setTimeout(restoreTheme, 2000);
+      }, 150);
     }
 
     async function downloadDokumenGambar() {
@@ -4064,7 +4115,7 @@
       if (el) { el.classList.add('hidden'); el.classList.remove('flex'); }
     }
 
-        function showToast(msg) {
+    function showToast(msg) {
       const toast = document.getElementById('toast') || document.getElementById('toastNotif');
       const txt = document.getElementById('toastMsg') || document.getElementById('toastText');
       if (!toast || !txt) return;
@@ -4097,7 +4148,6 @@
       downloadDokumenGambar();
     }
 
-    // Pastikan #printArea dan aturan CSS @media print tersedia otomatis
     (function ensurePrintSetup() {
       if (!document.getElementById('printArea')) {
         const printDiv = document.createElement('div');
@@ -4110,8 +4160,20 @@
         style.innerHTML = `
           #printArea { display: none; }
           @media print {
+            html, body, body.dark-mode {
+              background-color: #ffffff !important;
+              background: #ffffff !important;
+              min-height: 0 !important;
+              height: auto !important;
+            }
             body > *:not(#printArea) { display: none !important; }
-            #printArea { display: block !important; width: 100% !important; margin: 0 !important; padding: 0 !important; }
+            #printArea {
+              display: block !important;
+              background-color: #ffffff !important;
+              width: 100% !important;
+              margin: 0 !important;
+              padding: 0 !important;
+            }
           }
         `;
         document.head.appendChild(style);
