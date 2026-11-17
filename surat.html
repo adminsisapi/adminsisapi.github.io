@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Surat Jalan - CV. Yudistira Cattle and Farm</title>
+  <!-- Library html2pdf untuk fitur Unduh PDF langsung di HP/Tab/Laptop -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    :root {
+      --primary-green: #1f6e3c;
+      --primary-green-dark: #16522c;
+      --primary-green-light: #eaf5ee;
+      --accent-orange: #e88d2a;
+      --accent-orange-dark: #cf7617;
+      --accent-orange-light: #fdf3e7;
+      --border-color: #d6dfd9;
+      --text-dark: #1e2923;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body {
+      margin: 0;
+      padding: 12px;
+      background-color: #eef2ef;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #000;
+      font-size: 11pt;
+    }
+
+    /* Container Utama Aplikasi */
+    .app-container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    /* Panel Kontrol & Riwayat */
+    .card-panel {
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 18px;
+      margin-bottom: 20px;
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.07);
+      border-top: 4px solid var(--primary-green);
+      border-bottom: 2px solid var(--accent-orange);
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--primary-green-light);
+    }
+
+    .panel-header h2 {
+      margin: 0;
+      font-size: 16px;
+      color: var(--primary-green-dark);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge-orange {
+      background: var(--accent-orange-light);
+      color: var(--accent-orange-dark);
+      border: 1px solid var(--accent-orange);
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 20px;
+      font-weight: bold;
+    }
+
+    /* Grid Form Responsif */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .form-group label {
+      font-size: 12px;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: var(--text-dark);
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 9px 10px;
+      border: 1px solid #c5d1c8;
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: inherit;
+      background: #fff;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--primary-green);
+      box-shadow: 0 0 0 2px rgba(31, 110, 60, 0.15);
+    }
+
+    .date-input-group {
+      display: grid;
+      grid-template-columns: 135px 1fr;
+      gap: 8px;
+    }
+
+    /* Editor Produk */
+    .items-editor {
+      margin-top: 18px;
+      border-top: 1px solid var(--border-color);
+      padding-top: 14px;
+    }
+
+    .items-editor-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .prefix-toggle {
+      font-size: 12px;
+      color: #333;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .item-row-editor {
+      display: grid;
+      grid-template-columns: 1.8fr 1.8fr 1fr 1fr 1.2fr auto;
+      gap: 8px;
+      margin-bottom: 10px;
+      align-items: center;
+      background: var(--primary-green-light);
+      padding: 10px;
+      border-radius: 6px;
+      border-left: 4px solid var(--accent-orange);
+    }
+
+    .item-row-editor input,
+    .item-row-editor select {
+      width: 100%;
+      padding: 7px 8px;
+      border: 1px solid #bfd0c4;
+      border-radius: 5px;
+      font-size: 12.5px;
+      background: #fff;
+    }
+
+    /* Tombol Aksi */
+    .btn {
+      padding: 9px 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 13px;
+      transition: opacity 0.2s, transform 0.1s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn:active {
+      transform: scale(0.99);
+    }
+
+    .btn-add {
+      background-color: var(--primary-green);
+      color: #fff;
+    }
+
+    .btn-remove {
+      background-color: #d9534f;
+      color: #fff;
+      padding: 7px 12px;
+    }
+
+    .action-bar {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .btn-save {
+      background-color: var(--accent-orange);
+      color: #fff;
+      font-size: 13.5px;
+      padding: 11px;
+    }
+
+    .btn-print {
+      background-color: var(--primary-green);
+      color: #fff;
+      font-size: 13.5px;
+      padding: 11px;
+    }
+
+    .btn-pdf {
+      background-color: var(--primary-green-dark);
+      color: #fff;
+      font-size: 13.5px;
+      padding: 11px;
+    }
+
+    /* Bagian Riwayat */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: flex-end;
+      background: #f8fbf9;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      margin-bottom: 14px;
+    }
+
+    .filter-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+      min-width: 140px;
+    }
+
+    .filter-item label {
+      font-size: 11.5px;
+      font-weight: bold;
+      color: var(--primary-green-dark);
+    }
+
+    .filter-item select,
+    .filter-item input {
+      padding: 7px 9px;
+      border: 1px solid #c5d1c8;
+      border-radius: 5px;
+      font-size: 12.5px;
+    }
+
+    .history-table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+    }
+
+    .history-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+      min-width: 650px;
+    }
+
+    .history-table th {
+      background: var(--primary-green);
+      color: #fff;
+      padding: 9px 10px;
+      text-align: left;
+      border-bottom: 2px solid var(--accent-orange);
+    }
+
+    .history-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid #e6ece8;
+      vertical-align: middle;
+    }
+
+    .history-table tr:nth-child(even) {
+      background: #f9fcfa;
+    }
+
+    .history-actions {
+      display: flex;
+      gap: 5px;
+      flex-wrap: nowrap;
+    }
+
+    .btn-sm {
+      padding: 5px 8px;
+      font-size: 11.5px;
+      border-radius: 4px;
+    }
+
+    /* Wrapper Responsif Pratinjau Kertas A4 */
+    .preview-shell {
+      width: 100%;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+
+    .preview-scale-box {
+      width: 210mm;
+      transform-origin: top center;
+    }
+
+    /* Kertas A4 Presisi */
+    .a4-page {
+      width: 210mm;
+      min-height: 297mm;
+      background: #fff;
+      padding: 16mm 18mm;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.12);
+      position: relative;
+      margin: 0 auto;
+    }
+
+    /* KOP SURAT */
+    .header-kop {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding-bottom: 12px;
+    }
+
+    .header-kop img {
+      height: 64px;
+      width: auto;
+      max-width: 110px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+
+    .header-kop .company-name {
+      font-size: 19.5pt;
+      font-weight: 800;
+      color: var(--primary-green);
+      letter-spacing: 0.4px;
+      text-align: center;
+      line-height: 1.15;
+    }
+
+    /* Garis Pembatas Kop Kolaborasi Hijau & Oranye */
+    .kop-divider {
+      position: relative;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary-green) 0%, var(--primary-green) 65%, var(--accent-orange) 65%, var(--accent-orange) 100%);
+      margin-bottom: 20px;
+      border-radius: 2px;
+    }
+
+    .kop-divider::before,
+    .kop-divider::after {
+      content: "";
+      position: absolute;
+      top: -2px;
+      width: 7px;
+      height: 7px;
+    }
+
+    .kop-divider::before {
+      left: 0;
+      background-color: var(--primary-green);
+    }
+
+    .kop-divider::after {
+      right: 0;
+      background-color: var(--accent-orange);
+    }
+
+    /* Judul Surat Jalan */
+    .doc-title {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .doc-title h1 {
+      font-size: 14pt;
+      font-weight: bold;
+      margin: 0 0 4px 0;
+      letter-spacing: 0.6px;
+      color: var(--primary-green-dark);
+    }
+
+    .doc-title .subtitle {
+      font-size: 9.5pt;
+      color: #555;
+      margin: 0 0 5px 0;
+    }
+
+    .doc-title .doc-number {
+      font-size: 10.5pt;
+      font-weight: bold;
+      margin: 0;
+      color: #111;
+    }
+
+    /* Tabel Info Pengiriman */
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 16px;
+      font-size: 10pt;
+    }
+
+    .info-table td {
+      padding: 3px 0;
+      vertical-align: top;
+    }
+
+    .info-table td.label {
+      width: 150px;
+      font-weight: 500;
+    }
+
+    .info-table td.colon {
+      width: 12px;
+    }
+
+    .info-table tr.spacer td {
+      padding-top: 10px;
+    }
+
+    /* Tabel Barang (Hijau & Aksen Oranye) */
+    .product-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      margin-bottom: 14px;
+      font-size: 10pt;
+    }
+
+    .product-table th {
+      background-color: var(--primary-green);
+      color: #ffffff;
+      font-weight: bold;
+      border: 1px solid #124224;
+      border-bottom: 3px solid var(--accent-orange);
+      padding: 8px 6px;
+      text-align: center;
+      font-size: 9.5pt;
+    }
+
+    .product-table td {
+      border: 1px solid #222;
+      padding: 9px 8px;
+      text-align: center;
+      vertical-align: middle;
+      line-height: 1.35;
+    }
+
+    .closing-text {
+      font-size: 10pt;
+      margin: 12px 0 16px 0;
+    }
+
+    .notes-section {
+      font-size: 9.5pt;
+      font-style: italic;
+      margin-bottom: 26px;
+      min-height: 18px;
+    }
+
+    /* Tanda Tangan 3 Kolom */
+    .signature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      text-align: center;
+      margin-top: 10px;
+      font-size: 10pt;
+    }
+
+    .sig-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .sig-title {
+      font-weight: bold;
+      margin-bottom: 6px;
+      color: var(--primary-green-dark);
+    }
+
+    .sig-sub {
+      min-height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 8px;
+      line-height: 1.25;
+    }
+
+    .sig-space {
+      height: 65px;
+    }
+
+    .sig-name {
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    .sig-caption {
+      font-size: 8.5pt;
+      font-style: italic;
+      color: #444;
+    }
+
+    .doc-footer {
+      margin-top: 30px;
+      font-size: 8.5pt;
+      font-style: italic;
+      color: #444;
+      border-top: 1px dashed var(--accent-orange);
+      padding-top: 6px;
+    }
+
+    /* Responsif untuk HP & Tablet */
+    @media (max-width: 768px) {
+      body {
+        padding: 8px;
+      }
+      .card-panel {
+        padding: 14px;
+      }
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      .date-input-group {
+        grid-template-columns: 1fr;
+      }
+      .item-row-editor {
+        grid-template-columns: 1fr 1fr;
+      }
+      .item-row-editor select,
+      .item-row-editor input:nth-child(2) {
+        grid-column: span 2;
+      }
+      .item-row-editor button {
+        grid-column: span 2;
+      }
+      .action-bar {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Pengaturan Cetak A4 Murni */
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
+
+    @media print {
+      body {
+        background: #fff;
+        padding: 0;
+        margin: 0;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .preview-shell {
+        margin: 0;
+        overflow: visible;
+      }
+      .preview-scale-box {
+        transform: none !important;
+        width: 210mm !important;
+        height: auto !important;
+      }
+      .a4-page {
+        width: 210mm;
+        min-height: 297mm;
+        box-shadow: none;
+        margin: 0;
+        padding: 16mm 18mm;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- PANEL PENGATURAN SURAT JALAN -->
+    <div class="card-panel no-print">
+      <div class="panel-header">
+        <h2>Pengaturan Surat Jalan (CV. Yudistira Cattle and Farm)</h2>
+        <span class="badge-orange">Format Presisi A4</span>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Nomor Surat Jalan</label>
+          <input type="text" id="inNomor" value="#SJP/085/YCF/SHP/XI/2026" oninput="updateView()">
+        </div>
+        <div class="form-group">
+          <label>Sub-Judul Surat Jalan</label>
+          <input type="text" id="inSubjudul" value="Pengiriman Pakan dari Produsen ke Pelayaran" oninput="updateView()">
+        </div>
+        <div class="form-group">
+          <label>Tanggal (Pilih Kalender atau Ketik Manual)</label>
+          <div class="date-input-group">
+            <input type="date" id="inDatePicker" onchange="syncDatePicker()">
+            <input type="text" id="inTanggal" value="17 November 2026" oninput="updateView()" placeholder="Contoh: 17 November 2026">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Pemilik Barang</label>
+          <input type="text" id="inPemilik" value="PT Nirankara Makmur Agro" oninput="updateView()">
+        </div>
+        <div class="form-group">
+          <label>Pengangkut</label>
+          <input type="text" id="inPengangkut" value="PT Tritama Logistik Sentosa" oninput="updateView()">
+        </div>
+        <div class="form-group">
+          <label>Lokasi Bongkar / Depo</label>
+          <input type="text" id="inLokasiBongkar" value="UPTD Perbenihan Tanaman Jl. Bypass/Jl. Nasution, Kecamatan Padangsidimpuan, Batunadua" oninput="updateView()">
+        </div>
+        <div class="form-group">
+          <label>No. Polisi Kendaraan</label>
+          <input type="text" id="inNopol" value="BE 8437 AEU" oninput="updateView()" placeholder="Contoh: BE 8437 AEU">
+        </div>
+        <div class="form-group">
+          <label>Nama Supir / Pengemudi</label>
+          <input type="text" id="inSupir" value="Riki Arjuansah" oninput="updateView()" placeholder="Contoh: Riki Arjuansah">
+        </div>
+        <div class="form-group">
+          <label>Nama Pengirim (TTD CV. Yudistira Cattle and Farm)</label>
+          <select id="inPengirimNama" onchange="updateView()">
+            <option value="Ach. Sufyan Wahyudi">Ach. Sufyan Wahyudi</option>
+            <option value="Willy Budi Prasetyo">Willy Budi Prasetyo</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Catatan Tambahan (Opsional)</label>
+          <input type="text" id="inCatatan" value="" oninput="updateView()" placeholder="Kosongkan jika tidak ada catatan">
+        </div>
+      </div>
+
+      <!-- Editor Produk -->
+      <div class="items-editor">
+        <div class="items-editor-header">
+          <div>
+            <strong style="color: var(--primary-green-dark);">Daftar Produk / Barang</strong>
+            <label class="prefix-toggle">
+              <input type="checkbox" id="chkPrefix" checked onchange="renderTable()">
+              Sertakan teks <em>"Pakan Konsentrat Sapi Potong – ... (karung @50 kg)"</em>
+            </label>
+          </div>
+          <button type="button" class="btn btn-add" onclick="addItemRow()">+ Tambah Produk</button>
+        </div>
+        <div id="itemsContainer"></div>
+      </div>
+
+      <!-- Tombol Simpan & Cetak -->
+      <div class="action-bar">
+        <button type="button" class="btn btn-save" onclick="saveToHistory(true)">Simpan ke Riwayat SJ</button>
+        <button type="button" class="btn btn-print" onclick="saveAndPrint()">Cetak / Print (A4)</button>
+        <button type="button" class="btn btn-pdf" onclick="saveAndDownloadPDF()">Unduh File PDF (A4)</button>
+      </div>
+    </div>
+
+    <!-- PANEL RIWAYAT PEMBUATAN SURAT JALAN -->
+    <div class="card-panel no-print">
+      <div class="panel-header">
+        <h2>Riwayat Pembuatan Surat Jalan</h2>
+        <button type="button" class="btn btn-save btn-sm" onclick="exportHistoryCSV()">Unduh Rekap (CSV / Excel)</button>
+      </div>
+
+      <div class="filter-bar">
+        <div class="filter-item">
+          <label>Filter Periode</label>
+          <select id="filterMode" onchange="onFilterModeChange()">
+            <option value="all">Semua Riwayat</option>
+            <option value="daily">Harian (Hari Ini)</option>
+            <option value="weekly">Mingguan (7 Hari Terakhir)</option>
+            <option value="date">Pilih Tanggal / Rentang Tanggal</option>
+          </select>
+        </div>
+        <div class="filter-item" id="filterStartWrap" style="display:none;">
+          <label>Dari Tanggal</label>
+          <input type="date" id="filterStartDate" onchange="renderHistory()">
+        </div>
+        <div class="filter-item" id="filterEndWrap" style="display:none;">
+          <label>Sampai Tanggal</label>
+          <input type="date" id="filterEndDate" onchange="renderHistory()">
+        </div>
+        <div class="filter-item">
+          <label>Cari (No. SJ / Pemilik / Supir)</label>
+          <input type="text" id="filterSearch" placeholder="Ketik kata kunci..." oninput="renderHistory()">
+        </div>
+      </div>
+
+      <div class="history-table-wrap">
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Tanggal</th>
+              <th>No. Surat Jalan</th>
+              <th>Pemilik &amp; Tujuan</th>
+              <th>Kendaraan / Supir</th>
+              <th>Produk</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="historyTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRATINJAU LEMBAR SURAT JALAN A4 -->
+  <div class="preview-shell">
+    <div class="preview-scale-box" id="previewScaleBox">
+      <div class="a4-page" id="a4Sheet">
+        <!-- KOP SURAT -->
+        <div class="header-kop">
+          <img src="cv.png" alt="Logo CV" id="logoImg" onerror="this.style.display='none'">
+          <div class="company-name">CV. YUDISTIRA CATTLE AND FARM</div>
+        </div>
+        <div class="kop-divider"></div>
+
+        <!-- JUDUL -->
+        <div class="doc-title">
+          <h1>SURAT JALAN</h1>
+          <p class="subtitle" id="outSubjudul">Pengiriman Pakan dari Produsen ke Pelayaran</p>
+          <p class="doc-number">Nomor: <span id="outNomor">#SJP/085/YCF/SHP/XI/2026</span></p>
+        </div>
+
+        <!-- INFORMASI PENGIRIMAN -->
+        <table class="info-table">
+          <tr>
+            <td class="label">Tanggal</td>
+            <td class="colon">:</td>
+            <td id="outTanggal">17 November 2026</td>
+          </tr>
+          <tr>
+            <td class="label">Pemilik Barang</td>
+            <td class="colon">:</td>
+            <td id="outPemilik">PT Nirankara Makmur Agro</td>
+          </tr>
+          <tr>
+            <td class="label">Pengangkut</td>
+            <td class="colon">:</td>
+            <td id="outPengangkut">PT Tritama Logistik Sentosa</td>
+          </tr>
+          <tr>
+            <td class="label">Asal Muat (Produsen)</td>
+            <td class="colon">:</td>
+            <td><strong>CV Yudistira Cattle and Farm (Yudistira Feedmill)</strong></td>
+          </tr>
+          <tr>
+            <td class="label">Alamat Muat</td>
+            <td class="colon">:</td>
+            <td>Pergudangan Sentral Singosari, Jl. Yonkav, Krajan, Randuagung, Kec. Singosari, Kab. Malang, Jawa Timur 65153</td>
+          </tr>
+          <tr class="spacer">
+            <td class="label">Lokasi Bongkar / Depo</td>
+            <td class="colon">:</td>
+            <td id="outLokasiBongkar">UPTD Perbenihan Tanaman Jl. Bypass/Jl. Nasution, Kecamatan Padangsidimpuan, Batunadua</td>
+          </tr>
+          <tr class="spacer">
+            <td class="label">Kendaraan / Supir</td>
+            <td class="colon">:</td>
+            <td id="outKendaraanSupir">BE 8437 AEU – Riki Arjuansah</td>
+          </tr>
+        </table>
+
+        <!-- TABEL BARANG -->
+        <table class="product-table">
+          <thead>
+            <tr>
+              <th style="width: 42px;">No</th>
+              <th>Nama Barang</th>
+              <th style="width: 85px;">Karung</th>
+              <th style="width: 95px;">Berat (Kg)</th>
+              <th style="width: 145px;">No. Kontainer / Segel</th>
+            </tr>
+          </thead>
+          <tbody id="outProductBody"></tbody>
+        </table>
+
+        <div class="closing-text">
+          Barang telah diterima dalam keadaan baik dan jumlah sesuai.
+        </div>
+
+        <div class="notes-section">
+          Catatan: <span id="outCatatan"></span>
+        </div>
+
+        <!-- TANDA TANGAN (3 KOLOM) -->
+        <div class="signature-grid">
+          <!-- Kolom 1: Pengirim -->
+          <div class="sig-col">
+            <div class="sig-title">Pengirim</div>
+            <div class="sig-sub">CV. Yudistira Cattle and Farm</div>
+            <div class="sig-space"></div>
+            <div class="sig-name">(<span id="outPengirimNama">Ach. Sufyan Wahyudi</span>)</div>
+            <div class="sig-caption">Nama &amp; Cap</div>
+          </div>
+
+          <!-- Kolom 2: Pengemudi -->
+          <div class="sig-col">
+            <div class="sig-title">Pengemudi</div>
+            <div class="sig-sub" id="outSigNopol">No. Pol. BE 8437 AEU</div>
+            <div class="sig-space"></div>
+            <div class="sig-name">(<span id="outSigSupir">Riki Arjuansah</span>)</div>
+            <div class="sig-caption">Pengemudi</div>
+          </div>
+
+          <!-- Kolom 3: Penerima (Kosong) -->
+          <div class="sig-col">
+            <div class="sig-title">Penerima</div>
+            <div class="sig-sub"></div>
+            <div class="sig-space"></div>
+            <div class="sig-name">(...........................)</div>
+            <div class="sig-caption">Nama, Cap &amp; Jam Terima</div>
+          </div>
+        </div>
+
+        <div class="doc-footer">
+          Arsip CV. Yudistira Cattle and Farm – dokumen pemberkasan internal.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "yudistira_sj_history_v1";
+
+    const presetProducts = [
+      "Super Gemuk (KSPT 1-1)",
+      "Super Potong (KSPT 1-2)",
+      "PELLET (KSPT 1-1)"
+    ];
+
+    let items = [
+      {
+        mode: "Super Gemuk (KSPT 1-1)",
+        customName: "",
+        karung: "1,000",
+        berat: "50,000",
+        kontainer: "-"
+      }
+    ];
+
+    // Set tanggal hari ini secara default pada datepicker
+    function initDefaultDate() {
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, "0");
+      const dd = String(today.getDate()).padStart(2, "0");
+      const isoToday = `${yyyy}-${mm}-${dd}`;
+      document.getElementById("inDatePicker").value = isoToday;
+      document.getElementById("filterStartDate").value = isoToday;
+      document.getElementById("filterEndDate").value = isoToday;
+    }
+
+    function renderItemsEditor() {
+      const container = document.getElementById("itemsContainer");
+      container.innerHTML = "";
+
+      items.forEach((item, index) => {
+        const row = document.createElement("div");
+        row.className = "item-row-editor";
+
+        const select = document.createElement("select");
+        presetProducts.forEach(p => {
+          const opt = document.createElement("option");
+          opt.value = p;
+          opt.textContent = p;
+          if (item.mode === p) opt.selected = true;
+          select.appendChild(opt);
+        });
+        const manualOpt = document.createElement("option");
+        manualOpt.value = "MANUAL";
+        manualOpt.textContent = "-- Ketik Produk Manual --";
+        if (item.mode === "MANUAL") manualOpt.selected = true;
+        select.appendChild(manualOpt);
+
+        select.onchange = (e) => {
+          items[index].mode = e.target.value;
+          renderItemsEditor();
+          renderTable();
+        };
+
+        const customInput = document.createElement("input");
+        customInput.type = "text";
+        customInput.placeholder = "Ketik nama produk manual...";
+        customInput.value = item.customName;
+        customInput.disabled = item.mode !== "MANUAL";
+        customInput.style.backgroundColor = item.mode === "MANUAL" ? "#fff" : "#e9ecef";
+        customInput.oninput = (e) => {
+          items[index].customName = e.target.value;
+          renderTable();
+        };
+
+        const karungInput = document.createElement("input");
+        karungInput.type = "text";
+        karungInput.placeholder = "Karung (1,000)";
+        karungInput.value = item.karung;
+        karungInput.oninput = (e) => {
+          items[index].karung = e.target.value;
+          renderTable();
+        };
+
+        const beratInput = document.createElement("input");
+        beratInput.type = "text";
+        beratInput.placeholder = "Berat Kg (50,000)";
+        beratInput.value = item.berat;
+        beratInput.oninput = (e) => {
+          items[index].berat = e.target.value;
+          renderTable();
+        };
+
+        const kontainerInput = document.createElement("input");
+        kontainerInput.type = "text";
+        kontainerInput.placeholder = "No. Kontainer / Segel";
+        kontainerInput.value = item.kontainer;
+        kontainerInput.oninput = (e) => {
+          items[index].kontainer = e.target.value;
+          renderTable();
+        };
+
+        const removeBtn = document.createElement("button");
+        removeBtn.type = "button";
+        removeBtn.className = "btn btn-remove";
+        removeBtn.textContent = "Hapus";
+        removeBtn.disabled = items.length === 1;
+        removeBtn.onclick = () => {
+          if (items.length > 1) {
+            items.splice(index, 1);
+            renderItemsEditor();
+            renderTable();
+          }
+        };
+
+        row.appendChild(select);
+        row.appendChild(customInput);
+        row.appendChild(karungInput);
+        row.appendChild(beratInput);
+        row.appendChild(kontainerInput);
+        row.appendChild(removeBtn);
+
+        container.appendChild(row);
+      });
+    }
+
+    function addItemRow() {
+      items.push({
+        mode: "Super Gemuk (KSPT 1-1)",
+        customName: "",
+        karung: "1,000",
+        berat: "50,000",
+        kontainer: "-"
+      });
+      renderItemsEditor();
+      renderTable();
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById("outProductBody");
+      const usePrefix = document.getElementById("chkPrefix").checked;
+      tbody.innerHTML = "";
+
+      items.forEach((item, idx) => {
+        const tr = document.createElement("tr");
+        const prodName = item.mode === "MANUAL" ? (item.customName || "-") : item.mode;
+        const displayHtml = usePrefix
+          ? `Pakan Konsentrat Sapi Potong – ${prodName}<br>(karung @50 kg)`
+          : prodName;
+
+        tr.innerHTML = `
+          <td>${idx + 1}</td>
+          <td>${displayHtml}</td>
+          <td>${item.karung}</td>
+          <td>${item.berat}</td>
+          <td>${item.kontainer}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+      fitA4Preview();
+    }
+
+    function updateView() {
+      document.getElementById("outNomor").textContent = document.getElementById("inNomor").value;
+      document.getElementById("outSubjudul").textContent = document.getElementById("inSubjudul").value;
+      document.getElementById("outTanggal").textContent = document.getElementById("inTanggal").value;
+      document.getElementById("outPemilik").textContent = document.getElementById("inPemilik").value;
+      document.getElementById("outPengangkut").textContent = document.getElementById("inPengangkut").value;
+      document.getElementById("outLokasiBongkar").textContent = document.getElementById("inLokasiBongkar").value;
+
+      const nopol = document.getElementById("inNopol").value.trim();
+      const supir = document.getElementById("inSupir").value.trim();
+
+      const gabungan = (nopol && supir) ? `${nopol} – ${supir}` : (nopol || supir || "-");
+      document.getElementById("outKendaraanSupir").textContent = gabungan;
+      document.getElementById("outSigNopol").textContent = nopol ? `No. Pol. ${nopol}` : "";
+      document.getElementById("outSigSupir").textContent = supir || "...........................";
+
+      document.getElementById("outPengirimNama").textContent = document.getElementById("inPengirimNama").value;
+      document.getElementById("outCatatan").textContent = document.getElementById("inCatatan").value;
+      fitA4Preview();
+    }
+
+    function syncDatePicker() {
+      const val = document.getElementById("inDatePicker").value;
+      if (!val) return;
+      const bulanIndo = [
+        "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+        "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+      ];
+      const parts = val.split("-");
+      const tanggalFormatted = `${parseInt(parts[2], 10)} ${bulanIndo[parseInt(parts[1], 10) - 1]} ${parts[0]}`;
+      document.getElementById("inTanggal").value = tanggalFormatted;
+      updateView();
+    }
+
+    // Skala otomatis agar pratinjau A4 tidak terpotong di layar HP / Tablet
+    function fitA4Preview() {
+      const shell = document.querySelector(".preview-shell");
+      const scaleBox = document.getElementById("previewScaleBox");
+      const a4 = document.getElementById("a4Sheet");
+      if (!shell || !scaleBox || !a4) return;
+
+      const availableWidth = shell.clientWidth;
+      const a4WidthPx = a4.offsetWidth;
+
+      if (availableWidth < a4WidthPx) {
+        const scale = availableWidth / a4WidthPx;
+        scaleBox.style.transform = `scale(${scale})`;
+        shell.style.height = `${a4.offsetHeight * scale + 10}px`;
+      } else {
+        scaleBox.style.transform = "none";
+        shell.style.height = "auto";
+      }
+    }
+
+    window.addEventListener("resize", fitA4Preview);
+
+    // ================= FITUR RIWAYAT SURAT JALAN =================
+    function getHistory() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveHistoryArray(arr) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+    }
+
+    function collectCurrentFormState() {
+      const isoDate = document.getElementById("inDatePicker").value || new Date().toISOString().slice(0, 10);
+      return {
+        id: "SJ-" + Date.now(),
+        isoDate: isoDate,
+        createdAt: new Date().toISOString(),
+        nomor: document.getElementById("inNomor").value,
+        subjudul: document.getElementById("inSubjudul").value,
+        tanggalTeks: document.getElementById("inTanggal").value,
+        pemilik: document.getElementById("inPemilik").value,
+        pengangkut: document.getElementById("inPengangkut").value,
+        lokasiBongkar: document.getElementById("inLokasiBongkar").value,
+        nopol: document.getElementById("inNopol").value,
+        supir: document.getElementById("inSupir").value,
+        pengirimNama: document.getElementById("inPengirimNama").value,
+        catatan: document.getElementById("inCatatan").value,
+        usePrefix: document.getElementById("chkPrefix").checked,
+        items: JSON.parse(JSON.stringify(items))
+      };
+    }
+
+    function saveToHistory(showAlert = false) {
+      const history = getHistory();
+      const current = collectCurrentFormState();
+
+      // Jika nomor SJ sudah ada di hari yang sama, perbarui datanya
+      const existingIdx = history.findIndex(h => h.nomor === current.nomor && h.isoDate === current.isoDate);
+      if (existingIdx >= 0) {
+        history[existingIdx] = current;
+      } else {
+        history.unshift(current);
+      }
+
+      saveHistoryArray(history);
+      renderHistory();
+      if (showAlert) {
+        alert("Surat Jalan berhasil disimpan ke Riwayat!");
+      }
+    }
+
+    function saveAndPrint() {
+      saveToHistory(false);
+      window.print();
+    }
+
+    function saveAndDownloadPDF() {
+      saveToHistory(false);
+      downloadCurrentA4AsPDF();
+    }
+
+    function downloadCurrentA4AsPDF() {
+      const element = document.getElementById("a4Sheet");
+      const scaleBox = document.getElementById("previewScaleBox");
+      const prevTransform = scaleBox.style.transform;
+      scaleBox.style.transform = "none";
+
+      const nomorClean = (document.getElementById("inNomor").value || "Surat_Jalan")
+        .replace(/[^a-zA-Z0-9_-]/g, "_");
+
+      if (typeof html2pdf !== "undefined") {
+        const opt = {
+          margin: 0,
+          filename: `SJ_${nomorClean}.pdf`,
+          image: { type: "jpeg", quality: 0.98 },
+          html2canvas: { scale: 2, useCORS: true },
+          jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
+        };
+        html2pdf().set(opt).from(element).save().then(() => {
+          scaleBox.style.transform = prevTransform;
+          fitA4Preview();
+        });
+      } else {
+        scaleBox.style.transform = prevTransform;
+        window.print();
+      }
+    }
+
+    function onFilterModeChange() {
+      const mode = document.getElementById("filterMode").value;
+      const showDateInputs = mode === "date";
+      document.getElementById("filterStartWrap").style.display = showDateInputs ? "flex" : "none";
+      document.getElementById("filterEndWrap").style.display = showDateInputs ? "flex" : "none";
+      renderHistory();
+    }
+
+    function getFilteredHistory() {
+      const history = getHistory();
+      const mode = document.getElementById("filterMode").value;
+      const search = (document.getElementById("filterSearch").value || "").toLowerCase();
+      const todayIso = new Date().toISOString().slice(0, 10);
+
+      return history.filter(entry => {
+        let matchDate = true;
+        if (mode === "daily") {
+          matchDate = entry.isoDate === todayIso;
+        } else if (mode === "weekly") {
+          const entryDate = new Date(entry.isoDate);
+          const now = new Date(todayIso);
+          const diffDays = (now - entryDate) / (1000 * 60 * 60 * 24);
+          matchDate = diffDays >= 0 && diffDays <= 7;
+        } else if (mode === "date") {
+          const start = document.getElementById("filterStartDate").value;
+          const end = document.getElementById("filterEndDate").value;
+          if (start && entry.isoDate < start) matchDate = false;
+          if (end && entry.isoDate > end) matchDate = false;
+        }
+
+        if (!matchDate) return false;
+
+        if (search) {
+          const haystack = [
+            entry.nomor,
+            entry.tanggalTeks,
+            entry.pemilik,
+            entry.pengangkut,
+            entry.lokasiBongkar,
+            entry.nopol,
+            entry.supir
+          ].join(" ").toLowerCase();
+          return haystack.includes(search);
+        }
+        return true;
+      });
+    }
+
+    function renderHistory() {
+      const tbody = document.getElementById("historyTableBody");
+      const filtered = getFilteredHistory();
+      tbody.innerHTML = "";
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" style="text-align:center; padding: 16px; color:#666;">
+              Belum ada data riwayat Surat Jalan pada filter ini.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      filtered.forEach(entry => {
+        const tr = document.createElement("tr");
+        const ringkasanProduk = (entry.items || [])
+          .map(i => `${i.mode === "MANUAL" ? i.customName : i.mode} (${i.karung} krg / ${i.berat} kg)`)
+          .join(", ");
+
+        tr.innerHTML = `
+          <td><strong>${entry.tanggalTeks}</strong><br><small style="color:#666;">${entry.isoDate}</small></td>
+          <td><strong>${entry.nomor}</strong></td>
+          <td>${entry.pemilik}<br><small style="color:#555;">${entry.lokasiBongkar}</small></td>
+          <td>${entry.nopol} – ${entry.supir}</td>
+          <td>${ringkasanProduk}</td>
+          <td>
+            <div class="history-actions">
+              <button type="button" class="btn btn-add btn-sm" onclick="loadHistoryEntry('${entry.id}')">Muat</button>
+              <button type="button" class="btn btn-save btn-sm" onclick="downloadHistoryEntryPDF('${entry.id}')">Unduh PDF</button>
+              <button type="button" class="btn btn-remove btn-sm" onclick="deleteHistoryEntry('${entry.id}')">Hapus</button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function loadHistoryEntry(id) {
+      const history = getHistory();
+      const found = history.find(h => h.id === id);
+      if (!found) return;
+
+      document.getElementById("inDatePicker").value = found.isoDate || "";
+      document.getElementById("inNomor").value = found.nomor || "";
+      document.getElementById("inSubjudul").value = found.subjudul || "";
+      document.getElementById("inTanggal").value = found.tanggalTeks || "";
+      document.getElementById("inPemilik").value = found.pemilik || "";
+      document.getElementById("inPengangkut").value = found.pengangkut || "";
+      document.getElementById("inLokasiBongkar").value = found.lokasiBongkar || "";
+      document.getElementById("inNopol").value = found.nopol || "";
+      document.getElementById("inSupir").value = found.supir || "";
+      document.getElementById("inPengirimNama").value = found.pengirimNama || "Ach. Sufyan Wahyudi";
+      document.getElementById("inCatatan").value = found.catatan || "";
+      document.getElementById("chkPrefix").checked = found.usePrefix !== false;
+
+      items = JSON.parse(JSON.stringify(found.items || []));
+      renderItemsEditor();
+      renderTable();
+      updateView();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function downloadHistoryEntryPDF(id) {
+      loadHistoryEntry(id);
+      setTimeout(() => {
+        downloadCurrentA4AsPDF();
+      }, 200);
+    }
+
+    function deleteHistoryEntry(id) {
+      if (!confirm("Hapus Surat Jalan ini dari riwayat?")) return;
+      const history = getHistory().filter(h => h.id !== id);
+      saveHistoryArray(history);
+      renderHistory();
+    }
+
+    function exportHistoryCSV() {
+      const filtered = getFilteredHistory();
+      if (filtered.length === 0) {
+        alert("Tidak ada data riwayat untuk diunduh pada filter saat ini.");
+        return;
+      }
+
+      const headers = [
+        "Tanggal ISO",
+        "Tanggal Surat",
+        "Nomor SJ",
+        "Pemilik Barang",
+        "Pengangkut",
+        "Lokasi Bongkar",
+        "No Polisi",
+        "Supir",
+        "Daftar Produk",
+        "Total Baris Produk",
+        "Pengirim"
+      ];
+
+      const rows = filtered.map(h => {
+        const produkStr = (h.items || [])
+          .map(i => `${i.mode === "MANUAL" ? i.customName : i.mode} [Karung: ${i.karung} | Berat: ${i.berat} Kg | Kontainer: ${i.kontainer}]`)
+          .join(" ; ");
+
+        return [
+          h.isoDate,
+          h.tanggalTeks,
+          h.nomor,
+          h.pemilik,
+          h.pengangkut,
+          h.lokasiBongkar,
+          h.nopol,
+          h.supir,
+          produkStr,
+          (h.items || []).length,
+          h.pengirimNama
+        ].map(val => `"${String(val || "").replace(/"/g, '""')}"`).join(",");
+      });
+
+      const csvContent = "\uFEFF" + [headers.join(","), ...rows].join("\n");
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `Rekap_Surat_Jalan_Yudistira_${new Date().toISOString().slice(0,10)}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    // Inisialisasi Halaman
+    initDefaultDate();
+    renderItemsEditor();
+    renderTable();
+    updateView();
+    renderHistory();
+  </script>
+</body>
+</html>
