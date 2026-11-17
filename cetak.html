@@ -1,234 +1,1551 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="overflow-x-hidden">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sistem Cetak OTG - Gambar & PDF</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>SURAT JALAN - CV. YUDISTIRA CATTLE AND FARM</title>
+  <link rel="icon" type="image/png" href="cv.png">
+  <link rel="apple-touch-icon" href="cv.png">
+  <meta name="theme-color" content="#0f172a">
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Pustaka PDF.js untuk merender PDF menjadi halaman siap cetak di Android -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <style>
-    /* Pengaturan Kertas di Layar */
-    .lembar-kertas {
-      background: white;
-      width: 100%;
-      max-width: 210mm;
-      min-height: 297mm;
-      margin: 0 auto 20px auto;
-      padding: 15mm;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-      border: 1px solid #e5e7eb;
+    :root {
+      --primary-green: #1f6e3c;
+      --primary-green-dark: #16522c;
+      --primary-green-light: #eaf5ee;
+      --accent-orange: #e88d2a;
+      --accent-orange-dark: #cf7617;
     }
 
-    /* Pengaturan Khusus Saat Tombol Print Ditekan */
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
+      font-family: 'Inter', sans-serif;
+      background-color: #eef4f0;
+      color: #1e293b;
+      -webkit-tap-highlight-color: transparent;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    .font-mono-code { font-family: 'JetBrains Mono', monospace; }
+
+    .sub-tab-active {
+      background-color: #1f6e3c !important;
+      color: #ffffff !important;
+      border-color: #1f6e3c !important;
+      box-shadow: 0 4px 6px -1px rgba(31, 110, 60, 0.25);
+    }
+
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+    /* Tema Mode Terang (Hijau & Oranye) */
+    .theme-card {
+      background-color: #ffffff;
+      border-top: 4px solid var(--primary-green);
+      border-bottom: 2px solid var(--accent-orange);
+    }
+
+    /* Tema Mode Gelap (Dark Mode) sesuai acuan */
+    body.dark-mode { background-color: #090d16 !important; color: #e2e8f0 !important; }
+    body.dark-mode .bg-white:not(.a4-page) { background-color: #1e293b !important; color: #f1f5f9 !important; }
+    body.dark-mode .bg-slate-50, body.dark-mode .bg-slate-100 { background-color: #0f172a !important; color: #cbd5e1 !important; }
+    body.dark-mode .text-slate-800, body.dark-mode .text-slate-900, body.dark-mode .text-slate-700 { color: #f1f5f9 !important; }
+    body.dark-mode .text-slate-500, body.dark-mode .text-slate-600 { color: #94a3b8 !important; }
+    body.dark-mode .border-slate-200, body.dark-mode .border-slate-300, body.dark-mode .border-slate-100 { border-color: #334155 !important; }
+    body.dark-mode .divide-slate-200 > :not([hidden]) ~ :not([hidden]) { border-color: #334155 !important; }
+    body.dark-mode input, body.dark-mode select, body.dark-mode textarea {
+      background-color: #0f172a !important;
+      color: #f8fafc !important;
+      border-color: #334155 !important;
+    }
+    body.dark-mode .item-row-box {
+      background-color: #0f172a !important;
+      border-color: #334155 !important;
+    }
+    body.dark-mode tr.hover\:bg-slate-50:hover { background-color: rgba(51, 65, 85, 0.45) !important; }
+
+    @keyframes pulseLogo {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(0.88); opacity: 0.45; }
+    }
+    .animate-logo-blink { animation: pulseLogo 1s infinite ease-in-out; }
+
+    /* ================= STYLE KHUSUS KERTAS A4 SURAT JALAN ================= */
+    .preview-shell {
+      width: 100%;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      padding: 4px 0 20px 0;
+    }
+
+    .preview-scale-box {
+      width: 210mm;
+      transform-origin: top center;
+    }
+
+    /* Kertas A4 selalu putih bersih baik di Mode Terang maupun Mode Gelap */
+    .a4-page {
+      width: 210mm;
+      min-height: 297mm;
+      background-color: #ffffff !important;
+      color: #000000 !important;
+      padding: 16mm 18mm;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.18);
+      position: relative;
+      margin: 0 auto;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 11pt;
+    }
+
+    .header-kop {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding-bottom: 12px;
+    }
+
+    .header-kop img {
+      height: 64px;
+      width: auto;
+      max-width: 110px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+
+    .header-kop .company-name {
+      font-size: 19.5pt;
+      font-weight: 800;
+      color: var(--primary-green) !important;
+      letter-spacing: 0.4px;
+      text-align: center;
+      line-height: 1.15;
+    }
+
+    .kop-divider {
+      position: relative;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary-green) 0%, var(--primary-green) 65%, var(--accent-orange) 65%, var(--accent-orange) 100%);
+      margin-bottom: 20px;
+      border-radius: 2px;
+    }
+
+    .kop-divider::before,
+    .kop-divider::after {
+      content: "";
+      position: absolute;
+      top: -2px;
+      width: 7px;
+      height: 7px;
+    }
+
+    .kop-divider::before { left: 0; background-color: var(--primary-green); }
+    .kop-divider::after { right: 0; background-color: var(--accent-orange); }
+
+    .doc-title {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .doc-title h1 {
+      font-size: 14pt;
+      font-weight: bold;
+      margin: 0 0 4px 0;
+      letter-spacing: 0.6px;
+      color: var(--primary-green-dark) !important;
+    }
+
+    .doc-title .subtitle {
+      font-size: 9.5pt;
+      color: #555555 !important;
+      margin: 0 0 5px 0;
+    }
+
+    .doc-title .doc-number {
+      font-size: 10.5pt;
+      font-weight: bold;
+      margin: 0;
+      color: #111111 !important;
+    }
+
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 16px;
+      font-size: 10pt;
+      color: #000000 !important;
+    }
+
+    .info-table td {
+      padding: 3px 0;
+      vertical-align: top;
+      color: #000000 !important;
+    }
+
+    .info-table td.label { width: 150px; }
+    .info-table td.colon { width: 12px; }
+    .info-table tr.spacer td { padding-top: 10px; }
+
+    .product-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      margin-bottom: 14px;
+      font-size: 10pt;
+      color: #000000 !important;
+    }
+
+    .product-table th {
+      background-color: var(--primary-green) !important;
+      color: #ffffff !important;
+      font-weight: bold;
+      border: 1px solid #124224;
+      border-bottom: 3px solid var(--accent-orange);
+      padding: 8px 6px;
+      text-align: center;
+      font-size: 9.5pt;
+    }
+
+    .product-table td {
+      border: 1px solid #222222;
+      padding: 9px 8px;
+      text-align: center;
+      vertical-align: middle;
+      line-height: 1.35;
+      color: #000000 !important;
+    }
+
+    .closing-text {
+      font-size: 10pt;
+      margin: 12px 0 16px 0;
+      color: #000000 !important;
+    }
+
+    .notes-section {
+      font-size: 9.5pt;
+      font-style: italic;
+      margin-bottom: 26px;
+      min-height: 18px;
+      color: #000000 !important;
+    }
+
+    .signature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      text-align: center;
+      margin-top: 10px;
+      font-size: 10pt;
+      color: #000000 !important;
+    }
+
+    .sig-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .sig-title {
+      font-weight: bold;
+      margin-bottom: 6px;
+      color: var(--primary-green-dark) !important;
+    }
+
+    .sig-sub {
+      min-height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 8px;
+      line-height: 1.25;
+      color: #000000 !important;
+    }
+
+    .sig-space { height: 65px; }
+
+    .sig-name {
+      margin-bottom: 4px;
+      font-weight: 600;
+      color: #000000 !important;
+    }
+
+    .sig-caption {
+      font-size: 8.5pt;
+      font-style: italic;
+      color: #444444 !important;
+    }
+
+    .doc-footer {
+      margin-top: 30px;
+      font-size: 8.5pt;
+      font-style: italic;
+      color: #444444 !important;
+      border-top: 1px dashed var(--accent-orange);
+      padding-top: 6px;
+    }
+
+    /* Pengaturan Cetak A4 Murni */
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
+
     @media print {
-      body {
-        background: white !important;
-        margin: 0 !important;
+      html, body {
+        background: #ffffff !important;
         padding: 0 !important;
+        margin: 0 !important;
       }
       .no-print {
         display: none !important;
       }
-      .lembar-kertas {
-        box-shadow: none !important;
-        border: none !important;
+      main {
+        padding: 0 !important;
+        margin: 0 !important;
+        max-width: 100% !important;
+      }
+      .preview-shell {
         margin: 0 !important;
         padding: 0 !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        min-height: auto !important;
+        overflow: visible !important;
       }
-      /* Memastikan setiap halaman PDF/Gambar tidak terpotong di tengah kertas */
-      .page-break {
-        page-break-after: always;
-        break-after: page;
+      .preview-scale-box {
+        transform: none !important;
+        width: 210mm !important;
+        height: auto !important;
       }
-      @page {
-        size: A4 portrait;
-        margin: 10mm;
+      .a4-page {
+        width: 210mm !important;
+        min-height: 297mm !important;
+        box-shadow: none !important;
+        margin: 0 !important;
+        padding: 16mm 18mm !important;
       }
     }
   </style>
 </head>
-<body class="bg-slate-100 min-h-screen p-3 md:p-6">
+<body class="text-slate-800 min-h-screen flex flex-col w-full">
 
-  <!-- PANEL KONTROL ATAS (Tidak ikut tercetak) -->
-  <div class="no-print max-w-4xl mx-auto mb-6 bg-white p-4 rounded-xl shadow-md border border-slate-200">
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b pb-4 mb-4">
-      <div>
-        <h1 class="font-bold text-xl text-slate-800">🖨️ Panel Cetak OTG Pintar</h1>
-        <p class="text-xs text-slate-500">Mendukung ketik teks, upload foto/gambar, dan dokumen PDF multi-halaman</p>
+  <!-- OVERLAY LOADING TENGAH -->
+  <div id="centerLoadingOverlay" class="fixed inset-0 bg-slate-950/50 backdrop-blur-[2px] z-[90] hidden items-center justify-center p-4 no-print">
+    <div class="bg-slate-900/95 border border-slate-700 text-white px-5 py-4 rounded-2xl shadow-2xl flex flex-col items-center space-y-2.5 min-w-[160px]">
+      <div class="relative w-11 h-11 rounded-xl bg-emerald-500/20 border border-emerald-500/40 p-1.5 flex items-center justify-center animate-logo-blink">
+        <img src="cv.png" alt="Loading" class="w-full h-full object-contain rounded-lg" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+        <div class="hidden w-full h-full items-center justify-center text-emerald-400 text-lg"><i class="fa-solid fa-file-invoice"></i></div>
       </div>
-      <div class="flex gap-2 w-full md:w-auto">
-        <button onclick="bersihkanSemua()" class="bg-red-50 hover:bg-red-100 text-red-600 font-medium px-4 py-2.5 rounded-lg text-sm transition flex-1 md:flex-none">
-          🗑️ Reset
-        </button>
-        <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2.5 rounded-lg shadow transition flex-1 md:flex-none">
-          🖨️ Cetak Sekarang
-        </button>
-      </div>
-    </div>
-
-    <!-- Tombol Upload & Pengaturan -->
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-      <!-- Upload Gambar -->
-      <label class="flex items-center justify-center gap-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 font-medium p-3 rounded-lg cursor-pointer transition text-sm text-center">
-        <span>🖼️ Tambah Gambar/Foto</span>
-        <input type="file" id="inputGambar" accept="image/*" multiple class="hidden" onchange="handleGambar(event)">
-      </label>
-
-      <!-- Upload PDF -->
-      <label class="flex items-center justify-center gap-2 bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 font-medium p-3 rounded-lg cursor-pointer transition text-sm text-center">
-        <span>📄 Buka File PDF</span>
-        <input type="file" id="inputPDF" accept="application/pdf" class="hidden" onchange="handlePDF(event)">
-      </label>
-
-      <!-- Pengaturan Ukuran Gambar -->
-      <div class="flex items-center justify-between bg-slate-50 px-3 py-2 rounded-lg border border-slate-200 text-sm">
-        <span class="text-slate-600 font-medium">Ukuran Gambar:</span>
-        <select id="ukuranGambar" onchange="ubahUkuranGambar(this.value)" class="bg-white border rounded px-2 py-1 text-slate-700 outline-none">
-          <option value="100%">Penuh (100%)</option>
-          <option value="75%">Sedang (75%)</option>
-          <option value="50%">Setengah (50%)</option>
-        </select>
-      </div>
-    </div>
-
-    <!-- Status Loading PDF -->
-    <div id="statusLoading" class="hidden mt-3 p-3 bg-blue-50 text-blue-700 text-sm rounded-lg font-medium text-center animate-pulse">
-      Sedang memproses halaman PDF agar siap cetak... Mohon tunggu.
+      <span id="centerLoadingText" class="text-[11px] font-bold tracking-wider uppercase text-emerald-400">Memproses...</span>
     </div>
   </div>
 
-  <!-- AREA KERJA / KERTAS CETAK -->
-  <div id="areaCetak">
-    <!-- Lembar Ketik Manual (Bisa dihapus atau langsung diketik) -->
-    <div id="lembarTeks" class="lembar-kertas" contenteditable="true">
-      <p class="text-slate-400 italic">Klik di sini untuk mengetik teks tambahan, atau langsung gunakan tombol di atas untuk memasukkan Gambar / File PDF...</p>
-    </div>
-
-    <!-- Wadah untuk hasil render Gambar dan PDF -->
-    <div id="wadahMedia" class="max-w-[210mm] mx-auto"></div>
+  <!-- TOAST NOTIFIKASI MELAYANG -->
+  <div id="toast" class="fixed top-4 left-1/2 -translate-x-1/2 bg-slate-900/95 text-white px-4 py-2.5 rounded-full shadow-2xl border border-emerald-500/50 hidden items-center space-x-2 z-[100] text-xs font-bold backdrop-blur-md max-w-[90vw] truncate no-print">
+    <i class="fa-solid fa-circle-check text-emerald-400 text-sm shrink-0"></i>
+    <span id="toastMsg" class="truncate">Berhasil!</span>
   </div>
 
+  <!-- ========================================================= -->
+  <!-- 1. HEADER UTAMA DI ATAS (SESUAI ACUAN HTML)               -->
+  <!-- ========================================================= -->
+  <header class="bg-slate-900 text-white shadow-lg fixed top-0 left-0 right-0 z-40 border-b border-slate-800 w-full no-print">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2.5">
+      <div class="flex items-center justify-between gap-2">
+
+        <!-- Identitas Perusahaan -->
+        <div class="flex items-center space-x-2.5 min-w-0">
+          <div class="w-10 h-10 rounded-xl bg-white/10 border border-slate-700 p-1 flex items-center justify-center shadow shrink-0 overflow-hidden">
+            <img src="cv.png" alt="Logo" class="w-full h-full object-contain rounded-lg" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="hidden w-full h-full bg-emerald-600 text-white items-center justify-center font-extrabold rounded-lg text-sm">
+              <i class="fa-solid fa-truck-fast"></i>
+            </div>
+          </div>
+          <div class="min-w-0">
+            <div class="flex items-center space-x-1.5">
+              <h1 class="text-xs sm:text-base font-extrabold tracking-wide text-white truncate">SISTEM SURAT JALAN</h1>
+              <span class="hidden sm:inline-block bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[9px] px-2 py-0.5 rounded-full font-extrabold uppercase shrink-0">@50 KG / SAK</span>
+            </div>
+            <p class="text-[10px] sm:text-xs text-amber-400 font-bold tracking-wider uppercase truncate">CV. YUDISTIRA CATTLE AND FARM</p>
+          </div>
+        </div>
+
+        <!-- Jam Live (Tampil di Tablet/Desktop) -->
+        <div class="hidden lg:flex items-center space-x-2 bg-slate-800/90 border border-slate-700 px-3 py-1.5 rounded-xl text-xs shrink-0">
+          <i class="fa-regular fa-clock text-emerald-400"></i>
+          <span id="liveClockHeader" class="font-mono-code font-semibold text-slate-200">Memuat...</span>
+        </div>
+
+        <!-- Deretan Tombol Baris Atas -->
+        <div class="flex items-center space-x-1.5 shrink-0">
+          <button onclick="saveAndPrint()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-2.5 h-8 rounded-xl text-xs font-bold transition flex items-center space-x-1.5 shadow" title="Cetak Surat Jalan A4">
+            <i class="fa-solid fa-print"></i>
+            <span class="hidden sm:inline">Print A4</span>
+          </button>
+
+          <button onclick="saveAndDownloadPDF()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 px-2.5 h-8 rounded-xl text-xs font-extrabold transition flex items-center space-x-1.5 shadow" title="Unduh PDF A4">
+            <i class="fa-solid fa-file-pdf"></i>
+            <span class="hidden sm:inline">PDF</span>
+          </button>
+
+          <button onclick="toggleDarkMode()" class="bg-slate-800 hover:bg-slate-700 text-amber-400 border border-slate-700 px-2.5 h-8 rounded-xl text-xs font-bold transition flex items-center space-x-1.5" title="Ubah Mode Terang / Gelap">
+            <i id="themeIcon" class="fa-solid fa-moon"></i>
+            <span id="themeText" class="hidden md:inline text-[11px]">Mode Gelap</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================= -->
+  <!-- 2. KONTEN UTAMA                                           -->
+  <!-- ========================================================= -->
+  <main class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-8 flex-grow w-full space-y-5">
+
+    <!-- BARIS 1: 4 KOTAK RINGKASAN TONASE & MUATAN SURAT JALAN (KPI CARDS) -->
+    <section class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3.5 no-print">
+
+      <!-- Kotak 1: Total Tonase Surat Jalan Aktif -->
+      <div class="bg-gradient-to-br from-[#1f6e3c] via-emerald-900 to-slate-900 text-white p-3.5 sm:p-4 rounded-2xl shadow-lg border border-emerald-500/40 flex flex-col justify-between">
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] sm:text-[11px] font-extrabold text-emerald-200 uppercase">TONASE SURAT JALAN INI</span>
+          <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-white/15 text-amber-300 flex items-center justify-center text-xs"><i class="fa-solid fa-weight-hanging"></i></span>
+        </div>
+        <div class="mt-2">
+          <h2 id="kpiCurrentTon" class="text-lg sm:text-xl font-extrabold font-mono-code text-amber-400">50,0 TON</h2>
+          <p id="kpiCurrentKg" class="text-[10px] text-emerald-100 mt-0.5 truncate">Total Berat: 50,000 Kg (@50 Kg/Sak)</p>
+        </div>
+      </div>
+
+      <!-- Kotak 2: Total Karung / Sak Surat Jalan Ini -->
+      <div class="bg-white p-3.5 sm:p-4 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] sm:text-[11px] font-extrabold text-emerald-600 uppercase">TOTAL KARUNG / SAK</span>
+          <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-emerald-500/15 text-emerald-600 flex items-center justify-center text-xs"><i class="fa-solid fa-sack-xmark"></i></span>
+        </div>
+        <div class="mt-2">
+          <h3 id="kpiCurrentKarung" class="text-base sm:text-lg font-extrabold font-mono-code text-emerald-600">1,000 SAK</h3>
+          <p id="kpiCurrentItems" class="text-[10px] text-slate-500 font-semibold mt-0.5">1 Jenis Produk Dimuat</p>
+        </div>
+      </div>
+
+      <!-- Kotak 3: Riwayat SJ Tersimpan (Sesuai Filter) -->
+      <div class="bg-white p-3.5 sm:p-4 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] sm:text-[11px] font-extrabold text-amber-500 uppercase">RIWAYAT SURAT JALAN</span>
+          <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-amber-500/15 text-amber-500 flex items-center justify-center text-xs"><i class="fa-solid fa-clock-rotate-left"></i></span>
+        </div>
+        <div class="mt-2">
+          <h3 id="kpiHistoryCount" class="text-base sm:text-lg font-extrabold font-mono-code text-amber-500">0 DOKUMEN</h3>
+          <p id="kpiHistoryFilterLabel" class="text-[10px] text-slate-500 font-semibold mt-0.5">Periode: Semua Riwayat</p>
+        </div>
+      </div>
+
+      <!-- Kotak 4: Akumulasi Tonase Riwayat -->
+      <div class="bg-white p-3.5 sm:p-4 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] sm:text-[11px] font-extrabold text-blue-500 uppercase">AKUMULASI TONASE RIWAYAT</span>
+          <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-blue-500/15 text-blue-500 flex items-center justify-center text-xs"><i class="fa-solid fa-truck-ramp-box"></i></span>
+        </div>
+        <div class="mt-2">
+          <h3 id="kpiHistoryTon" class="text-base sm:text-lg font-extrabold font-mono-code text-blue-500">0,0 TON</h3>
+          <p id="kpiHistorySak" class="text-[10px] text-slate-500 font-semibold mt-0.5">Total: 0 Karung (0 Kg)</p>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- BARIS 2: FORM PENGATURAN SURAT JALAN                      -->
+    <!-- ========================================================= -->
+    <section class="bg-white theme-card rounded-2xl shadow-sm border border-slate-200 p-4 sm:p-5 space-y-4 no-print">
+      <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
+        <div class="flex items-center space-x-2">
+          <span class="w-8 h-8 rounded-xl bg-[#1f6e3c] text-white flex items-center justify-center text-sm shadow">
+            <i class="fa-solid fa-pen-to-square"></i>
+          </span>
+          <div>
+            <h2 class="text-sm sm:text-base font-extrabold text-slate-800">Form Pengaturan Surat Jalan</h2>
+            <p class="text-[11px] text-slate-500">Ketik jumlah karung, maka Berat (Kg) dan Tonase otomatis dihitung (@50 Kg/Karung).</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <button type="button" onclick="resetFormBaru()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-xl text-xs font-bold border border-slate-300 transition flex items-center space-x-1">
+            <i class="fa-solid fa-file-circle-plus text-emerald-600"></i>
+            <span>Reset / SJ Baru</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Grid Input Utama -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
+        <div>
+          <label class="block text-[11px] font-extrabold text-slate-700 uppercase mb-1">Nomor Surat Jalan</label>
+          <input type="text" id="inNomor" value="#SJP/085/YCF/SHP/XI/2026" oninput="updateView()" class="w-full rounded-xl border border-slate-300 px-3 py-2 font-bold font-mono-code">
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-extrabold text-slate-700 uppercase mb-1">Sub-Judul Surat Jalan</label>
+          <input type="text" id="inSubjudul" value="Pengiriman Pakan dari Produsen ke Pelayaran" oninput="updateView()" class="w-full rounded-xl border border-slate-300 px-3 py-2 font-semibold">
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-extrabold text-slate-700 uppercase mb-1">Tanggal (Kalender / Ketik Manual)</label>
+          <div class="grid grid-cols-2 gap-1.5">
+            <input type="date" id="inDatePicker" onchange="syncDatePicker()" class="w-full rounded-xl border border-slate-300 px-2.5 py-2 font-bold">
+            <input type="text" id="inTanggal" value="17 November 2026" oninput="updateView()" placeholder="17 November 2026" class="w-full rounded-xl border border-slate-300 px-2.5 py-2 font-bold">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-extrabold text-slate-700 uppercase mb-1">Pemilik Barang (Manual)</label>
+          <input type="text" id="inPemilik" value="PT Nirankara Makmur Agro" oninput="updateView()" class="w-full rounded-xl border border-slate-300 px-3 py-2 font-bold">
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-extrabold text-slate-700 uppercase mb-1">Pengangkut (Manual)</label>
+          <input type="text" id="inPengangkut" value="PT Tritama Logistik Sentosa" oninput="updateView()" class="w-full rounded-xl border border-slate-300 px-3 py-2 font-bold">
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-extrabold text-slate-700 uppercase mb-1">Nama Pengirim (TTD CV. Yudistira)</label>
+          <select id="inPengirimNama" onchange="updateView()" class="w-full rounded-xl border border-slate-300 px-3 py-2 font-extrabold">
+            <option value="Ach. Sufyan Wahyudi">Ach. Sufyan Wahyudi</option>
+            <option value="Willy Budi Prasetyo">Willy Budi Prasetyo</option>
+          </select>
+        </div>
+
+        <div class="sm:col-span-2">
+          <label class="block text-[11px] font-extrabold text-slate-700 uppercase mb-1">Lokasi Bongkar / Depo (Manual)</label>
+          <input type="text" id="inLokasiBongkar" value="UPTD Perbenihan Tanaman Jl. Bypass/Jl. Nasution, Kecamatan Padangsidimpuan, Batunadua" oninput="updateView()" class="w-full rounded-xl border border-slate-300 px-3 py-2 font-semibold">
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-[11px] font-extrabold text-slate-700 uppercase mb-1">No. Polisi</label>
+            <input type="text" id="inNopol" value="BE 8437 AEU" oninput="updateView()" placeholder="BE 8437 AEU" class="w-full rounded-xl border border-slate-300 px-3 py-2 font-extrabold uppercase">
+          </div>
+          <div>
+            <label class="block text-[11px] font-extrabold text-slate-700 uppercase mb-1">Nama Supir</label>
+            <input type="text" id="inSupir" value="Riki Arjuansah" oninput="updateView()" placeholder="Riki Arjuansah" class="w-full rounded-xl border border-slate-300 px-3 py-2 font-bold">
+          </div>
+        </div>
+
+        <div class="sm:col-span-2 lg:col-span-3">
+          <label class="block text-[11px] font-extrabold text-slate-700 uppercase mb-1">Catatan Tambahan (Opsional)</label>
+          <input type="text" id="inCatatan" value="" oninput="updateView()" placeholder="Kosongkan jika tidak ada catatan tambahan..." class="w-full rounded-xl border border-slate-300 px-3 py-2">
+        </div>
+      </div>
+
+      <!-- Editor Daftar Produk (Otomatis 50 Kg / Karung) -->
+      <div class="pt-3 border-t border-slate-200 space-y-3">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div class="flex flex-wrap items-center gap-3">
+            <span class="text-xs font-extrabold text-emerald-700 uppercase flex items-center gap-1.5">
+              <i class="fa-solid fa-boxes-stacked text-amber-500"></i>
+              Daftar Produk & Otomatisasi Tonase (1 Sak = 50 Kg)
+            </span>
+            <label class="inline-flex items-center space-x-1.5 text-xs cursor-pointer select-none">
+              <input type="checkbox" id="chkPrefix" checked onchange="renderTable()" class="rounded text-emerald-600 w-4 h-4">
+              <span class="text-slate-600 font-medium">Tampilkan teks <em>"Pakan Konsentrat Sapi Potong – ... (karung @50 kg)"</em></span>
+            </label>
+          </div>
+          <button type="button" onclick="addItemRow()" class="bg-[#1f6e3c] hover:bg-[#16522c] text-white px-3 py-1.5 rounded-xl text-xs font-extrabold shadow flex items-center space-x-1.5 transition">
+            <i class="fa-solid fa-plus"></i>
+            <span>Tambah Baris Produk</span>
+          </button>
+        </div>
+
+        <!-- Container Baris Produk -->
+        <div id="itemsContainer" class="space-y-2.5"></div>
+      </div>
+
+      <!-- Deretan Tombol Aksi Utama -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-2">
+        <button type="button" onclick="saveToHistory(true)" class="bg-[#e88d2a] hover:bg-[#cf7617] text-white font-extrabold py-2.5 px-4 rounded-xl text-xs sm:text-sm shadow transition flex items-center justify-center space-x-2">
+          <i class="fa-solid fa-floppy-disk"></i>
+          <span>Simpan ke Riwayat SJ</span>
+        </button>
+        <button type="button" onclick="saveAndPrint()" class="bg-[#1f6e3c] hover:bg-[#16522c] text-white font-extrabold py-2.5 px-4 rounded-xl text-xs sm:text-sm shadow transition flex items-center justify-center space-x-2">
+          <i class="fa-solid fa-print"></i>
+          <span>Cetak / Print Kertas A4</span>
+        </button>
+        <button type="button" onclick="saveAndDownloadPDF()" class="bg-slate-900 hover:bg-slate-800 text-amber-400 border border-slate-700 font-extrabold py-2.5 px-4 rounded-xl text-xs sm:text-sm shadow transition flex items-center justify-center space-x-2">
+          <i class="fa-solid fa-file-arrow-down"></i>
+          <span>Unduh File PDF (A4)</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- BARIS 3: RIWAYAT PEMBUATAN SURAT JALAN & FILTER           -->
+    <!-- ========================================================= -->
+    <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 sm:p-5 space-y-4 no-print">
+      <div class="flex flex-wrap items-center justify-between gap-2.5 border-b border-slate-100 pb-3">
+        <div class="flex flex-wrap items-center gap-1.5">
+          <span class="text-xs font-extrabold text-slate-700 mr-1 flex items-center gap-1.5">
+            <i class="fa-solid fa-clock-rotate-left text-amber-500"></i>
+            Filter Riwayat SJ:
+          </span>
+          <button type="button" onclick="setFilterMode('all')" id="tabFilterAll" class="sub-tab-active px-3 py-1.5 rounded-xl text-xs font-extrabold bg-slate-100 text-slate-700 border border-slate-300 transition">Semua Data</button>
+          <button type="button" onclick="setFilterMode('daily')" id="tabFilterDaily" class="px-3 py-1.5 rounded-xl text-xs font-extrabold bg-slate-100 text-slate-700 border border-slate-300 transition">Harian</button>
+          <button type="button" onclick="setFilterMode('weekly')" id="tabFilterWeekly" class="px-3 py-1.5 rounded-xl text-xs font-extrabold bg-slate-100 text-slate-700 border border-slate-300 transition">Mingguan</button>
+          <button type="button" onclick="setFilterMode('date')" id="tabFilterDate" class="px-3 py-1.5 rounded-xl text-xs font-extrabold bg-slate-100 text-slate-700 border border-slate-300 transition">Pilih Tanggal</button>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-1.5">
+          <button type="button" onclick="exportHistoryCSV()" class="bg-[#e88d2a] hover:bg-[#cf7617] text-white px-3 py-1.5 rounded-xl text-xs font-extrabold shadow flex items-center space-x-1.5 transition">
+            <i class="fa-solid fa-file-csv"></i>
+            <span>Unduh Rekap CSV / Excel</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Baris Input Tanggal Filter & Pencarian -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 items-end text-xs">
+        <div id="filterStartWrap" class="hidden">
+          <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Dari Tanggal</label>
+          <input type="date" id="filterStartDate" onchange="renderHistory()" class="w-full rounded-xl border border-slate-300 px-3 py-1.5 font-bold">
+        </div>
+        <div id="filterEndWrap" class="hidden">
+          <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Sampai Tanggal</label>
+          <input type="date" id="filterEndDate" onchange="renderHistory()" class="w-full rounded-xl border border-slate-300 px-3 py-1.5 font-bold">
+        </div>
+        <div class="sm:col-span-3" id="filterSearchWrap">
+          <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Pencarian Cepat Riwayat</label>
+          <div class="relative">
+            <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
+            <input type="text" id="filterSearch" oninput="renderHistory()" placeholder="Cari Nomor SJ, Pemilik Barang, Lokasi Bongkar, Nopol, Supir, atau Produk..." class="w-full pl-8 pr-3 py-1.5 rounded-xl border border-slate-300 text-xs font-semibold">
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabel Riwayat Surat Jalan -->
+      <div class="overflow-x-auto custom-scrollbar rounded-xl border border-slate-300">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="bg-[#1f6e3c] text-white text-[10px] sm:text-[11px] uppercase tracking-wider border-b-2 border-[#e88d2a]">
+              <th class="py-3 px-3 font-extrabold">Tanggal</th>
+              <th class="py-3 px-3 font-extrabold">No. Surat Jalan</th>
+              <th class="py-3 px-3 font-extrabold">Pemilik & Tujuan</th>
+              <th class="py-3 px-3 font-extrabold">Kendaraan / Supir</th>
+              <th class="py-3 px-3 font-extrabold">Rincian Produk</th>
+              <th class="py-3 px-3 font-extrabold text-right text-amber-200">Total Tonase</th>
+              <th class="py-3 px-3 font-extrabold text-center">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="historyTableBody" class="divide-y divide-slate-200 text-xs"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- BARIS 4: PRATINJAU KERTAS SURAT JALAN A4                  -->
+    <!-- ========================================================= -->
+    <div class="preview-shell">
+      <div class="preview-scale-box" id="previewScaleBox">
+        <div class="a4-page" id="a4Sheet">
+          <!-- KOP SURAT -->
+          <div class="header-kop">
+            <img src="cv.png" alt="Logo CV" id="logoImg" onerror="this.style.display='none'">
+            <div class="company-name">CV. YUDISTIRA CATTLE AND FARM</div>
+          </div>
+          <div class="kop-divider"></div>
+
+          <!-- JUDUL -->
+          <div class="doc-title">
+            <h1>SURAT JALAN</h1>
+            <p class="subtitle" id="outSubjudul">Pengiriman Pakan dari Produsen ke Pelayaran</p>
+            <p class="doc-number">Nomor: <span id="outNomor">#SJP/085/YCF/SHP/XI/2026</span></p>
+          </div>
+
+          <!-- INFORMASI PENGIRIMAN -->
+          <table class="info-table">
+            <tr>
+              <td class="label">Tanggal</td>
+              <td class="colon">:</td>
+              <td id="outTanggal">17 November 2026</td>
+            </tr>
+            <tr>
+              <td class="label">Pemilik Barang</td>
+              <td class="colon">:</td>
+              <td id="outPemilik">PT Nirankara Makmur Agro</td>
+            </tr>
+            <tr>
+              <td class="label">Pengangkut</td>
+              <td class="colon">:</td>
+              <td id="outPengangkut">PT Tritama Logistik Sentosa</td>
+            </tr>
+            <tr>
+              <td class="label">Asal Muat (Produsen)</td>
+              <td class="colon">:</td>
+              <td><strong>CV Yudistira Cattle and Farm (Yudistira Feedmill)</strong></td>
+            </tr>
+            <tr>
+              <td class="label">Alamat Muat</td>
+              <td class="colon">:</td>
+              <td>Pergudangan Sentral Singosari, Jl. Yonkav, Krajan, Randuagung, Kec. Singosari, Kab. Malang, Jawa Timur 65153</td>
+            </tr>
+            <tr class="spacer">
+              <td class="label">Lokasi Bongkar / Depo</td>
+              <td class="colon">:</td>
+              <td id="outLokasiBongkar">UPTD Perbenihan Tanaman Jl. Bypass/Jl. Nasution, Kecamatan Padangsidimpuan, Batunadua</td>
+            </tr>
+            <tr class="spacer">
+              <td class="label">Kendaraan / Supir</td>
+              <td class="colon">:</td>
+              <td id="outKendaraanSupir">BE 8437 AEU – Riki Arjuansah</td>
+            </tr>
+          </table>
+
+          <!-- TABEL BARANG -->
+          <table class="product-table">
+            <thead>
+              <tr>
+                <th style="width: 42px;">No</th>
+                <th>Nama Barang</th>
+                <th style="width: 85px;">Karung</th>
+                <th style="width: 95px;">Berat (Kg)</th>
+                <th style="width: 145px;">No. Kontainer / Segel</th>
+              </tr>
+            </thead>
+            <tbody id="outProductBody"></tbody>
+          </table>
+
+          <div class="closing-text">
+            Barang telah diterima dalam keadaan baik dan jumlah sesuai.
+          </div>
+
+          <div class="notes-section">
+            Catatan: <span id="outCatatan"></span>
+          </div>
+
+          <!-- TANDA TANGAN (3 KOLOM) -->
+          <div class="signature-grid">
+            <!-- Kolom 1: Pengirim -->
+            <div class="sig-col">
+              <div class="sig-title">Pengirim</div>
+              <div class="sig-sub">CV. Yudistira Cattle and Farm</div>
+              <div class="sig-space"></div>
+              <div class="sig-name">(<span id="outPengirimNama">Ach. Sufyan Wahyudi</span>)</div>
+              <div class="sig-caption">Nama &amp; Cap</div>
+            </div>
+
+            <!-- Kolom 2: Pengemudi -->
+            <div class="sig-col">
+              <div class="sig-title">Pengemudi</div>
+              <div class="sig-sub" id="outSigNopol">No. Pol. BE 8437 AEU</div>
+              <div class="sig-space"></div>
+              <div class="sig-name">(<span id="outSigSupir">Riki Arjuansah</span>)</div>
+              <div class="sig-caption">Pengemudi</div>
+            </div>
+
+            <!-- Kolom 3: Penerima (Kosong) -->
+            <div class="sig-col">
+              <div class="sig-title">Penerima</div>
+              <div class="sig-sub"></div>
+              <div class="sig-space"></div>
+              <div class="sig-name">(...........................)</div>
+              <div class="sig-caption">Nama, Cap &amp; Jam Terima</div>
+            </div>
+          </div>
+
+          <div class="doc-footer">
+            Arsip CV. Yudistira Cattle and Farm – dokumen pemberkasan internal.
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="max-w-7xl mx-auto px-4 py-4 text-center text-[11px] text-slate-500 w-full no-print">
+    <b>CV. YUDISTIRA CATTLE AND FARM</b> • Sistem Pembuatan & Arsip Surat Jalan
+  </footer>
+
+  <!-- ========================================================= -->
+  <!-- SCRIPT JAVASCRIPT LENGKAP & OTOMATISASI TONASE 50 KG/SAK  -->
+  <!-- ========================================================= -->
   <script>
-    // Konfigurasi Worker PDF.js
-    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    const STORAGE_KEY = "yudistira_sj_history_v1";
+    const THEME_KEY = "yudistira_sj_dark_mode";
+    const KG_PER_SAK = 50;
 
-    const lembarTeks = document.getElementById('lembarTeks');
-    const wadahMedia = document.getElementById('wadahMedia');
-    const statusLoading = document.getElementById('statusLoading');
+    const presetProducts = [
+      "Super Gemuk (KSPT 1-1)",
+      "Super Potong (KSPT 1-2)",
+      "PELLET (KSPT 1-1)"
+    ];
 
-    // Hilangkan teks placeholder saat mulai diketik
-    lembarTeks.addEventListener('focus', function() {
-      if (this.innerText.includes('Klik di sini untuk mengetik')) {
-        this.innerHTML = '<p><br></p>';
+    let activeFilterMode = "all";
+
+    let items = [
+      {
+        mode: "Super Gemuk (KSPT 1-1)",
+        customName: "",
+        karungNum: 1000,
+        karung: "1,000",
+        beratNum: 50000,
+        berat: "50,000",
+        kontainer: "-"
       }
-    }, { once: true });
+    ];
 
-    // 1. FUNGSI HANDLE UPLOAD GAMBAR
-    function handleGambar(event) {
-      const files = event.target.files;
-      if (!files.length) return;
+    /* ================= 1. JAM LIVE & MODE TERANG / GELAP ================= */
+    function startClock() {
+      const update = () => {
+        const now = new Date();
+        const str = now.toLocaleString("id-ID", {
+          weekday: "short",
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit"
+        });
+        const el = document.getElementById("liveClockHeader");
+        if (el) el.innerText = str + " WIB";
+      };
+      update();
+      setInterval(update, 1000);
+    }
 
-      // Sembunyikan lembar teks kosong jika user hanya ingin print gambar
-      sembunyikanTeksKosong();
+    // Default: Mode Terang (Hijau-Oranye), bisa diubah ke Mode Gelap
+    function initTheme() {
+      const saved = localStorage.getItem(THEME_KEY);
+      const isDark = saved === "true";
+      document.body.classList.toggle("dark-mode", isDark);
+      updateThemeButtonUI(isDark);
+    }
 
-      const ukuran = document.getElementById('ukuranGambar').value;
+    function toggleDarkMode() {
+      const isDark = document.body.classList.toggle("dark-mode");
+      localStorage.setItem(THEME_KEY, isDark);
+      updateThemeButtonUI(isDark);
+      showToast(isDark ? "Mode Gelap Aktif" : "Mode Terang Aktif");
+    }
 
-      Array.from(files).forEach((file) => {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          const bungkus = document.createElement('div');
-          bungkus.className = 'lembar-kertas page-break flex flex-col items-center justify-center relative group';
-          
-          bungkus.innerHTML = `
-            <button onclick="this.parentElement.remove()" class="no-print absolute top-3 right-3 bg-red-500 text-white text-xs px-2.5 py-1 rounded shadow opacity-80 hover:opacity-100">
-              Hapus Halaman Ini
-            </button>
-            <img src="${e.target.result}" style="width: ${ukuran};" class="img-cetak max-h-[270mm] object-contain mx-auto" />
-          `;
-          wadahMedia.appendChild(bungkus);
+    function updateThemeButtonUI(isDark) {
+      const icon = document.getElementById("themeIcon");
+      const text = document.getElementById("themeText");
+      if (icon) icon.className = isDark ? "fa-solid fa-sun text-amber-400" : "fa-solid fa-moon text-amber-400";
+      if (text) text.innerText = isDark ? "Mode Terang" : "Mode Gelap";
+    }
+
+    let toastTimeout = null;
+    function showToast(msg) {
+      const t = document.getElementById("toast");
+      document.getElementById("toastMsg").innerText = msg;
+      t.classList.remove("hidden");
+      t.classList.add("flex");
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        t.classList.add("hidden");
+        t.classList.remove("flex");
+      }, 2800);
+    }
+
+    function showCenterLoading(teks = "Memproses...") {
+      const el = document.getElementById("centerLoadingOverlay");
+      const txt = document.getElementById("centerLoadingText");
+      if (txt) txt.innerText = teks;
+      if (el) { el.classList.remove("hidden"); el.classList.add("flex"); }
+    }
+
+    function hideCenterLoading() {
+      const el = document.getElementById("centerLoadingOverlay");
+      if (el) { el.classList.add("hidden"); el.classList.remove("flex"); }
+    }
+
+    /* ================= 2. FORMATTER ANGKA & TONASE OTOMATIS ================= */
+    function parseCleanNumber(str) {
+      if (typeof str === "number") return str;
+      const digits = String(str || "").replace(/[^\d]/g, "");
+      return digits ? parseInt(digits, 10) : 0;
+    }
+
+    function formatRibuanKoma(num) {
+      const n = Number(num) || 0;
+      return n.toLocaleString("en-US");
+    }
+
+    function formatTonIndo(kgVal) {
+      const ton = (Number(kgVal) || 0) / 1000;
+      return ton.toLocaleString("id-ID", { minimumFractionDigits: 1, maximumFractionDigits: 2 });
+    }
+
+    /* ================= 3. EDITOR PRODUK (OTOMATIS @50 KG/KARUNG) ================= */
+    function renderItemsEditor() {
+      const container = document.getElementById("itemsContainer");
+      container.innerHTML = "";
+
+      items.forEach((item, index) => {
+        const sakNum = parseCleanNumber(item.karung);
+        const kgNum = parseCleanNumber(item.berat);
+        const tonStr = formatTonIndo(kgNum);
+
+        const row = document.createElement("div");
+        row.className = "item-row-box bg-[#eaf5ee] border-l-4 border-[#e88d2a] border border-emerald-200 p-3 rounded-xl grid grid-cols-1 sm:grid-cols-12 gap-2.5 items-end";
+
+        // 1. Pilihan Produk (3 col)
+        const colSelect = document.createElement("div");
+        colSelect.className = "sm:col-span-3";
+        colSelect.innerHTML = `<label class="block text-[10px] font-extrabold text-slate-600 uppercase mb-1">Pilih Produk #${index + 1}</label>`;
+        const select = document.createElement("select");
+        select.className = "w-full rounded-lg border border-slate-300 px-2.5 py-1.5 text-xs font-bold bg-white";
+        presetProducts.forEach(p => {
+          const opt = document.createElement("option");
+          opt.value = p;
+          opt.textContent = p;
+          if (item.mode === p) opt.selected = true;
+          select.appendChild(opt);
+        });
+        const manualOpt = document.createElement("option");
+        manualOpt.value = "MANUAL";
+        manualOpt.textContent = "-- Ketik Produk Manual --";
+        if (item.mode === "MANUAL") manualOpt.selected = true;
+        select.appendChild(manualOpt);
+
+        select.onchange = (e) => {
+          items[index].mode = e.target.value;
+          renderItemsEditor();
+          renderTable();
         };
-        reader.readAsDataURL(file);
-      });
+        colSelect.appendChild(select);
 
-      event.target.value = ''; // Reset input
+        // 2. Nama Produk Manual (3 col)
+        const colCustom = document.createElement("div");
+        colCustom.className = "sm:col-span-3";
+        colCustom.innerHTML = `<label class="block text-[10px] font-extrabold text-slate-600 uppercase mb-1">Nama Produk Manual</label>`;
+        const customInput = document.createElement("input");
+        customInput.type = "text";
+        customInput.placeholder = item.mode === "MANUAL" ? "Ketik nama produk..." : "Otomatis dari pilihan";
+        customInput.value = item.customName || "";
+        customInput.disabled = item.mode !== "MANUAL";
+        customInput.className = `w-full rounded-lg border border-slate-300 px-2.5 py-1.5 text-xs font-semibold ${item.mode === "MANUAL" ? "bg-white" : "bg-slate-200/70 opacity-60 cursor-not-allowed"}`;
+        customInput.oninput = (e) => {
+          items[index].customName = e.target.value;
+          renderTable();
+        };
+        colCustom.appendChild(customInput);
+
+        // 3. Input Jumlah Karung / Sak (2 col) -> OTOMATIS HITUNG KG & TON
+        const colKarung = document.createElement("div");
+        colKarung.className = "sm:col-span-2";
+        colKarung.innerHTML = `<label class="block text-[10px] font-extrabold text-emerald-700 uppercase mb-1">Jumlah Karung (Sak)</label>`;
+        const karungInput = document.createElement("input");
+        karungInput.type = "text";
+        karungInput.inputMode = "numeric";
+        karungInput.placeholder = "Contoh: 1000";
+        karungInput.value = item.karung;
+        karungInput.className = "w-full rounded-lg border-2 border-emerald-500 px-2.5 py-1.5 text-xs font-extrabold font-mono-code bg-white";
+
+        // Referensi ke elemen berat & badge tonase di baris yang sama
+        const beratInput = document.createElement("input");
+        const tonBadge = document.createElement("span");
+
+        karungInput.oninput = (e) => {
+          const jmlSak = parseCleanNumber(e.target.value);
+          const autoKg = jmlSak * KG_PER_SAK;
+
+          items[index].karungNum = jmlSak;
+          items[index].karung = jmlSak > 0 ? formatRibuanKoma(jmlSak) : "";
+          items[index].beratNum = autoKg;
+          items[index].berat = autoKg > 0 ? formatRibuanKoma(autoKg) : "0";
+
+          e.target.value = items[index].karung;
+          beratInput.value = items[index].berat;
+          tonBadge.textContent = `${formatTonIndo(autoKg)} Ton`;
+
+          renderTable();
+          updateKpiSummary();
+        };
+        colKarung.appendChild(karungInput);
+
+        // 4. Berat (Kg) Otomatis (@50 Kg/Sak) + Badge Tonase (2 col)
+        const colBerat = document.createElement("div");
+        colBerat.className = "sm:col-span-2";
+        const labelWrap = document.createElement("div");
+        labelWrap.className = "flex items-center justify-between mb-1";
+        labelWrap.innerHTML = `<label class="text-[10px] font-extrabold text-amber-600 uppercase">Berat (Kg) @50Kg</label>`;
+        tonBadge.className = "text-[10px] font-extrabold font-mono-code bg-amber-500/20 text-amber-600 px-1.5 py-0.2 rounded";
+        tonBadge.textContent = `${tonStr} Ton`;
+        labelWrap.appendChild(tonBadge);
+
+        beratInput.type = "text";
+        beratInput.value = item.berat;
+        beratInput.className = "w-full rounded-lg border border-slate-300 px-2.5 py-1.5 text-xs font-extrabold font-mono-code bg-white text-emerald-700";
+        beratInput.title = "Dihitung otomatis: Jumlah Karung × 50 Kg (tetap bisa diedit manual bila diperlukan)";
+        beratInput.oninput = (e) => {
+          const manualKg = parseCleanNumber(e.target.value);
+          items[index].beratNum = manualKg;
+          items[index].berat = manualKg > 0 ? formatRibuanKoma(manualKg) : e.target.value;
+          tonBadge.textContent = `${formatTonIndo(manualKg)} Ton`;
+          renderTable();
+          updateKpiSummary();
+        };
+        colBerat.appendChild(labelWrap);
+        colBerat.appendChild(beratInput);
+
+        // 5. No. Kontainer / Segel & Tombol Hapus (2 col)
+        const colKontainer = document.createElement("div");
+        colKontainer.className = "sm:col-span-2 flex items-end gap-1.5";
+        const kontWrap = document.createElement("div");
+        kontWrap.className = "flex-1";
+        kontWrap.innerHTML = `<label class="block text-[10px] font-extrabold text-slate-600 uppercase mb-1">No. Kontainer / Segel</label>`;
+        const kontainerInput = document.createElement("input");
+        kontainerInput.type = "text";
+        kontainerInput.placeholder = "-";
+        kontainerInput.value = item.kontainer;
+        kontainerInput.className = "w-full rounded-lg border border-slate-300 px-2.5 py-1.5 text-xs font-bold bg-white";
+        kontainerInput.oninput = (e) => {
+          items[index].kontainer = e.target.value;
+          renderTable();
+        };
+        kontWrap.appendChild(kontainerInput);
+
+        const removeBtn = document.createElement("button");
+        removeBtn.type = "button";
+        removeBtn.className = `px-2.5 py-1.5 rounded-lg text-xs font-bold text-white transition ${items.length === 1 ? "bg-slate-400 cursor-not-allowed opacity-50" : "bg-rose-600 hover:bg-rose-700"}`;
+        removeBtn.innerHTML = `<i class="fa-solid fa-trash-can"></i>`;
+        removeBtn.disabled = items.length === 1;
+        removeBtn.onclick = () => {
+          if (items.length > 1) {
+            items.splice(index, 1);
+            renderItemsEditor();
+            renderTable();
+            updateKpiSummary();
+          }
+        };
+
+        colKontainer.appendChild(kontWrap);
+        colKontainer.appendChild(removeBtn);
+
+        row.appendChild(colSelect);
+        row.appendChild(colCustom);
+        row.appendChild(colKarung);
+        row.appendChild(colBerat);
+        row.appendChild(colKontainer);
+
+        container.appendChild(row);
+      });
     }
 
-    // 2. FUNGSI HANDLE UPLOAD PDF (Render per Halaman ke Canvas)
-    async function handlePDF(event) {
-      const file = event.target.files[0];
-      if (!file) return;
+    function addItemRow() {
+      items.push({
+        mode: "Super Gemuk (KSPT 1-1)",
+        customName: "",
+        karungNum: 1000,
+        karung: "1,000",
+        beratNum: 50000,
+        berat: "50,000",
+        kontainer: "-"
+      });
+      renderItemsEditor();
+      renderTable();
+      updateKpiSummary();
+      showToast("Baris produk ditambahkan (@50 Kg/Sak)");
+    }
 
-      sembunyikanTeksKosong();
-      statusLoading.classList.remove('hidden');
+    function renderTable() {
+      const tbody = document.getElementById("outProductBody");
+      const usePrefix = document.getElementById("chkPrefix").checked;
+      tbody.innerHTML = "";
 
-      try {
-        const arrayBuffer = await file.arrayBuffer();
-        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-        
-        // Loop setiap halaman PDF
-        for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
-          statusLoading.innerText = `Memproses halaman PDF (${pageNum} dari ${pdf.numPages})...`;
-          
-          const page = await pdf.getPage(pageNum);
-          // Gunakan scale 2.0 agar hasil cetakan tajam dan tidak pecah di printer Epson
-          const viewport = page.getViewport({ scale: 2.0 });
+      items.forEach((item, idx) => {
+        const tr = document.createElement("tr");
+        const prodName = item.mode === "MANUAL" ? (item.customName || "-") : item.mode;
+        const displayHtml = usePrefix
+          ? `Pakan Konsentrat Sapi Potong – ${prodName}<br>(karung @50 kg)`
+          : prodName;
 
-          const bungkus = document.createElement('div');
-          bungkus.className = 'lembar-kertas page-break flex flex-col items-center justify-center relative';
-          
-          const tombolHapus = document.createElement('button');
-          tombolHapus.className = 'no-print absolute top-3 right-3 bg-red-500 text-white text-xs px-2.5 py-1 rounded shadow';
-          tombolHapus.innerText = `Hapus Hal ${pageNum}`;
-          tombolHapus.onclick = () => bungkus.remove();
+        tr.innerHTML = `
+          <td>${idx + 1}</td>
+          <td>${displayHtml}</td>
+          <td>${item.karung || "-"}</td>
+          <td>${item.berat || "-"}</td>
+          <td>${item.kontainer || "-"}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+      fitA4Preview();
+    }
 
-          const canvas = document.createElement('canvas');
-          const context = canvas.getContext('2d');
-          canvas.height = viewport.height;
-          canvas.width = viewport.width;
-          canvas.className = 'w-full h-auto max-h-[275mm] object-contain';
+    function updateKpiSummary() {
+      let totalSak = 0;
+      let totalKg = 0;
 
-          bungkus.appendChild(tombolHapus);
-          bungkus.appendChild(canvas);
-          wadahMedia.appendChild(bungkus);
+      items.forEach(item => {
+        const sak = parseCleanNumber(item.karung);
+        const kg = parseCleanNumber(item.berat);
+        totalSak += sak;
+        totalKg += kg;
+      });
 
-          await page.render({
-            canvasContext: context,
-            viewport: viewport
-          }).promise;
+      document.getElementById("kpiCurrentTon").innerText = `${formatTonIndo(totalKg)} TON`;
+      document.getElementById("kpiCurrentKg").innerText = `Total Berat: ${formatRibuanKoma(totalKg)} Kg (@50 Kg/Sak)`;
+      document.getElementById("kpiCurrentKarung").innerText = `${formatRibuanKoma(totalSak)} SAK`;
+      document.getElementById("kpiCurrentItems").innerText = `${items.length} Baris Produk Dimuat`;
+    }
+
+    function updateView() {
+      document.getElementById("outNomor").textContent = document.getElementById("inNomor").value;
+      document.getElementById("outSubjudul").textContent = document.getElementById("inSubjudul").value;
+      document.getElementById("outTanggal").textContent = document.getElementById("inTanggal").value;
+      document.getElementById("outPemilik").textContent = document.getElementById("inPemilik").value;
+      document.getElementById("outPengangkut").textContent = document.getElementById("inPengangkut").value;
+      document.getElementById("outLokasiBongkar").textContent = document.getElementById("inLokasiBongkar").value;
+
+      const nopol = document.getElementById("inNopol").value.trim();
+      const supir = document.getElementById("inSupir").value.trim();
+
+      const gabungan = (nopol && supir) ? `${nopol} – ${supir}` : (nopol || supir || "-");
+      document.getElementById("outKendaraanSupir").textContent = gabungan;
+      document.getElementById("outSigNopol").textContent = nopol ? `No. Pol. ${nopol}` : "";
+      document.getElementById("outSigSupir").textContent = supir || "...........................";
+
+      document.getElementById("outPengirimNama").textContent = document.getElementById("inPengirimNama").value;
+      document.getElementById("outCatatan").textContent = document.getElementById("inCatatan").value;
+      updateKpiSummary();
+      fitA4Preview();
+    }
+
+    function syncDatePicker() {
+      const val = document.getElementById("inDatePicker").value;
+      if (!val) return;
+      const bulanIndo = [
+        "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+        "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+      ];
+      const parts = val.split("-");
+      const tanggalFormatted = `${parseInt(parts[2], 10)} ${bulanIndo[parseInt(parts[1], 10) - 1]} ${parts[0]}`;
+      document.getElementById("inTanggal").value = tanggalFormatted;
+      updateView();
+    }
+
+    function initDefaultDate() {
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, "0");
+      const dd = String(today.getDate()).padStart(2, "0");
+      const isoToday = `${yyyy}-${mm}-${dd}`;
+      document.getElementById("inDatePicker").value = isoToday;
+      document.getElementById("filterStartDate").value = isoToday;
+      document.getElementById("filterEndDate").value = isoToday;
+      syncDatePicker();
+    }
+
+    function resetFormBaru() {
+      const history = getHistory();
+      const nextNum = String(history.length + 1).padStart(3, "0");
+      const now = new Date();
+      const romawiBulan = ["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII"][now.getMonth()];
+      document.getElementById("inNomor").value = `#SJP/${nextNum}/YCF/SHP/${romawiBulan}/${now.getFullYear()}`;
+      document.getElementById("inCatatan").value = "";
+      items = [
+        {
+          mode: "Super Gemuk (KSPT 1-1)",
+          customName: "",
+          karungNum: 1000,
+          karung: "1,000",
+          beratNum: 50000,
+          berat: "50,000",
+          kontainer: "-"
         }
-      } catch (error) {
-        alert('Gagal membaca file PDF: ' + error.message);
-      } finally {
-        statusLoading.classList.add('hidden');
-        event.target.value = '';
+      ];
+      initDefaultDate();
+      renderItemsEditor();
+      renderTable();
+      updateView();
+      showToast("Form Surat Jalan Baru Siap Diisi!");
+    }
+
+    // Skala otomatis agar pratinjau A4 pas di layar HP, Tablet, maupun Laptop
+    function fitA4Preview() {
+      const shell = document.querySelector(".preview-shell");
+      const scaleBox = document.getElementById("previewScaleBox");
+      const a4 = document.getElementById("a4Sheet");
+      if (!shell || !scaleBox || !a4) return;
+
+      const availableWidth = shell.clientWidth;
+      const a4WidthPx = a4.offsetWidth;
+
+      if (availableWidth < a4WidthPx) {
+        const scale = availableWidth / a4WidthPx;
+        scaleBox.style.transform = `scale(${scale})`;
+        shell.style.height = `${a4.offsetHeight * scale + 16}px`;
+      } else {
+        scaleBox.style.transform = "none";
+        shell.style.height = "auto";
       }
     }
 
-    // Fungsi pengatur ukuran gambar secara real-time
-    function ubahUkuranGambar(ukuran) {
-      document.querySelectorAll('.img-cetak').forEach(img => {
-        img.style.width = ukuran;
+    window.addEventListener("resize", fitA4Preview);
+
+    /* ================= 4. RIWAYAT SURAT JALAN, FILTER & UNDUH ================= */
+    function getHistory() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveHistoryArray(arr) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+    }
+
+    function collectCurrentFormState() {
+      const isoDate = document.getElementById("inDatePicker").value || new Date().toISOString().slice(0, 10);
+      return {
+        id: "SJ-" + Date.now(),
+        isoDate: isoDate,
+        createdAt: new Date().toISOString(),
+        nomor: document.getElementById("inNomor").value,
+        subjudul: document.getElementById("inSubjudul").value,
+        tanggalTeks: document.getElementById("inTanggal").value,
+        pemilik: document.getElementById("inPemilik").value,
+        pengangkut: document.getElementById("inPengangkut").value,
+        lokasiBongkar: document.getElementById("inLokasiBongkar").value,
+        nopol: document.getElementById("inNopol").value,
+        supir: document.getElementById("inSupir").value,
+        pengirimNama: document.getElementById("inPengirimNama").value,
+        catatan: document.getElementById("inCatatan").value,
+        usePrefix: document.getElementById("chkPrefix").checked,
+        items: JSON.parse(JSON.stringify(items))
+      };
+    }
+
+    function saveToHistory(showNotif = false) {
+      const history = getHistory();
+      const current = collectCurrentFormState();
+
+      const existingIdx = history.findIndex(h => h.nomor === current.nomor && h.isoDate === current.isoDate);
+      if (existingIdx >= 0) {
+        history[existingIdx] = current;
+      } else {
+        history.unshift(current);
+      }
+
+      saveHistoryArray(history);
+      renderHistory();
+      if (showNotif) {
+        showToast("Surat Jalan berhasil disimpan ke Riwayat!");
+      }
+    }
+
+    function saveAndPrint() {
+      saveToHistory(false);
+      window.print();
+    }
+
+    function saveAndDownloadPDF() {
+      saveToHistory(false);
+      downloadCurrentA4AsPDF();
+    }
+
+    function downloadCurrentA4AsPDF() {
+      const element = document.getElementById("a4Sheet");
+      const scaleBox = document.getElementById("previewScaleBox");
+      const prevTransform = scaleBox.style.transform;
+      scaleBox.style.transform = "none";
+
+      const nomorClean = (document.getElementById("inNomor").value || "Surat_Jalan")
+        .replace(/[^a-zA-Z0-9_-]/g, "_");
+
+      if (typeof html2pdf !== "undefined") {
+        showCenterLoading("Menyiapkan PDF A4...");
+        const opt = {
+          margin: 0,
+          filename: `SJ_${nomorClean}.pdf`,
+          image: { type: "jpeg", quality: 0.98 },
+          html2canvas: { scale: 2, useCORS: true, backgroundColor: "#ffffff" },
+          jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
+        };
+        html2pdf().set(opt).from(element).save().then(() => {
+          scaleBox.style.transform = prevTransform;
+          fitA4Preview();
+          hideCenterLoading();
+          showToast("PDF Surat Jalan Berhasil Diunduh!");
+        }).catch(() => {
+          scaleBox.style.transform = prevTransform;
+          fitA4Preview();
+          hideCenterLoading();
+        });
+      } else {
+        scaleBox.style.transform = prevTransform;
+        window.print();
+      }
+    }
+
+    function setFilterMode(mode) {
+      activeFilterMode = mode;
+      const baseClass = "px-3 py-1.5 rounded-xl text-xs font-extrabold bg-slate-100 text-slate-700 border border-slate-300 transition";
+      document.getElementById("tabFilterAll").className = mode === "all" ? `sub-tab-active ${baseClass}` : baseClass;
+      document.getElementById("tabFilterDaily").className = mode === "daily" ? `sub-tab-active ${baseClass}` : baseClass;
+      document.getElementById("tabFilterWeekly").className = mode === "weekly" ? `sub-tab-active ${baseClass}` : baseClass;
+      document.getElementById("tabFilterDate").className = mode === "date" ? `sub-tab-active ${baseClass}` : baseClass;
+
+      const showDateRange = mode === "date";
+      document.getElementById("filterStartWrap").classList.toggle("hidden", !showDateRange);
+      document.getElementById("filterEndWrap").classList.toggle("hidden", !showDateRange);
+      document.getElementById("filterSearchWrap").className = showDateRange ? "sm:col-span-1" : "sm:col-span-3";
+
+      const labelMap = {
+        all: "Semua Riwayat",
+        daily: "Harian (Hari Ini)",
+        weekly: "Mingguan (7 Hari Terakhir)",
+        date: "Rentang Tanggal Pilihan"
+      };
+      document.getElementById("kpiHistoryFilterLabel").innerText = `Periode: ${labelMap[mode]}`;
+
+      renderHistory();
+    }
+
+    function getFilteredHistory() {
+      const history = getHistory();
+      const search = (document.getElementById("filterSearch").value || "").toLowerCase();
+      const todayIso = new Date().toISOString().slice(0, 10);
+
+      return history.filter(entry => {
+        let matchDate = true;
+        if (activeFilterMode === "daily") {
+          matchDate = entry.isoDate === todayIso;
+        } else if (activeFilterMode === "weekly") {
+          const entryDate = new Date(entry.isoDate + "T00:00:00");
+          const now = new Date(todayIso + "T00:00:00");
+          const diffDays = (now - entryDate) / (1000 * 60 * 60 * 24);
+          matchDate = diffDays >= -1 && diffDays <= 7;
+        } else if (activeFilterMode === "date") {
+          const start = document.getElementById("filterStartDate").value;
+          const end = document.getElementById("filterEndDate").value;
+          if (start && entry.isoDate < start) matchDate = false;
+          if (end && entry.isoDate > end) matchDate = false;
+        }
+
+        if (!matchDate) return false;
+
+        if (search) {
+          const produkNames = (entry.items || []).map(i => i.mode === "MANUAL" ? i.customName : i.mode).join(" ");
+          const haystack = [
+            entry.nomor,
+            entry.tanggalTeks,
+            entry.pemilik,
+            entry.pengangkut,
+            entry.lokasiBongkar,
+            entry.nopol,
+            entry.supir,
+            produkNames
+          ].join(" ").toLowerCase();
+          return haystack.includes(search);
+        }
+        return true;
       });
     }
 
-    // Sembunyikan kotak ketik manual jika tidak dipakai agar tidak menyisakan 1 kertas kosong
-    function sembunyikanTeksKosong() {
-      if (lembarTeks.innerText.includes('Klik di sini untuk mengetik') || lembarTeks.innerText.trim() === '') {
-        lembarTeks.classList.add('hidden');
+    function renderHistory() {
+      const tbody = document.getElementById("historyTableBody");
+      const filtered = getFilteredHistory();
+      tbody.innerHTML = "";
+
+      let sumHistorySak = 0;
+      let sumHistoryKg = 0;
+
+      filtered.forEach(entry => {
+        (entry.items || []).forEach(i => {
+          sumHistorySak += parseCleanNumber(i.karung);
+          sumHistoryKg += parseCleanNumber(i.berat);
+        });
+      });
+
+      document.getElementById("kpiHistoryCount").innerText = `${filtered.length} DOKUMEN`;
+      document.getElementById("kpiHistoryTon").innerText = `${formatTonIndo(sumHistoryKg)} TON`;
+      document.getElementById("kpiHistorySak").innerText = `Total: ${formatRibuanKoma(sumHistorySak)} Karung (${formatRibuanKoma(sumHistoryKg)} Kg)`;
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" class="text-center py-6 text-slate-400">
+              Belum ada data riwayat Surat Jalan pada filter ini.
+            </td>
+          </tr>
+        `;
+        return;
       }
+
+      filtered.forEach(entry => {
+        const tr = document.createElement("tr");
+        tr.className = "hover:bg-slate-50 transition";
+
+        let entrySak = 0;
+        let entryKg = 0;
+        const ringkasanProduk = (entry.items || []).map(i => {
+          const s = parseCleanNumber(i.karung);
+          const k = parseCleanNumber(i.berat);
+          entrySak += s;
+          entryKg += k;
+          const nama = i.mode === "MANUAL" ? i.customName : i.mode;
+          return `${nama} (${i.karung} sak / ${i.berat} kg)`;
+        }).join(", ");
+
+        tr.innerHTML = `
+          <td class="py-2.5 px-3 whitespace-nowrap">
+            <div class="font-bold text-slate-800">${entry.tanggalTeks}</div>
+            <div class="text-[10px] text-slate-400 font-mono-code">${entry.isoDate}</div>
+          </td>
+          <td class="py-2.5 px-3 font-mono-code font-bold text-emerald-600 whitespace-nowrap">${entry.nomor}</td>
+          <td class="py-2.5 px-3">
+            <div class="font-bold text-slate-800">${entry.pemilik}</div>
+            <div class="text-[10px] text-slate-500 max-w-[220px] truncate">${entry.lokasiBongkar}</div>
+          </td>
+          <td class="py-2.5 px-3 whitespace-nowrap font-semibold text-slate-700">${entry.nopol} – ${entry.supir}</td>
+          <td class="py-2.5 px-3 text-slate-600 max-w-[230px] leading-snug">${ringkasanProduk}</td>
+          <td class="py-2.5 px-3 text-right whitespace-nowrap">
+            <div class="font-mono-code font-extrabold text-amber-500">${formatTonIndo(entryKg)} Ton</div>
+            <div class="text-[10px] font-mono-code text-slate-400">${formatRibuanKoma(entrySak)} Sak • ${formatRibuanKoma(entryKg)} Kg</div>
+          </td>
+          <td class="py-2.5 px-3 text-center whitespace-nowrap">
+            <div class="inline-flex items-center space-x-1">
+              <button type="button" onclick="loadHistoryEntry('${entry.id}')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1 rounded-lg text-[11px] font-bold transition" title="Muat ke Form">
+                <i class="fa-solid fa-folder-open"></i> Muat
+              </button>
+              <button type="button" onclick="downloadHistoryEntryPDF('${entry.id}')" class="bg-[#e88d2a] hover:bg-[#cf7617] text-white px-2.5 py-1 rounded-lg text-[11px] font-bold transition" title="Unduh PDF">
+                <i class="fa-solid fa-file-pdf"></i> PDF
+              </button>
+              <button type="button" onclick="deleteHistoryEntry('${entry.id}')" class="bg-rose-500/15 hover:bg-rose-600 text-rose-500 hover:text-white px-2 py-1 rounded-lg text-[11px] font-bold transition" title="Hapus">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
     }
 
-    // Reset semua halaman kembali ke awal
-    function bersihkanSemua() {
-      wadahMedia.innerHTML = '';
-      lembarTeks.classList.remove('hidden');
-      lembarTeks.innerHTML = '<p class="text-slate-400 italic">Klik di sini untuk mengetik teks tambahan, atau langsung gunakan tombol di atas untuk memasukkan Gambar / File PDF...</p>';
+    function loadHistoryEntry(id) {
+      const history = getHistory();
+      const found = history.find(h => h.id === id);
+      if (!found) return;
+
+      document.getElementById("inDatePicker").value = found.isoDate || "";
+      document.getElementById("inNomor").value = found.nomor || "";
+      document.getElementById("inSubjudul").value = found.subjudul || "";
+      document.getElementById("inTanggal").value = found.tanggalTeks || "";
+      document.getElementById("inPemilik").value = found.pemilik || "";
+      document.getElementById("inPengangkut").value = found.pengangkut || "";
+      document.getElementById("inLokasiBongkar").value = found.lokasiBongkar || "";
+      document.getElementById("inNopol").value = found.nopol || "";
+      document.getElementById("inSupir").value = found.supir || "";
+      document.getElementById("inPengirimNama").value = found.pengirimNama || "Ach. Sufyan Wahyudi";
+      document.getElementById("inCatatan").value = found.catatan || "";
+      document.getElementById("chkPrefix").checked = found.usePrefix !== false;
+
+      items = JSON.parse(JSON.stringify(found.items || []));
+      renderItemsEditor();
+      renderTable();
+      updateView();
+      showToast(`Surat Jalan ${found.nomor} dimuat!`);
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
+
+    function downloadHistoryEntryPDF(id) {
+      loadHistoryEntry(id);
+      setTimeout(() => {
+        downloadCurrentA4AsPDF();
+      }, 250);
+    }
+
+    function deleteHistoryEntry(id) {
+      if (!confirm("Hapus Surat Jalan ini dari riwayat?")) return;
+      const history = getHistory().filter(h => h.id !== id);
+      saveHistoryArray(history);
+      renderHistory();
+      showToast("Data riwayat dihapus!");
+    }
+
+    function exportHistoryCSV() {
+      const filtered = getFilteredHistory();
+      if (filtered.length === 0) {
+        alert("Tidak ada data riwayat untuk diunduh pada filter saat ini.");
+        return;
+      }
+
+      const headers = [
+        "Tanggal ISO",
+        "Tanggal Surat",
+        "Nomor SJ",
+        "Pemilik Barang",
+        "Pengangkut",
+        "Lokasi Bongkar",
+        "No Polisi",
+        "Supir",
+        "Daftar Produk",
+        "Total Karung (Sak)",
+        "Total Berat (Kg)",
+        "Total Tonase (Ton)",
+        "Pengirim"
+      ];
+
+      const rows = filtered.map(h => {
+        let totalSak = 0;
+        let totalKg = 0;
+        const produkStr = (h.items || []).map(i => {
+          const s = parseCleanNumber(i.karung);
+          const k = parseCleanNumber(i.berat);
+          totalSak += s;
+          totalKg += k;
+          return `${i.mode === "MANUAL" ? i.customName : i.mode} [Karung: ${i.karung} | Berat: ${i.berat} Kg | Kontainer: ${i.kontainer}]`;
+        }).join(" ; ");
+
+        return [
+          h.isoDate,
+          h.tanggalTeks,
+          h.nomor,
+          h.pemilik,
+          h.pengangkut,
+          h.lokasiBongkar,
+          h.nopol,
+          h.supir,
+          produkStr,
+          totalSak,
+          totalKg,
+          (totalKg / 1000).toFixed(2),
+          h.pengirimNama
+        ].map(val => `"${String(val ?? "").replace(/"/g, '""')}"`).join(",");
+      });
+
+      const csvContent = "\uFEFF" + [headers.join(","), ...rows].join("\n");
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `Rekap_Surat_Jalan_Yudistira_${new Date().toISOString().slice(0, 10)}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast("Rekap CSV berhasil diunduh!");
+    }
+
+    /* ================= INISIALISASI AWAL ================= */
+    window.addEventListener("DOMContentLoaded", () => {
+      initTheme();
+      startClock();
+      initDefaultDate();
+      renderItemsEditor();
+      renderTable();
+      updateView();
+      renderHistory();
+    });
   </script>
 </body>
 </html>
