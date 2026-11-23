@@ -416,11 +416,11 @@
         <div class="space-y-1">
           <div class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">Pengaturan Cepat Pasangan Admin Gudang (Cetak & Default):</div>
           <div class="flex flex-wrap gap-1.5">
-            <button type="button" id="btnPresetAdmin1" onclick="setPasanganAdminCetak('SUFYAN', 'UDIN')" class="px-2.5 py-1 rounded-lg text-[10px] font-extrabold bg-emerald-600 text-white shadow transition">
-              Pagi: SUFYAN • Malam: UDIN
+            <button type="button" id="btnPresetAdmin1" onclick="setPasanganAdminCetak('SUFYAN', 'FAUZAN')" class="px-2.5 py-1 rounded-lg text-[10px] font-extrabold bg-emerald-600 text-white shadow transition">
+              Pagi: SUFYAN • Malam: FAUZAN
             </button>
-            <button type="button" id="btnPresetAdmin2" onclick="setPasanganAdminCetak('UDIN', 'SUFYAN')" class="px-2.5 py-1 rounded-lg text-[10px] font-extrabold bg-slate-200 text-slate-700 hover:bg-emerald-600 hover:text-white transition">
-              Pagi: UDIN • Malam: SUFYAN
+            <button type="button" id="btnPresetAdmin2" onclick="setPasanganAdminCetak('FAUZAN', 'SUFYAN')" class="px-2.5 py-1 rounded-lg text-[10px] font-extrabold bg-slate-200 text-slate-700 hover:bg-emerald-600 hover:text-white transition">
+              Pagi: FAUZAN • Malam: SUFYAN
             </button>
           </div>
         </div>
@@ -440,7 +440,7 @@
             <div id="boxTglMalam" class="bg-slate-100 py-0.5 px-2 text-slate-600 border-b border-slate-300 font-mono-code">02/11/2026</div>
             <div class="bg-[#ffff00] text-slate-950 py-0.5 px-2 font-extrabold uppercase tracking-wider border-b border-slate-300 text-[9px]">ADMIN GUDANG</div>
             <div class="bg-white py-0.5 px-2 text-slate-500 border-b border-slate-200 text-[9px]">MALAM</div>
-            <div id="boxNamaAdminMalam" class="bg-white py-1 px-2 text-blue-500 font-extrabold text-xs">UDIN</div>
+            <div id="boxNamaAdminMalam" class="bg-white py-1 px-2 text-blue-500 font-extrabold text-xs">FAUZAN</div>
           </div>
         </div>
       </div>
@@ -586,13 +586,13 @@
               <span>PAGI • SUFYAN</span>
               <span class="text-[9px] font-normal text-emerald-100">Shift Pagi (Sufyan)</span>
             </button>
-            <button type="button" id="btnKombinasi2" onclick="pilihKombinasiShift('MALAM', 'UDIN')" class="py-2 px-2.5 rounded-xl font-extrabold text-[11px] border-2 border-slate-300 text-slate-600 bg-white transition flex flex-col items-center justify-center">
-              <span>MALAM • UDIN</span>
-              <span class="text-[9px] font-normal text-slate-400">Shift Malam (UDIN)</span>
+            <button type="button" id="btnKombinasi2" onclick="pilihKombinasiShift('MALAM', 'FAUZAN')" class="py-2 px-2.5 rounded-xl font-extrabold text-[11px] border-2 border-slate-300 text-slate-600 bg-white transition flex flex-col items-center justify-center">
+              <span>MALAM • FAUZAN</span>
+              <span class="text-[9px] font-normal text-slate-400">Shift Malam (FAUZAN)</span>
             </button>
-            <button type="button" id="btnKombinasi3" onclick="pilihKombinasiShift('PAGI', 'UDIN')" class="py-2 px-2.5 rounded-xl font-extrabold text-[11px] border-2 border-slate-300 text-slate-600 bg-white transition flex flex-col items-center justify-center">
-              <span>PAGI • UDIN</span>
-              <span class="text-[9px] font-normal text-slate-400">Shift Pagi (UDIN)</span>
+            <button type="button" id="btnKombinasi3" onclick="pilihKombinasiShift('PAGI', 'FAUZAN')" class="py-2 px-2.5 rounded-xl font-extrabold text-[11px] border-2 border-slate-300 text-slate-600 bg-white transition flex flex-col items-center justify-center">
+              <span>PAGI • FAUZAN</span>
+              <span class="text-[9px] font-normal text-slate-400">Shift Pagi (FAUZAN)</span>
             </button>
             <button type="button" id="btnKombinasi4" onclick="pilihKombinasiShift('MALAM', 'SUFYAN')" class="py-2 px-2.5 rounded-xl font-extrabold text-[11px] border-2 border-slate-300 text-slate-600 bg-white transition flex flex-col items-center justify-center">
               <span>MALAM • SUFYAN</span>
@@ -612,7 +612,7 @@
               <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Admin Gudang</label>
               <select id="inputAdminBM" class="w-full rounded-lg border border-slate-300 px-2.5 py-1.5 font-extrabold text-xs">
                 <option value="SUFYAN">SUFYAN</option>
-                <option value="UDIN">UDIN</option>
+                <option value="FAUZAN">FAUZAN</option>
               </select>
             </div>
             <div>
@@ -768,7 +768,7 @@
             <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Admin *</label>
             <select id="gajiAdmin" class="w-full rounded-xl border border-slate-300 px-3 py-2 font-extrabold text-xs bg-white">
               <option value="SUFYAN">SUFYAN</option>
-              <option value="UDIN">UDIN</option>
+              <option value="FAUZAN">FAUZAN</option>
             </select>
           </div>
         </div>
@@ -1069,7 +1069,7 @@
     let listTransaksiBM = JSON.parse(localStorage.getItem(STORAGE_KEY_BM_DATA)) || [];
     let listTimKuli = JSON.parse(localStorage.getItem(STORAGE_KEY_TIM_KULI)) || DEFAULT_TIM_KULI;
     let listPenggajian = JSON.parse(localStorage.getItem(STORAGE_KEY_GAJI_KULI)) || [];
-    let pasanganAdminCetak = JSON.parse(localStorage.getItem(STORAGE_KEY_PASANGAN)) || { pagi: "SUFYAN", malam: "UDIN" };
+    let pasanganAdminCetak = JSON.parse(localStorage.getItem(STORAGE_KEY_PASANGAN)) || { pagi: "SUFYAN", malam: "FAUZAN" };
 
     let gasUrl = localStorage.getItem(STORAGE_KEY_GAS_URL) || DEFAULT_GAS_URL;
     if (!gasUrl || gasUrl.startsWith("Https://")) {
@@ -1335,8 +1335,8 @@
       });
 
       if (shift === 'PAGI' && admin === 'SUFYAN') b1.className = "py-2 px-2.5 rounded-xl font-extrabold text-[11px] border-2 border-emerald-600 bg-emerald-600 text-white shadow transition flex flex-col items-center justify-center";
-      else if (shift === 'MALAM' && admin === 'UDIN') b2.className = "py-2 px-2.5 rounded-xl font-extrabold text-[11px] border-2 border-blue-600 bg-blue-600 text-white shadow transition flex flex-col items-center justify-center";
-      else if (shift === 'PAGI' && admin === 'UDIN') b3.className = "py-2 px-2.5 rounded-xl font-extrabold text-[11px] border-2 border-emerald-600 bg-emerald-600 text-white shadow transition flex flex-col items-center justify-center";
+      else if (shift === 'MALAM' && admin === 'FAUZAN') b2.className = "py-2 px-2.5 rounded-xl font-extrabold text-[11px] border-2 border-blue-600 bg-blue-600 text-white shadow transition flex flex-col items-center justify-center";
+      else if (shift === 'PAGI' && admin === 'FAUZAN') b3.className = "py-2 px-2.5 rounded-xl font-extrabold text-[11px] border-2 border-emerald-600 bg-emerald-600 text-white shadow transition flex flex-col items-center justify-center";
       else if (shift === 'MALAM' && admin === 'SUFYAN') b4.className = "py-2 px-2.5 rounded-xl font-extrabold text-[11px] border-2 border-blue-600 bg-blue-600 text-white shadow transition flex flex-col items-center justify-center";
     }
 
@@ -2115,7 +2115,7 @@
         const isSudahBayar = item.statusGaji === 'SUDAH DIBAYAR';
 
         const shiftBadge = isMalam
-          ? `<span class="bg-blue-500/20 text-blue-400 border border-blue-500/30 px-2 py-0.5 rounded text-[10px] font-extrabold">MALAM • ${item.admin || 'UDIN'}</span>`
+          ? `<span class="bg-blue-500/20 text-blue-400 border border-blue-500/30 px-2 py-0.5 rounded text-[10px] font-extrabold">MALAM • ${item.admin || 'FAUZAN'}</span>`
           : `<span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded text-[10px] font-extrabold">PAGI • ${item.admin || 'SUFYAN'}</span>`;
 
         const badgeGaji = isSudahBayar
